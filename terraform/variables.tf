@@ -63,8 +63,8 @@ variable "instance_count" {
    type = "map"
    default = {
       opsc      = 2
-      cassandra = 2
-      solr      = 2
+      cassandra = 3
+      solr      = 3
    }
 }
 
