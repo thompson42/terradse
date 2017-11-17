@@ -11,7 +11,7 @@ The scripts in this repository have 3 major parts:
    1. generate the ansible host inventory file (required by the ansible playbooks) out of the terraform state output
    2. lauch the terraform scripts and ansible playbooks
 
-Among them, the ansible part follows exactly the same framework as in my previous repository. Please check that repository for more details. In this repository, I will focuson the remaining two parts.
+Among them, the ansible part follows exactly the same framework as in my previous repository. Please check that repository for more details. In this repository, I will focus mainly on the remaining two parts and touch a bit on the ansible part with the new playbook that wasn't in the previous repository.
 
 
 ## Terraform Introduction and Cluster Topology
