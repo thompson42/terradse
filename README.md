@@ -41,6 +41,51 @@ In order to run the terraform script sucessfully, the following procedures need 
 2. Install and configure AWS CLI properly. Make sure you have an AWS account that have the enough privilege to create and configure AWS resources.
 3. Create a SSH key-pair. The script automatically uploads the public key to AWS (to create an AWS key pair resource), so the launched AWS EC2 instances can be connected through SSH. The names of the SSH key-pair, by default, should be “id_rsa_aws and id_rsa_aws.pub”. If you choose other names, please make sure to update the Terraform configuration variable accordingly.
 
-### 
+### Define AWS EC2 Count and Type
 
-<< to be continued ... >>
+The number and type of AWS EC2 instances are determined at DataCenter (DC) level through terraform variable mappings, with each DC has its own instance type and count as determined by the target DSE cluster topology. The example for the example cluster topology is as below:
+```
+variable "instance_count" {
+   type = "map"
+   default = {
+      opsc      = 2
+      cassandra = 3
+      solr      = 3
+   }
+}
+
+variable "instance_type" {
+   type = "map"
+   default = {
+      // t2.2xlarge is the minimal DSE requirement
+      opsc      = "t2.2xlarge"
+      cassandra = "t2.2xlarge"
+      solr      = "t2.2xlarge"
+   }
+}
+```
+
+When provisioning the required AWS EC2 instances for a specific DC, the type and count is determined through a map search as in the example below:
+```
+#
+# EC2 instances for DSE cluster, "DSE Search" DC
+# 
+resource "aws_instance" "dse_search" {
+   ... ...
+   instance_type   = "${lookup(var.instance_type, var.dse_search_type)}"
+   count           = "${lookup(var.instance_count, var.dse_search_type)}"
+   ... ...
+}
+```
+
+### AWS Resources: Security Group and EC2 User Data  
+
+In order for the DSE cluster and OpsCenter to work properly, certain ports on the ec2 instances have to be open, as per the following DataStax documents:
+* ![Securing DataStax Enterprise ports](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secFirewallPorts.html)
+* ![OpsCenter ports reference](https://docs.datastax.com/en/opscenter/6.1/opsc/reference/opscLcmPorts.html)
+
+The script does so by creating the following AWS security group resources:
+1. sg_ssh: allows SSH access from public
+2. sg_opsc_web: allows OpsCenter Web Access from public
+3. sg_opsc_node: allows communication between OpsCenter and datastax-agent
+4. sg_dse_node: allow communication between DSE nodes
