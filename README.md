@@ -115,3 +115,6 @@ resource "aws_instance" "dse_search" {
 ```
 
 Other than NTP service, python (minimal version) is also installed in order for Ansible to work properly.
+
+## Generate Ansible Inventory File Programmatically
+
