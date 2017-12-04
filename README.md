@@ -41,7 +41,9 @@ In order to run the terraform script sucessfully, the following procedures need 
 2. Install and configure AWS CLI properly. Make sure you have an AWS account that have the enough privilege to create and configure AWS resources.
 3. Create a SSH key-pair. The script automatically uploads the public key to AWS (to create an AWS key pair resource), so the launched AWS EC2 instances can be connected through SSH. The names of the SSH key-pair, by default, should be “id_rsa_aws and id_rsa_aws.pub”. If you choose other names, please make sure to update the Terraform configuration variable accordingly.
 
-### Define AWS EC2 Count and Type
+### AWS Resources 
+
+#### EC2 Count and Type
 
 The number and type of AWS EC2 instances are determined at DataCenter (DC) level through terraform variable mappings, with each DC has its own instance type and count as determined by the target DSE cluster topology. The example for the example cluster topology is as below:
 ```
@@ -78,7 +80,7 @@ resource "aws_instance" "dse_search" {
 }
 ```
 
-### AWS Resources: Security Group and EC2 User Data  
+#### Security Group
 
 In order for the DSE cluster and OpsCenter to work properly, certain ports on the ec2 instances have to be open, as per the following DataStax documents:
 * ![Securing DataStax Enterprise ports](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secFirewallPorts.html)
@@ -89,3 +91,6 @@ The script does so by creating the following AWS security group resources:
 2. sg_opsc_web: allows OpsCenter Web Access from public
 3. sg_opsc_node: allows communication between OpsCenter and datastax-agent
 4. sg_dse_node: allow communication between DSE nodes
+
+#### User Data
+
