@@ -88,9 +88,30 @@ In order for the DSE cluster and OpsCenter to work properly, certain ports on th
 
 The script does so by creating the following AWS security group resources:
 1. sg_ssh: allows SSH access from public
-2. sg_opsc_web: allows OpsCenter Web Access from public
-3. sg_opsc_node: allows communication between OpsCenter and datastax-agent
-4. sg_dse_node: allow communication between DSE nodes
+2. sg_opsc_web: allows web Access from public, such as for OpsCenter Web UI
+3. sg_opsc_node: allows OpsCenter related communication, such as between OpsCenter server and datastax-agent
+4. sg_dse_node: allows DSE node specific communication
 
 #### User Data
 
+One of the key requirements to run DSE cluster is to enable NTP service. The script achieves this through EC2 instance user data. which is provided through a terraform template file. 
+```
+data "template_file" "user_data" {
+   template = <<-EOF
+              #!/bin/bash
+              apt-get update -y
+              apt-get install python-minimal -y
+              apt-get install ntp -y
+              apt-get install ntpstat -y
+              ntpq -pcrv
+              EOF
+}
+
+resource "aws_instance" "dse_search" {
+   ... ...
+   user_data = "${data.template_file.user_data.rendered}"
+   ... ...
+}
+```
+
+Other than NTP service, python (minimal version) is also installed in order for Ansible to work properly.
