@@ -118,3 +118,14 @@ Other than NTP service, python (minimal version) is also installed in order for 
 
 ## Generate Ansible Inventory File Programmatically
 
+After the infrastructure instances have been provisioned, we need to install and configure DSE and OpsCenter and these instances accordingly, which is through the Ansible framework that I presented before at ![here](https://github.com/yabinmeng/dseansible). One key item in the ansible framework is the Ansible inventory file which determines key DSE node characteristics such as node IP, seed node, VNode, workload type, and so on. 
+
+Now since we have provisioned the instances using terraform script, it is possible to generate the Ansible inventory file programmatically from terraform output state. The idea is:
+1. Generate terraform output state in a text file:
+```
+terraform show terraform/terraform.tfstate > $TFSTATE_FILE
+```
+
+2. Scan the terraform output state text file to generate a file (dse_ec2IpList) that contains each instance's targeted DC tag, public IP, and private IP. An example is provided in this repository at: ![dse_ec2IpList](https://github.com/yabinmeng/terradse/blob/master/dse_ec2IpList)
+
+3. The same IP list information can also be used to generate the required Ansible inventory file. In the script, the first node in any DSE DC is automatically picked as the seed node. An example of the generated Ansible inventory file is provided in this repository: ![dse_ansHosts](https://github.com/yabinmeng/terradse/blob/master/dse_ansHosts)
