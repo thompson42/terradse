@@ -14,7 +14,7 @@ The scripts in this repository have 3 major parts:
 Among them, the ansible part follows exactly the same framework as in my previous repository. Please check that repository for more details. In this repository, I will focus mainly on the remaining two parts and touch a bit on the ansible part with the new playbook that wasn't in the previous repository.
 
 
-## Terraform Introduction and Cluster Topology
+## 1. Terraform Introduction and Cluster Topology
 
 Terraform is a great tool to plan, create, and manage infrastructure as code. Through a mechanism called ***providers***, it offers an agonstic way to manage various infrastructure resources (e.g. physical machines, VMs, networks, containers, etc.) from different underlying platforms such as AWS, Azure, OpenStack, and so on. In this respository, I focus on using Terraform to launch AWS resources due to its popularity and 1-year free-tier access. For more information about Terraform itself, please check HashiCorp's document space for Terraform at https://www.terraform.io/docs/.
 
@@ -31,9 +31,9 @@ Currently, the number of nodes per DC is configurable through Terraform variable
 The reason of setting up a different monitoring cluster other than the application cluster is to follow the field best practice of physically separating the storage of monitoring metrics data in a different DSE cluster in order to avoid the hardware resource contentions that could happen when manaing the metrics data and application data together. 
 
 
-## Use Terraform to Launch Infrastructure Resources
+## 2. Use Terraform to Launch Infrastructure Resources
 
-### Pre-requisites
+### 2.1. Pre-requisites
 
 In order to run the terraform script sucessfully, the following procedures need to be executed in advance:
 
@@ -41,9 +41,9 @@ In order to run the terraform script sucessfully, the following procedures need 
 2. Install and configure AWS CLI properly. Make sure you have an AWS account that have the enough privilege to create and configure AWS resources.
 3. Create a SSH key-pair. The script automatically uploads the public key to AWS (to create an AWS key pair resource), so the launched AWS EC2 instances can be connected through SSH. The names of the SSH key-pair, by default, should be “id_rsa_aws and id_rsa_aws.pub”. If you choose other names, please make sure to update the Terraform configuration variable accordingly.
 
-### AWS Resources 
+### 2.2. Provision AWS Resources 
 
-#### EC2 Count and Type
+#### 2.2.1. EC2 Count and Type
 
 The number and type of AWS EC2 instances are determined at DataCenter (DC) level through terraform variable mappings, with each DC has its own instance type and count as determined by the target DSE cluster topology. The example for the example cluster topology is as below:
 ```
@@ -80,7 +80,7 @@ resource "aws_instance" "dse_search" {
 }
 ```
 
-#### Security Group
+#### 2.2.2. Security Group
 
 In order for the DSE cluster and OpsCenter to work properly, certain ports on the ec2 instances have to be open, as per the following DataStax documents:
 * ![Securing DataStax Enterprise ports](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secFirewallPorts.html)
@@ -92,7 +92,7 @@ The script does so by creating the following AWS security group resources:
 3. sg_opsc_node: allows OpsCenter related communication, such as between OpsCenter server and datastax-agent
 4. sg_dse_node: allows DSE node specific communication
 
-#### User Data
+#### 2.2.3. User Data
 
 One of the key requirements to run DSE cluster is to enable NTP service. The script achieves this through EC2 instance user data. which is provided through a terraform template file. 
 ```
@@ -119,7 +119,7 @@ Other than NTP service, python (minimal version) is also installed in order for 
 **NOTE:** a linux bash script, ***runterra.sh***, is provided to automate the execution the terraform scripts.
 
 
-## Generate Ansible Inventory File Automatically
+## 3. Generate Ansible Inventory File Automatically
 
 After the infrastructure instances have been provisioned, we need to install and configure DSE and OpsCenter and these instances accordingly, which is through the Ansible framework that I presented before at ![here](https://github.com/yabinmeng/dseansible). One key item in the Ansible framework is the Ansible inventory file which determines key DSE node characteristics such as node IP, seed node, VNode, workload type, and so on. 
 
@@ -149,7 +149,7 @@ A linux script file, ***genansinv.sh***, is providied for this purpose. The scri
 ```
 
 
-## Extended Ansible Framework for DSE and OpsCenter Installation and Configuration
+## 4. Extended Ansible Framework for DSE and OpsCenter Installation and Configuration
 
 Compared with the previous Ansible framework of installing and configuring DSE clusters, the version in this repository has extended features (through new Ansible playbooks):
 
