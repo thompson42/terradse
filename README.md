@@ -33,6 +33,8 @@ The reason of setting up a different monitoring cluster other than the applicati
 
 ## 2. Use Terraform to Launch Infrastructure Resources
 
+**NOTE:** a linux bash script, ***runterra.sh***, is provided to automate the execution the terraform scripts.
+
 ### 2.1. Pre-requisites
 
 In order to run the terraform script sucessfully, the following procedures need to be executed in advance:
@@ -80,7 +82,23 @@ resource "aws_instance" "dse_search" {
 }
 ```
 
-#### 2.2.2. Security Group
+#### 2.2.2. AWS Key-Pair
+
+The script also creates an AWS key-pair resource that can be associated with the EC2 instances. The AWS key-pair resource is created from a locally generated SSH public key and the corresponding private key can be used to log into the EC2 instances.
+```
+resource "aws_key_pair" "dse_terra_ssh" {
+    key_name = "${var.keyname}"
+    public_key = "${file("${var.ssh_key_localpath}/${var.ssh_key_filename}.pub")}"
+}
+
+resource "aws_instance" "dse_search" {
+   ... ...
+   key_name        = "${aws_key_pair.dse_terra_ssh.key_name}"
+   ... ... 
+}
+```
+
+#### 2.2.3. Security Group
 
 In order for the DSE cluster and OpsCenter to work properly, certain ports on the ec2 instances have to be open, as per the following DataStax documents:
 * ![Securing DataStax Enterprise ports](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secFirewallPorts.html)
@@ -92,7 +110,36 @@ The script does so by creating the following AWS security group resources:
 3. sg_opsc_node: allows OpsCenter related communication, such as between OpsCenter server and datastax-agent
 4. sg_dse_node: allows DSE node specific communication
 
-#### 2.2.3. User Data
+The code snippet below describes how a security group resource is defined and associated with EC2 instances.
+```
+resource "aws_security_group" "sg_ssh" {
+   name = "sg_ssh"
+
+   ingress {
+      from_port = 22
+      to_port = 22
+      protocol = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+   }
+
+   egress {
+      from_port = 0
+      to_port = 0
+      protocol = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+   }
+}
+
+... ... // other security group definitions
+
+resource "aws_instance" "dse_search" {
+   ... ...
+   vpc_security_group_ids = ["${aws_security_group.sg_internal_only.id}","${aws_security_group.sg_ssh.id}","${aws_security_group.sg_dse_node.id}"]
+   ... ...
+}
+```
+
+#### 2.2.4. User Data
 
 One of the key requirements to run DSE cluster is to enable NTP service. The script achieves this through EC2 instance user data. which is provided through a terraform template file. 
 ```
@@ -114,9 +161,11 @@ resource "aws_instance" "dse_search" {
 }
 ```
 
-Other than NTP service, python (minimal version) is also installed in order for Ansible to work properly.
+Other than NTP service, python (minimal version) is also installed in order for Ansible to work properly. Please note that Java, as another essential software required by DSE and OpsCenter software, is currently installed through Ansible and therefore not listed here as part of the User Data installation. 
 
-**NOTE:** a linux bash script, ***runterra.sh***, is provided to automate the execution the terraform scripts.
+### 2.3. Limitation 
+
+The terraform script presented in this section only focuses on the most fundamental AWS resources for DSE and OpsCenter installation and operation, such as EC2 instances and security groups in particular, For other AWS resources such as VPC, IP Subnet, and so on, we just rely on the default as provided by AWS. But the script should be very easy to extend to include other customized AWS resources.
 
 
 ## 3. Generate Ansible Inventory File Automatically
