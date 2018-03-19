@@ -178,7 +178,7 @@ Now since we have provisioned the instances using terraform script, it is possib
   terraform show terraform/terraform.tfstate > $TFSTATE_FILE
 ```
 
-2. Scan the terraform output state text file to generate a file that contains each instance's target DC tag, public IP, and private IP. An example is provided in this repository at: ![dse_ec2IpList](https://github.com/yabinmeng/terradse/blob/master/dse_ec2IpList)
+2. Scan the terraform output state text file to generate a file that contains each instance's target DC tag, public IP, and private IP. An example is provided in this repository at: [dse_ec2IpList](https://github.com/yabinmeng/terradse/blob/master/dse_ec2IpList)
 
 3. The same IP list information can also be used to generate the required Ansible inventory file. In the script, the first node in any DSE DC is automatically picked as the seed node. An example of the generated Ansible inventory file is provided in this repository: [dse_ansHosts](https://github.com/yabinmeng/terradse/blob/master/dse_ansHosts)
 
@@ -204,6 +204,6 @@ Compared with the previous Ansible framework of installing and configuring DSE c
 
 1. *dse_install.yml*: installs and configures a multi-DC DSE cluster. This is the same functionality as the previous version.
 2. *opsc_install.yml": installs OpsCenter server, datastax-agents, and configures accordingly to allow proper communication between OpsCenter server and datastax-agents.
-3. *osparm_change.yml*: configures OS/Kernel parameters on each node where DSE is installed, as per ![Recommended production settings](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/config/configRecommendedSettings.html) from DataStax documentation.
+3. *osparm_change.yml*: configures OS/Kernel parameters on each node where DSE is installed, as per [Recommended production settings](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/config/configRecommendedSettings.html) from DataStax documentation.
 
 For operational simplicity, a linux script file, ***runansi.sh***, is provided to execute these Ansible playbooks.
