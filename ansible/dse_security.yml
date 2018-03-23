@@ -1,0 +1,71 @@
+
+# Install and configure DSE node security
+- hosts: dse
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_install }
+    - { role: security_node_to_node }
+    - { role: security_client_to_node }
+    - { role: security_opscenter_agents } #currently a noop, should pull config from opsc
+
+# Install and configure OpsCenter cluster and webserver security
+- hosts: opsc_srv
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_opscenter }
+    
+
+#Stop and restart all nodes in seed order
+# Stop DSE seed nodes 
+- hosts: dse
+  any_errors_fatal: true
+  name: Start seed node 
+  serial: 1
+  become: true
+  become_method: sudo
+  vars:
+    srvc_name: dse
+  roles:
+    - { role: stop_srvc, when: seed == 'true' } 
+
+# Stop DSE non-seed nodes 
+- hosts: dse
+  any_errors_fatal: true
+  name: Start non-seed node one by one
+  serial: 1
+  become: true
+  become_method: sudo
+  vars:
+    srvc_name: dse
+  roles:
+    - { role: stop_srvc, when: seed == 'false' }
+
+# Start DSE seed nodes 
+- hosts: dse
+  any_errors_fatal: true
+  name: Start seed node 
+  serial: 1
+  become: true
+  become_method: sudo
+  vars:
+    srvc_name: dse
+  roles:
+    - { role: start_srvc, when: seed == 'true' } 
+
+# Start DSE non-seed nodes 
+- hosts: dse
+  any_errors_fatal: true
+  name: Start non-seed node one by one
+  serial: 1
+  become: true
+  become_method: sudo
+  vars:
+    srvc_name: dse
+  roles:
+    - { role: start_srvc, when: seed == 'false' }
+    
+#TODO: stop and start opscenter server

@@ -1,10 +1,16 @@
 ---
+
+# To run system:
+# Set academy.datastax.com username/password in roles/datastax_pkg/vars
+# The Terraform generated hosts file contains the C* cluster_name
+# Set all vars you need in terraform/variables
+#
 ### Host connection 
 #   - connection type: SSH
 #   - default SSH user 
 #
 ansible_connection: ssh
-ansible_user: ubuntu
+ansible_user: root
 
 ### Target/Current DSE verson
 dse_ver_target:  5.1.5
@@ -30,9 +36,21 @@ vnode_token_num_solr: 8
 data_file_directories: /dse_data/cassandra
 hints_directory: /dse_data/hints
 commitlog_directory: /dse_data/commitlog
-saved_caches_directory: /dse_data/saved_cahces
+saved_caches_directory: /dse_data/saved_caches
 
 
 ## Block device string (xvd...) for the EBS 
 #    volume attached for DSE data
 ebs_devstr: xvda
+
+### Cluster security settings
+# Used by server_encryption_options and client_encryption_options in cassandra.yaml
+cluster_keystore_password: cluster_keystore_password_here
+cluster_truststore_password: cluster_truststore_password_here
+
+### OpsCenter security settings
+# Used by [agents] and [webserver] section of opscenterd.conf
+opsc_config: /etc/opscenter/opscenterd.conf
+opsc_ssl_dir: /var/lib/opscenter/ssl
+
+

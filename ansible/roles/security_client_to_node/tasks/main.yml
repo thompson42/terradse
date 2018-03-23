@@ -1,0 +1,26 @@
+---
+- name: Configure Client -> Node encryption in cassandra.yaml
+  yedit:
+    src: "{{ dse_config_dir }}/cassandra/cassandra.yaml"
+    edits:
+    - key: client_encryption_options.enabled
+      value: true
+    - key: client_encryption_options.optional
+      value: false
+    - key: client_encryption_options.keystore
+      value: resources/dse/conf/.keystore
+    - key: client_encryption_options.keystore_password
+      value: "{{ cluster_keystore_password }}"
+    state: present
+
+# More advanced defaults below for 5.1.x:
+# require_client_auth: false
+# Set trustore and truststore_password if require_client_auth is true
+# truststore: resources/dse/conf/.truststore
+# truststore_password: cassandra
+# More advanced defaults below:
+# protocol: TLS
+# algorithm: SunX509
+# store_type: JKS
+# cipher_suites: [TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA]
+

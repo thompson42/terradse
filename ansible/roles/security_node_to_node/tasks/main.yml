@@ -1,0 +1,26 @@
+---
+- name: Configure Node -> Node encryption in cassandra.yaml
+  yedit:
+    src: "{{ dse_config_dir }}/cassandra/cassandra.yaml"
+    edits:
+    - key: server_encryption_options.internode_encryption
+      value: all
+    - key: server_encryption_options.keystore
+      value: resources/dse/conf/.keystore
+    - key: server_encryption_options.keystore_password
+      value: "{{ cluster_keystore_password }}"
+    - key: server_encryption_options.truststore
+      value: resources/dse/conf/.truststore
+    - key: server_encryption_options.truststore_password
+      value: "{{ cluster_truststore_password }}"
+    state: present
+    
+# More advanced defaults below for 5.1.x:
+# protocol: TLS
+# algorithm: SunX509
+# store_type: JKS
+# cipher_suites: [TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA]
+# require_client_auth: false
+# require_endpoint_verification: false
+
+#NOTE: the default seperator is "." some examples use "#" - ignore them

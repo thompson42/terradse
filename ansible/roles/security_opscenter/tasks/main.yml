@@ -1,0 +1,71 @@
+
+#configure opsc cluster security
+---
+- name: Configure opsc cluster security - use_ssl
+  ini_file:
+    path: "{{ opsc_config }}"
+    section: agents
+    option: use_ssl
+    value: true
+
+- name: Configure opsc cluster security - ssl_keyfile
+  ini_file:
+    path: "{{ opsc_config }}"
+    section: agents
+    option: ssl_keyfile
+    value: "{{ opsc_ssl_dir }}/opscenter.key"
+    
+- name: Configure opsc cluster security - ssl_certfile
+  ini_file:
+    path: "{{ opsc_config }}"
+    section: agents
+    option: ssl_certfile
+    value: "{{ opsc_ssl_dir }}/opscenter.der"
+    
+- name: Configure opsc cluster security - agent_keyfile
+  ini_file:
+    path: "{{ opsc_config }}"
+    section: agents
+    option: agent_keyfile
+    value: "{{ opsc_ssl_dir }}/agentKeyStore"
+    
+- name: Configure opsc cluster security - agent_keyfile_raw
+  ini_file:
+    path: "{{ opsc_config }}"
+    section: agents
+    option: agent_keyfile_raw
+    value: "{{ opsc_ssl_dir }}/agentKeyStore.key" # for non-Java clients
+
+- name: Configure opsc cluster security - agent_certfile  
+  ini_file:
+    path: "{{ opsc_config }}"
+    section: agents
+    option: agent_certfile
+    value: "{{ opsc_ssl_dir }}/agentKeyStore.der"
+    
+#configure opsc webserver security
+
+- name: Configure opsc webserver security - ssl_keyfile
+  ini_file:
+    path: "{{ opsc_config }}"
+    section: webserver
+    option: ssl_keyfile
+    value: "{{ opsc_ssl_dir }}/opscenter.key"
+
+- name: Configure opsc webserver security - ssl_keyfile
+  ini_file:
+    path: "{{ opsc_config }}"
+    section: webserver
+    option: ssl_certfile
+    value: "{{ opsc_ssl_dir }}/opscenter.der"
+    
+- name: Configure opsc webserver security - ssl_port
+  ini_file:
+    path: "/etc/opscenter/opscenterd.conf"
+    section: webserver
+    option: ssl_port
+    value: 8443
+      
+#More settings for [webserver] section:
+#hsts_enabled = True
+#hsts_max_age = 31536000

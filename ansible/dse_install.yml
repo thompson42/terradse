@@ -1,5 +1,5 @@
 ---
-# Get the current timestamp and register datastx debian packages
+# Get the current timestamp and register datastax debian packages
 - hosts: dse
   any_errors_fatal: true
   become: true
