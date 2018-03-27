@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TFSTATE_FILE=/tmp/tfshow.txt
-terraform show terraform/terraform.tfstate > $TFSTATE_FILE
+terraform show terraform_extended/terraform.tfstate > $TFSTATE_FILE
 
 dse_nodetype=()
 public_ip=()
