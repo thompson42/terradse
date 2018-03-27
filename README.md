@@ -1,8 +1,6 @@
 # Automate the Launch of AWS Instances for a multi-DC DSE cluster with OpsCenter
 
-Previously I came up with a framework (https://github.com/yabinmeng/dseansible) to automate the creation of a multi-DC DSE cluster using Ansible playbook. That framework however doesn't provision the underlying infrastcture and it relies on the  number of the node instances required by the DSE cluster topology to be in place in advance.
-
-In this repository, I will add the missing part to automate provisioning the required hardware infrastructure on AWS using HashiCorp's terraform script. The type and number of AWS EC2 instances are determined by th target DSE cluster topology. 
+This project is a fork of [yabinmeng/terradse](https://github.com/yabinmeng/terradse)
 
 The scripts in this repository have 3 major parts:
 1. Terraform scripts to launch the required AWS resources (EC2 instances, security groups, etc.) based on the target DSE cluster toplogy.
@@ -10,9 +8,6 @@ The scripts in this repository have 3 major parts:
 3. Linux bash scripts to 
    1. generate the ansible host inventory file (required by the ansible playbooks) out of the terraform state output
    2. lauch the terraform scripts and ansible playbooks
-
-Among them, the ansible part follows exactly the same framework as in my previous repository. Please check that repository for more details. In this repository, I will focus mainly on the remaining two parts and touch a bit on the ansible part with the new playbook that wasn't in the previous repository.
-
 
 ## 1. Terraform Introduction and Cluster Topology
 
@@ -198,12 +193,16 @@ A linux script file, ***genansinv.sh***, is providied for this purpose. The scri
 ```
 
 
-## 4. Extended Ansible Framework for DSE and OpsCenter Installation and Configuration
-
-Compared with the previous Ansible framework of installing and configuring DSE clusters, the version in this repository has extended features (through new Ansible playbooks):
+## 4. This base forked version features:
 
 1. *dse_install.yml*: installs and configures a multi-DC DSE cluster. This is the same functionality as the previous version.
 2. *opsc_install.yml": installs OpsCenter server, datastax-agents, and configures accordingly to allow proper communication between OpsCenter server and datastax-agents.
 3. *osparm_change.yml*: configures OS/Kernel parameters on each node where DSE is installed, as per [Recommended production settings](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/config/configRecommendedSettings.html) from DataStax documentation.
 
 For operational simplicity, a linux script file, ***runansi.sh***, is provided to execute these Ansible playbooks.
+
+## 5. Additional features introduced by this fork
+
+1. security_xxx playbooks under ansible/roles to configure client -> node encryption, node -> node encryption, Opscenter HTTPS access, Opscenter -> agent encryption
+2. introduction of spark and graph DSE datacenter types 
+3. extended versions of terraform, variables and .sh scripts to handle the new DC types
