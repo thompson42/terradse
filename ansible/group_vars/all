@@ -1,10 +1,11 @@
 ---
 
-# To run system:
-# Set academy.datastax.com username/password in roles/datastax_pkg/vars
-# The Terraform generated hosts file contains the C* cluster_name
-# Set all vars you need in terraform/variables
+### To run system:
+# Set params in terraform/variables
+# Set the cluster_names in genansinv_extended.sh file
+# Set all vars in ansible/group_vars/all
 #
+
 ### Host connection 
 #   - connection type: SSH
 #   - default SSH user 
@@ -12,27 +13,32 @@
 ansible_connection: ssh
 ansible_user: root
 
-### Target/Current DSE verson
+### Datastax repository --------------------------------------------------------
+dse_repo_file: /etc/apt/sources.list.d/datastax.sources.list
+
+#User name and password to download DSE (DataStax Academy)
+dse_repo_email: <datastax_academy_uesername>
+dse_repo_password: <datastax_academy_passwd>
+
+# Target/Current DSE verson
 dse_ver_target:  5.1.5
 
-### DSE system file location
-#
+# DSE directory locations ----------------------------------------------------
 dse_config_dir: /etc/dse
 dse_default_dir: /etc/default
 dse_syslog_dir: /var/log/cassandra
 
 
-### Key cassandra.yaml settings
+### Key cassandra.yaml settings ------------------------------------------------
 
-#  DSE VNode setup
-#
-# default vnode token_num setting for DSE Core/Cassandra
-vnode_token_num: 64
-# default vnode token_num setting for DSE Search/Solr
-vnode_token_num_solr: 8
+# default vnode token_num setting for DSE Core/Cassandra and Graph/Graph
+vnode_token_num: 256
 
-## DSE cluster name and other configuration items
-#
+# default vnode token_num setting for DSE Search/Solr and Analytics/Spark
+vnode_token_num_solr: 32
+vnode_token_num_spark: 32
+
+# data directories
 data_file_directories: /dse_data/cassandra
 hints_directory: /dse_data/hints
 commitlog_directory: /dse_data/commitlog
@@ -43,14 +49,24 @@ saved_caches_directory: /dse_data/saved_caches
 #    volume attached for DSE data
 ebs_devstr: xvda
 
-### Cluster security settings
-# Used by server_encryption_options and client_encryption_options in cassandra.yaml
+# Cluster security settings sed by server_encryption_options and client_encryption_options in cassandra.yaml
 cluster_keystore_password: cluster_keystore_password_here
 cluster_truststore_password: cluster_truststore_password_here
 
-### OpsCenter security settings
-# Used by [agents] and [webserver] section of opscenterd.conf
+### Key opscenterd.conf security settings --------------------------------------
+
+# security settings used by [agents] and [webserver] section
 opsc_config: /etc/opscenter/opscenterd.conf
 opsc_ssl_dir: /var/lib/opscenter/ssl
+
+### Key jvm.options settings ---------------------------------------------------
+
+# JVM HEAP used by DSE
+#TODO: 
+#core/spark/graph should be 20G
+#solr should be 32GB (on larger nodes)
+heap_xms: 4G
+heap_xmx: 4G
+
 
 

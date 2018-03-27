@@ -8,7 +8,8 @@
     - { role: security_install }
     - { role: security_node_to_node }
     - { role: security_client_to_node }
-    - { role: security_opscenter_agents } #currently a noop, should pull config from opsc
+    - { role: security_opscenter_agents } #currently a noop, should auto pull config from opsc_server
+
 
 # Install and configure OpsCenter cluster and webserver security
 - hosts: opsc_srv

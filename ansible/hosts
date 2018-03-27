@@ -3,7 +3,7 @@ dse_core
 dse_search
 
 [dse_core]
-192.168.1.7 private_ip=172.31.10.221 seed=true dc=core_dc rack=RAC1 vnode=1 initial_token=
+192.168.43.20 private_ip=172.31.10.221 seed=true dc=core_dc rack=RAC1 vnode=1 initial_token=
 
 [dse_search]
 

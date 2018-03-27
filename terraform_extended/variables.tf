@@ -1,20 +1,20 @@
 #
 # The local directory where the SSH key files are stored
-# default = "/Users/yabinmeng/.ssh"
+#
 variable "ssh_key_localpath" {
    default = "/home/alext/.ssh"
 }
 
 #
 # The local private SSH key file name 
-# default = "id_rsa_aws"
+#
 variable "ssh_key_filename" {
    default = "id_rsa"
 }
 
 #
 # AWS EC2 key-pair name
-# default = "dse-sshkey"
+#
 variable "keyname" {
    default = "id_rsa"
 }

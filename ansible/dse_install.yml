@@ -22,6 +22,7 @@
     - { role: dse_common }
     - { role: dse_instbin }
     - { role: dse_updcfg }
+    - { role: dse_set_heap }
 
 # Start DSE seed nodes 
 - hosts: dse

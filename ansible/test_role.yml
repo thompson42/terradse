@@ -1,0 +1,7 @@
+
+- hosts: dse
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: dse_set_heap}

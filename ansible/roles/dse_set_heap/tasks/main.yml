@@ -1,0 +1,14 @@
+---
+#update jvm.options
+
+- name: Configure jvm.options HEAP -Xms and Xmx (e.g. Xms4G, Xmx4G)
+  lineinfile:
+    name: "{{ dse_config_dir }}/cassandra/jvm.options"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    owner: cassandra
+    group: cassandra
+    mode: 0644
+  with_items:
+    - { regexp: '#-Xms4G', line: '-Xms{{ heap_xms }}' }
+    - { regexp: '#-Xmx4G', line: '-Xmx{{ heap_xmx }}' }
