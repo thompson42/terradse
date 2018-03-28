@@ -4,7 +4,6 @@
 # file: /etc/default/dse
 # file: cassandra.yaml
 # file: cassandra-rackdc.properties
-# file: jvm.options
 
 - name: Determine the right VNode num_token value SOLR
   when: solr_enabled|int == 1

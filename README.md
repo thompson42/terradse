@@ -1,6 +1,16 @@
 # Automate the Launch of AWS Instances for a multi-DC DSE cluster with OpsCenter
 
-This project is a fork of [yabinmeng/terradse](https://github.com/yabinmeng/terradse)
+# Quick start summary of the following steps:
+
+1. Set all params and cluster topology in terraform_extended/variables.tf
+2. Set all port rules and security in terraform_extended/ec2.tf
+3. Set the cluster_names in genansinv_extended.sh file
+4. Set all paths and vars in ansible/group_vars/all
+5. Run /runterra_extended.sh and check AWS instances that will be created - accept and run the plan
+6. Run /genansinv_extended.sh (it will generate the /ansible/hosts)
+7. Run /runansi.sh (it will run osparm_change, dse_install and opsc_install playbooks, it expects your key to be: ~/.ssh/id_rsa_aws)
+
+# Basic processes: 
 
 The scripts in this repository have 3 major parts:
 1. Terraform scripts to launch the required AWS resources (EC2 instances, security groups, etc.) based on the target DSE cluster toplogy.
@@ -206,3 +216,7 @@ For operational simplicity, a linux script file, ***runansi.sh***, is provided t
 1. security_xxx playbooks under ansible/roles to configure client -> node encryption, node -> node encryption, Opscenter HTTPS access, Opscenter -> agent encryption
 2. introduction of spark and graph DSE datacenter types 
 3. extended versions of terraform, variables and .sh scripts to handle the new DC types
+
+
+
+

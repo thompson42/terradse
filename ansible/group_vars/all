@@ -1,11 +1,5 @@
 ---
 
-### To run system:
-# Set params in terraform/variables
-# Set the cluster_names in genansinv_extended.sh file
-# Set all vars in ansible/group_vars/all
-#
-
 ### Host connection 
 #   - connection type: SSH
 #   - default SSH user 
