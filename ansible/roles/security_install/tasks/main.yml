@@ -9,9 +9,10 @@
     - "python-dev"
     - "build-essential"
 
-- name: Install via pip ruamel.yaml for ansible/library/yedit
+- name: Install ruamel.yaml via pip ( used by ansible/library/yedit)
   pip:
     name: ruamel.yaml
+    state: present
 
 #The repo should aready be configured when Java was installed but lets keep it idempotent
 - name: Add apt repository

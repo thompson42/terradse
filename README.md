@@ -60,6 +60,8 @@ variable "instance_count" {
       opsc      = 2
       cassandra = 3
       solr      = 3
+      spark     = 0
+      graph     = 0
    }
 }
 
@@ -70,6 +72,8 @@ variable "instance_type" {
       opsc      = "t2.2xlarge"
       cassandra = "t2.2xlarge"
       solr      = "t2.2xlarge"
+      spark     = "t2.2xlarge"
+      graph     = "t2.2xlarge"
    }
 }
 ```
@@ -180,26 +184,30 @@ After the infrastructure instances have been provisioned, we need to install and
 Now since we have provisioned the instances using terraform script, it is possible to generate the Ansible inventory file programmatically from terraform output state. Basically the idea is as below:
 1. Generate terraform output state in a text file:
 ```
-  terraform show terraform/terraform.tfstate > $TFSTATE_FILE
+  terraform show terraform_extended/terraform.tfstate > $TFSTATE_FILE
 ```
 
-2. Scan the terraform output state text file to generate a file that contains each instance's target DC tag, public IP, and private IP. An example is provided in this repository at: [dse_ec2IpList](https://github.com/yabinmeng/terradse/blob/master/dse_ec2IpList)
+2. Scan the terraform output state text file to generate a file that contains each instance's target DC tag, public IP, and private IP. An example is provided in this repository at: [dse_ec2IpList](https://github.com/thompson42/terradse/blob/master/dse_ec2IpList)
 
-3. The same IP list information can also be used to generate the required Ansible inventory file. In the script, the first node in any DSE DC is automatically picked as the seed node. An example of the generated Ansible inventory file is provided in this repository: [dse_ansHosts](https://github.com/yabinmeng/terradse/blob/master/dse_ansHosts)
+3. The same IP list information can also be used to generate the required Ansible inventory file. In the script, the first node in any DSE DC is automatically picked as the seed node. An example of the generated Ansible inventory file is provided in this repository: [dse_ansHosts](https://github.com/thompson/terradse/blob/master/dse_ansHosts)
 
-A linux script file, ***genansinv.sh***, is providied for this purpose. The script has 3 configurable parameters, either through input arguments or script variables. These parameters will impact the target DSE cluster topology information (as presented in the Ansible inventory file) a bit. Please adjust accordingly for your own case.
+A linux script file, ***genansinv_extended.sh***, is providied for this purpose. The script has 3 configurable parameters via input parameters. These parameters will impact the target DSE cluster topology information (as presented in the Ansible inventory file) a bit. Please adjust accordingly for your own case.
 
 1. Script input argument: number of seed nodes per DC, default at 1
 ```
-  genansinv.sh [<number_of_seeds_per_dc>]
+  genansinv_extended.sh [<number_of_seeds_per_dc>] [<dse_appcluster_name>] [<dse_opsccluster_name>]
 ```
-2. Script variable: the name of the application DSE cluster: 
+2. Script input argument: the name of the application DSE cluster: 
 ```
-  DSE_APPCLUSTER_NAME="MyAppCluster"
+  "MyAppClusterName"
 ```
-3. Script variable: the name of the OpsCenter monitoring cluster:
+3. Script input argument: the name of the OpsCenter monitoring cluster:
 ```
-   DSE_OPSCCLUSTER_NAME="OpscCluster"
+   "MyOpscClusterName"
+```
+4. e.g.:
+```
+   ./genansinv_extended.sh 1 dse_appcluster_name dse_opsccluster_name
 ```
 
 
@@ -213,9 +221,18 @@ For operational simplicity, a linux script file, ***runansi.sh***, is provided t
 
 ## 5. Additional features introduced by this fork
 
-1. security_xxx playbooks under ansible/roles to configure client -> node encryption, node -> node encryption, Opscenter HTTPS access, Opscenter -> agent encryption
-2. introduction of spark and graph DSE datacenter types 
-3. extended versions of terraform, variables and .sh scripts to handle the new DC types
+# Security_xxyz playbooks under ansible/roles to configure:
+
+1. Client -> node encryption
+2. Node -> node encryption
+3. Opscenter HTTPS access
+4. Opscenter -> agent encryption
+
+# Introduction of spark and graph DSE datacenter types 
+
+1. Extended versions of terraform file, use: terraform_extended.sh
+2. Extended versions of .sh scripts to handle the new DC types
+3. Added dse_set_heap role to automate setting HEAP for jvm.options file (see new param in group_vars/all: [heap_xms] and [heap_xmx] - always set them both to the same value to avoid runtime memory allocation issues.
 
 
 

@@ -39,8 +39,8 @@ commitlog_directory: /dse_data/commitlog
 saved_caches_directory: /dse_data/saved_caches
 
 
-## Block device string (xvd...) for the EBS 
-#    volume attached for DSE data
+# Block device string (xvd...) for the EBS volume attached for DSE data
+# consumed in osparm_change.yml
 ebs_devstr: xvda
 
 # Cluster security settings sed by server_encryption_options and client_encryption_options in cassandra.yaml

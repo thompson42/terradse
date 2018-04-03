@@ -3,6 +3,16 @@
 TFSTATE_FILE=/tmp/tfshow.txt
 terraform show terraform_extended/terraform.tfstate > $TFSTATE_FILE
 
+if [ $# -lt 3 ]
+then
+  echo "Error: script has less than 3 arguments, requires number_of_seeds_per_dc, dse_appcluster_name, dse_opscluster_name"
+  echo "-- usage: genansinv_extended.sh [<number_of_seeds_per_dc>] [<dse_appcluster_name>] [<dse_opsccluster_name>]"
+  exit 1
+fi
+
+DSE_APPCLUSTER_NAME="$2"
+DSE_OPSCCLUSTER_NAME="$3"
+
 dse_nodetype=()
 public_ip=()
 private_ip=()
@@ -15,8 +25,8 @@ pmsg() {
 }
 
 usage() {
-   echo "Error: Only accepts a postivie number as the only (optional) input parameter"
-   echo "-- usage: genansinv.sh [<number_of_seeds_per_dc>]"
+   echo "Error: [<number_of_seeds_per_dc>] accepts a postive number as the only input parameter"
+   echo "-- usage: genansinv_extended.sh [<number_of_seeds_per_dc>] [<dse_appcluster_name>] [<dse_opsccluster_name>]"
 }
 
 # check if an input is a positive number
@@ -63,18 +73,13 @@ SEED_PER_DC=1
 
 if [[ "$1" != "" ]]; then
    res=`isnum "$1"`
-   if [[ $# > 1 ]] || [[ "$res" != "1" ]] ; then
+   if [[ "$res" != "1" ]] ; then
       usage
       exit 
    fi
 
    SEED_PER_DC="$1"
 fi
-
-
-DSE_APPCLUSTER_NAME="MyAppCluster"
-DSE_OPSCCLUSTER_NAME="OpscCluster"
-
 
 # Generate Ansible inventory file for multi-DC DSE cluster (no OpsCenter)
 DSE_ANSINV_FILE="dse_ansHosts"
