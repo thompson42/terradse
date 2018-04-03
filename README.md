@@ -221,18 +221,22 @@ For operational simplicity, a linux script file, ***runansi.sh***, is provided t
 
 ## 5. Additional features introduced by this fork
 
-# Security_xxyz playbooks under ansible/roles to configure:
+### 5.1 Creation of independently runnable Security_xyz playbooks under ansible/roles to configure:
 
 1. Client -> node encryption
 2. Node -> node encryption
 3. Opscenter HTTPS access
 4. Opscenter -> agent encryption
 
-# Introduction of spark and graph DSE datacenter types 
+### 5.2 Introduction of spark and graph DSE datacenter types 
 
 1. Extended versions of terraform file, use: terraform_extended.sh
 2. Extended versions of .sh scripts to handle the new DC types
-3. Added dse_set_heap role to automate setting HEAP for jvm.options file (see new param in group_vars/all: [heap_xms] and [heap_xmx] - always set them both to the same value to avoid runtime memory allocation issues.
+
+
+### 5.3 Added dse_set_heap role to automate setting HEAP for jvm.options file
+
+1. See new params in group_vars/all: [heap_xms] and [heap_xmx] - always set them both to the same value to avoid runtime memory allocation issues.
 
 
 
