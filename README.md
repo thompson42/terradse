@@ -245,26 +245,39 @@ ansible-playbook -i hosts opsc_security.yml --private-key=~/.ssh/id_rsa_aws
 
 ```
 
-### 5.3 Creation of independently runnable Security_xyz encryption roles under ansible/roles to configure:
+### 5.3 Addition of a configurable spark_security.yml playbook
+
+This playbook concerns itself with forcing authentication at spark submit level, to block unauthorized access to the Spark service byt calling the role: security_spark, see section 5.7.2 "DSE Unified Authentication and Spark" below.
+
+To run:
+```
+cd ansible
+ansible-playbook -i hosts spark_security.yml --private-key=~/.ssh/id_rsa_aws
+
+```
+
+### 5.4 Creation of independently runnable Security_xyz encryption roles under ansible/roles to configure:
 
 1. Client -> node encryption: security_client_to_node
 2. Node -> node encryption: security_node_to_node
 3. Opscenter HTTPS access: security_opscenter
 4. Opscenter -> agent encryption: security_opscenter_agents
 
-### 5.4 Introduction of spark and graph DSE datacenter types 
+### 5.5 Introduction of spark and graph DSE datacenter types 
 
 1. Extended versions of terraform file, use: terraform_extended.sh
 2. Extended versions of .sh scripts to handle the new DC types
 
 
-### 5.5 Added dse_set_heap role to automate setting HEAP for jvm.options file
+### 5.6 Added dse_set_heap role to automate setting HEAP for jvm.options file
 
 1. See new params in group_vars/all: [heap_xms] and [heap_xmx] - always set them both to the same value to avoid runtime memory allocation issues.
 
-### 5.6 Additional security roles: security_dse_unified_auth_config and security_prerequisites to implement the core configuration settings for DSE Unified Authentication
+### 5.7 DSE Unified Authentication
 
-See:
+Additional security roles: security_dse_unified_auth_config and security_prerequisites to implement the core configuration settings for DSE Unified Authentication
+
+The default SCHEME is internal please re-configure for LDAP and Kerberos SCHEMES, see the documentation here on how to do this:
 
 1. [DSE Unified Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuthAndRbacAbout.html)
 2. [Enabling DSE Unified Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secEnableDseAuthenticator.html)
@@ -276,7 +289,38 @@ Special note: default install cassandra superuser account:
 3. A possible automation approach is to use this user/role library: [ansible-module-cassandra](https://github.com/Ensighten/ansible-module-cassandra)
 4. A candidate role for this process is roles:security_prerequisites
 
-Once the security_dse_unified_auth_config role has run you should have a system that challenges user access at all levels, its now time to create your roles and open your system back up, you will need your superuser account to edit these roles.
+### 5.7.1 Roles for DSE Unified Authentication
+
+[Creating Roles for Internal Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secRolesInternal.html)
+
+Once the security_dse_unified_auth_config role has run you should have a system that challenges user access at all levels, its now time to create your roles and open your system back up, you will need your superuser account to edit these roles. See the above link to create roles, not that you want ot use the "internal" option on that page, with the SCHEME: internal  e.g.
+
+```
+CREATE ROLE jane WITH LOGIN = true AND PASSWORD = 'Abc123Jane';
+```
+
+### 5.7.2 DSE Unified Authentication and Spark
+
+Addition of role: security_spark
+
+[DSE Analytics security checklist](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secChecklists.html#ariaid-title4)
+
+[Configuring Spark nodes](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/spark/sparkConfiguration.html#sparkConfiguration):
+
+Enabling security and authentication: 
+
+Security is enabled using the spark_security_enabled option in dse.yaml. Setting it to enabled turns on authentication between the Spark Master and Worker nodes, and allows you to enable encryption. To encrypt Spark connections for all components except the web UI, enable spark_security_encryption_enabled. The length of the shared secret used to secure Spark components is set using the spark_shared_secret_bit_length option, with a default value of 256 bits. These options are described in DSE Analytics options. For production clusters, enable these authentication and encryption. Doing so does not significantly affect performance.
+
+Authentication and Spark applications:
+
+If authentication is enabled, users need to be authenticated in order to submit an application.
+Note: DSE 5.1.4, DSE 5.1.5, and 5.1.6 users should refer to the release notes for information on using Spark SQL applications and DSE authentication.
+
+
+
+
+
+
 
 
 

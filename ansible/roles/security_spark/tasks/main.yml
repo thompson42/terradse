@@ -1,0 +1,8 @@
+---
+#Configure spark_security_enabled in dse.yaml (/etc/dse/dse.yaml)
+- name: Configure spark_security_enabled in dse.yaml (/etc/dse/dse.yaml)
+  yedit:
+    src: "{{ dse_config_dir }}/dse.yaml"
+    edits:
+    - key: spark_security_enabled
+      value: true
