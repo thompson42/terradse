@@ -1,6 +1,6 @@
 # Automate the Launch of AWS Instances for a multi-DC DSE cluster with OpsCenter
 
-# Quick start summary of the following steps:
+# Quickstart steps:
 
 1. Set all params and cluster topology in terraform_extended/variables.tf
 2. Set all port rules and security in terraform_extended/ec2.tf, for AMZN VPC's you will need to modify this file
@@ -8,7 +8,9 @@
 4. Run /runterra_extended.sh and check AWS instances that will be created - accept and run the plan
 5. Run /genansinv_extended.sh (it will generate the /ansible/hosts file)
 6. Run /runansi_extended.sh (it will run osparm_change, dse_install, opsc_install playbooks, it expects your key to be: ~/.ssh/id_rsa_aws)
-7. Configure required security roles in ansible/dse_security.yml and run manually
+7. (Optional) Configure required DSE node security roles in ansible/dse_security.yml and run manually
+8. (Optional) Configure required OPSCENTER security roles in ansible/opsc_security.yml and run manually
+8. (Optional) Configure required SPARK security roles in ansible/spark_security.yml and run manually
 
 # Basic processes: 
 
