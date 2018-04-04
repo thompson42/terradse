@@ -98,10 +98,19 @@ for ((i=0; i<${#dse_nodetype[*]}; i++));
 do
    if [[ ${dse_nodetype[i]} == *"dse_core"* ]]; then
       if [[ $seedmarked < $SEED_PER_DC ]]; then
-         pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=true dc=core_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
-         seedmarked=$((seedmarked+1))
+         if [[${#public_ip[@]} == 0]]; then
+            pmsg "${private_ip[i]} private_ip=${private_ip[i]} seed=true dc=core_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+            seedmarked=$((seedmarked+1))
+         else
+            pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=true dc=core_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+            seedmarked=$((seedmarked+1))
+         fi
       else
-         pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=false dc=core_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+         if [[${#public_ip[@]} == 0]]; then
+             pmsg "${private_ip[i]} private_ip=${private_ip[i]} seed=false dc=core_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+         else
+             pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=false dc=core_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+         fi
       fi
    fi
 done
@@ -113,10 +122,19 @@ for ((i=0; i<${#dse_nodetype[*]}; i++));
 do
    if [[ ${dse_nodetype[i]} == *"dse_search"* ]]; then
       if [[ $seedmarked < $SEED_PER_DC ]]; then
-         pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=true dc=search_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
-         seedmarked=$((seedmarked+1))
+         if [[${#public_ip[@]} == 0]]; then
+             pmsg "${private_ip[i]} private_ip=${private_ip[i]} seed=true dc=search_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             seedmarked=$((seedmarked+1))
+         else
+             pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=true dc=search_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             seedmarked=$((seedmarked+1))
+         fi
       else
-         pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=false dc=search_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+         if [[${#public_ip[@]} == 0]]; then
+             pmsg "${private_ip[i]} private_ip=${private_ip[i]} seed=false dc=search_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+         else
+             pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=false dc=search_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+         fi
       fi
    fi
 done
@@ -128,10 +146,19 @@ for ((i=0; i<${#dse_nodetype[*]}; i++));
 do
    if [[ ${dse_nodetype[i]} == *"dse_graph"* ]]; then
       if [[ $seedmarked < $SEED_PER_DC ]]; then
-         pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=true dc=graph_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
-         seedmarked=$((seedmarked+1))
+         if [[${#public_ip[@]} == 0]]; then
+             pmsg "${private_ip[i]} private_ip=${private_ip[i]} seed=true dc=graph_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             seedmarked=$((seedmarked+1))
+         else
+             pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=true dc=graph_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             seedmarked=$((seedmarked+1))
+         fi
       else
-         pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=false dc=graph_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+         if [[${#public_ip[@]} == 0]]; then
+             pmsg "${private_ip[i]} private_ip=${private_ip[i]} seed=false dc=graph_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+         else
+             pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=false dc=graph_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+         fi
       fi
    fi
 done
@@ -143,10 +170,19 @@ for ((i=0; i<${#dse_nodetype[*]}; i++));
 do
    if [[ ${dse_nodetype[i]} == *"dse_analytics"* ]]; then
       if [[ $seedmarked < $SEED_PER_DC ]]; then
-         pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=true dc=analytics_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
-         seedmarked=$((seedmarked+1))
+         if [[${#public_ip[@]} == 0]]; then
+             pmsg "${private_ip[i]} private_ip=${private_ip[i]} seed=true dc=analytics_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             seedmarked=$((seedmarked+1))
+         else
+             pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=true dc=analytics_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             seedmarked=$((seedmarked+1))
+         fi
       else
-         pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=false dc=analytics_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+         if [[${#public_ip[@]} == 0]]; then
+            pmsg "${private_ip[i]} private_ip=${private_ip[i]} seed=false dc=analytics_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+         else
+            pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=false dc=analytics_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+         fi
       fi
    fi
 done
@@ -192,16 +228,30 @@ do
    if [[ ${dse_nodetype[i]} == *"dse_opsc"* ]]; then
       # only install OpsCenter server on one host
       if [[ $opscsrvmarked == 0 ]]; then
-         opscSrvNodeStr="${public_ip[i]} private_ip=${private_ip[i]}" 
+         if [[${#public_ip[@]} == 0]]; then
+             opscSrvNodeStr="${private_ip[i]} private_ip=${private_ip[i]}" 
+         else
+             opscSrvNodeStr="${public_ip[i]} private_ip=${private_ip[i]}" 
+         fi
+         
          opscSrvPrivateIp="${private_ip[i]}"
          opscsrvmarked=1
       fi
 
       if [[ $seedmarked < $SEED_PER_DC ]]; then
-         pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=true dc=DC1 rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
-         seedmarked=$((seedmarked+1))
+         if [[${#public_ip[@]} == 0]]; then
+            pmsg "${private_ip[i]} private_ip=${private_ip[i]} seed=true dc=DC1 rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+            seedmarked=$((seedmarked+1))
+         else
+            pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=true dc=DC1 rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+            seedmarked=$((seedmarked+1))
+         fi
       else
-         pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=false dc=DC1 rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+         if [[${#public_ip[@]} == 0]]; then
+            pmsg "${private_ip[i]} private_ip=${private_ip[i]} seed=false dc=DC1 rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+         else
+            pmsg "${public_ip[i]} private_ip=${private_ip[i]} seed=false dc=DC1 rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+         fi
       fi
    fi
 done
@@ -223,7 +273,11 @@ pmsg "" $DSE_ANSINV_FILE
 pmsg "[datastax_agent]" $DSE_ANSINV_FILE
 for ((i=0; i<${#dse_nodetype[*]}; i++));
 do
-   pmsg "${public_ip[i]} private_ip=${private_ip[i]} opsc_srv_ip=$opscSrvPrivateIp" $DSE_ANSINV_FILE
+   if [[${#public_ip[@]} == 0]]; then
+      pmsg "${private_ip[i]} private_ip=${private_ip[i]} opsc_srv_ip=$opscSrvPrivateIp" $DSE_ANSINV_FILE
+   else
+      pmsg "${public_ip[i]} private_ip=${private_ip[i]} opsc_srv_ip=$opscSrvPrivateIp" $DSE_ANSINV_FILE
+   fi
 done
 pmsg "" $DSE_ANSINV_FILE
 pmsg "" $DSE_ANSINV_FILE
