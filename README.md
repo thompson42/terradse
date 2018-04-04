@@ -299,7 +299,7 @@ Once the security_dse_unified_auth_config role has run you should have a system 
 CREATE ROLE jane WITH LOGIN = true AND PASSWORD = 'Abc123Jane';
 ```
 
-### 5.7.2 DSE Unified Authentication and Spark
+### 5.7.2 DSE Unified Authentication and Spark Security
 
 Addition of role: security_spark
 
@@ -315,6 +315,10 @@ Authentication and Spark applications:
 
 If authentication is enabled, users need to be authenticated in order to submit an application.
 Note: DSE 5.1.4, DSE 5.1.5, and 5.1.6 users should refer to the release notes for information on using Spark SQL applications and DSE authentication.
+
+[Running spark-submit job with internal authentication](https://docs.datastax.com/en/dse/5.1/dse-dev/datastax_enterprise/spark/sparkInternalAuth.html)
+
+[Managing Spark application permissions](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuthSpark.html)
 
 
 
