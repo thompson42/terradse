@@ -1,0 +1,71 @@
+---
+
+# https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuthAndRbacAbout.html
+# https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secEnableDseAuthenticator.html
+  
+# In the cassandra.yaml file the following should all be setup already, but make sure here:
+- name: Configure DSE Unified Authentication authenticator, authorizer, role_manager in cassandra.yaml.
+  yedit:
+    src: "{{ dse_config_dir }}/cassandra/cassandra.yaml"
+    edits:
+    - key: authenticator
+      value: com.datastax.bdp.cassandra.auth.DseAuthenticator
+    - key: authorizer
+      value: com.datastax.bdp.cassandra.auth.DseAuthorizer
+    - key: role_manager
+      value: com.datastax.bdp.cassandra.auth.DseRoleManager
+
+
+# Configure DSE Authenticator in dse.yaml (/etc/dse/dse.yaml)
+# Extended settings:
+# allow_digest_with_kerberos: true
+# plain_text_without_ssl: warn
+# transitional_mode: disabled
+# other_schemes:
+# scheme_permissions: false
+- name: Configure DSE Authenticator in dse.yaml (/etc/dse/dse.yaml)
+  yedit:
+    src: "{{ dse_config_dir }}/dse.yaml"
+    edits:
+    - key: authentication_options.enabled
+      value: true
+    - key: authentication_options.default_scheme
+      value: internal
+
+
+#Configure the DSE Authorizer in dse.yaml (/etc/dse/dse.yaml)
+- name: Configure the DSE Authorizer in dse.yaml (/etc/dse/dse.yaml)
+  yedit:
+    src: "{{ dse_config_dir }}/dse.yaml"
+    edits:
+    - key: authorization_options.enabled
+      value: true
+
+
+#Configure the DSE Role Manager in dse.yaml (/etc/dse/dse.yaml)
+- name: Configure the DSE Role Manager in dse.yaml (/etc/dse/dse.yaml)
+  yedit:
+    src: "{{ dse_config_dir }}/dse.yaml"
+    edits:
+    - key: role_management_options.mode
+      value: internal
+
+# ON-HOLD LDAP -----------------------------------------------------------------
+# Configure selected authentication scheme options.
+# https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secLDAPScheme.html
+# Configure caching. 
+# Adjust the credentials_validity_in_ms and credentials_update_interval_in_ms as required for your environment in the dse.yaml.
+
+# ON-HOLD ----------------------------------------------------------------------
+# Set up JMX authentication to allow nodetool and dsetool operations.
+# https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html
+
+
+# Push in a Spark role and user
+# Beginning in DSE 5.1: Communication between Spark applications and the resource manager are now routed through
+# the CQL native protocol. Enabling client encryption in the cassandra.yaml will also enable encryption for
+# the communication with the DSE Spark Master.
+
+#spark_security_enabled option in dse.yaml.
+
+

@@ -4,4 +4,4 @@
   become: true
   become_method: sudo
   roles:
-    - { role: dse_set_heap}
+    - { role: security_dse_unified_authentication }

@@ -1,24 +1,32 @@
 
-# Install and configure DSE node security
+# Run CQL security table replication and strategy changes once only on a single DSE cluster node
+- hosts: dse[0]
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_prerequisites }
+
+
+# Install and configure DSE security dependencies
 - hosts: dse
   any_errors_fatal: true
   become: true
   become_method: sudo
   roles:
     - { role: security_install }
-    - { role: security_node_to_node }
-    - { role: security_client_to_node }
-    - { role: security_opscenter_agents } #currently a noop, should auto pull config from opsc_server
+    
 
-
-# Install and configure OpsCenter cluster and webserver security
-- hosts: opsc_srv
+# Install and configure DSE node security to your requirements <---- EDIT LIST
+- hosts: dse
   any_errors_fatal: true
   become: true
   become_method: sudo
   roles:
-    - { role: security_opscenter }
-    
+    - { role: security_node_to_node }
+    - { role: security_client_to_node }
+    - { role: security_dse_unified_auth_config }
+
 
 #Stop and restart all nodes in seed order
 # Stop DSE seed nodes 
@@ -68,5 +76,4 @@
     srvc_name: dse
   roles:
     - { role: start_srvc, when: seed == 'false' }
-    
-#TODO: stop and start opscenter server
+

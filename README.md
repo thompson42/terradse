@@ -3,12 +3,12 @@
 # Quick start summary of the following steps:
 
 1. Set all params and cluster topology in terraform_extended/variables.tf
-2. Set all port rules and security in terraform_extended/ec2.tf
-3. Set the cluster_names in genansinv_extended.sh file
-4. Set all paths and vars in ansible/group_vars/all
-5. Run /runterra_extended.sh and check AWS instances that will be created - accept and run the plan
-6. Run /genansinv_extended.sh (it will generate the /ansible/hosts)
-7. Run /runansi.sh (it will run osparm_change, dse_install and opsc_install playbooks, it expects your key to be: ~/.ssh/id_rsa_aws)
+2. Set all port rules and security in terraform_extended/ec2.tf, for AMZN VPC's you will need to modify this file
+3. Set all paths and vars in ansible/group_vars/all
+4. Run /runterra_extended.sh and check AWS instances that will be created - accept and run the plan
+5. Run /genansinv_extended.sh (it will generate the /ansible/hosts file)
+6. Run /runansi_extended.sh (it will run osparm_change, dse_install, opsc_install playbooks, it expects your key to be: ~/.ssh/id_rsa_aws)
+7. Configure required security roles in ansible/dse_security.yml and run manually
 
 # Basic processes: 
 
@@ -217,27 +217,66 @@ A linux script file, ***genansinv_extended.sh***, is providied for this purpose.
 2. *opsc_install.yml": installs OpsCenter server, datastax-agents, and configures accordingly to allow proper communication between OpsCenter server and datastax-agents.
 3. *osparm_change.yml*: configures OS/Kernel parameters on each node where DSE is installed, as per [Recommended production settings](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/config/configRecommendedSettings.html) from DataStax documentation.
 
-For operational simplicity, a linux script file, ***runansi.sh***, is provided to execute these Ansible playbooks.
+For operational simplicity, a linux script file, ***runansi_extended.sh***, is provided to execute these Ansible playbooks.
 
 ## 5. Additional features introduced by this fork
 
-### 5.1 Creation of independently runnable Security_xyz playbooks under ansible/roles to configure:
+### 5.1 Addition of a configurable dse_security.yml playbook
 
-1. Client -> node encryption
-2. Node -> node encryption
-3. Opscenter HTTPS access
-4. Opscenter -> agent encryption
+This playbook concerns itself with security of DSE cluster nodes including required prerequisite table and replication configurations, installation of Python and Java security libraries, a shopping list of security items you want to implement, and a start/stop of DSE on the the nodes at the end to force the changes.
 
-### 5.2 Introduction of spark and graph DSE datacenter types 
+1. See the task: "Install and configure DSE node security to your requirements" indicated by: EDIT LIST and choose the security features you wish to implement, take note of certificate paths.
+
+To run:
+```
+cd ansible
+ansible-playbook -i hosts dse_security.yml --private-key=~/.ssh/id_rsa_aws
+
+```
+
+### 5.2 Addition of a configurable opsc_security.yml playbook
+
+This playbook concerns itself with web browser -> OpsCenter server SSL/TLS HTTPS access and OpsCenter server to Agents on DSE nodes.
+
+To run:
+```
+cd ansible
+ansible-playbook -i hosts opsc_security.yml --private-key=~/.ssh/id_rsa_aws
+
+```
+
+### 5.3 Creation of independently runnable Security_xyz encryption roles under ansible/roles to configure:
+
+1. Client -> node encryption: security_client_to_node
+2. Node -> node encryption: security_node_to_node
+3. Opscenter HTTPS access: security_opscenter
+4. Opscenter -> agent encryption: security_opscenter_agents
+
+### 5.4 Introduction of spark and graph DSE datacenter types 
 
 1. Extended versions of terraform file, use: terraform_extended.sh
 2. Extended versions of .sh scripts to handle the new DC types
 
 
-### 5.3 Added dse_set_heap role to automate setting HEAP for jvm.options file
+### 5.5 Added dse_set_heap role to automate setting HEAP for jvm.options file
 
 1. See new params in group_vars/all: [heap_xms] and [heap_xmx] - always set them both to the same value to avoid runtime memory allocation issues.
 
+### 5.6 Additional security roles: security_dse_unified_auth_config and security_prerequisites to implement the core configuration settings for DSE Unified Authentication
+
+See:
+
+1. [DSE Unified Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuthAndRbacAbout.html)
+2. [Enabling DSE Unified Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secEnableDseAuthenticator.html)
+
+Special note: default install cassandra superuser account:
+
+1. This account needs to be removed and replaced with a new superuser on all exposed installs of DSE, it is there to facilitate initial install and user/role configuration.
+2. Automation of this superuser remove/replace is not currently available in this solution, please follow the nmanual process here: [Replace root account](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secCreateRootAccount.html)
+3. A possible automation approach is to use this user/role library: [ansible-module-cassandra](https://github.com/Ensighten/ansible-module-cassandra)
+4. A candidate role for this process is roles:security_prerequisites
+
+Once the security_dse_unified_auth_config role has run you should have a system that challenges user access at all levels, its now time to create your roles and open your system back up, you will need your superuser account to edit these roles.
 
 
 

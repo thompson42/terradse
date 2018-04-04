@@ -1,0 +1,27 @@
+# Install and configure DSE security dependencies
+- hosts: opsc_dsecore
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_install }
+    
+# Install and configure DSE node security to your requirements <---- EDIT LIST
+- hosts: dse
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_opscenter_agents } #currently a noop, should auto pull config from opsc_server
+
+# Install and configure OpsCenter cluster and webserver security
+- hosts: opsc_srv
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_opscenter }
+    
+ #TODO - need to restart opsc_srv then restart all agents
+    
+

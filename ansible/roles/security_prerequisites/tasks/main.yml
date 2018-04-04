@@ -1,0 +1,23 @@
+
+# WARNING: This role should only be run once per cluster on a single DSE node
+
+# https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuthAndRbacAbout.html
+# https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secEnableDseAuthenticator.html
+
+# Change system_auth and dse_security RF to 3-5 for each DC and change to NetworkToplogyStrategy from SimpleStrategy.
+- name: Create dse_security ALTER KEYSPACE string
+  set_fact:
+    _dse_security_alter_keyspace: "ALTER KEYSPACE dse_security WITH REPLICATION = { 'class' : 'NetworkToplogyStrategy', 'replication_factor' : {{ security_table_replication_factor }} }"
+    
+#- debug:
+#    msg: "{{ _dse_security_alter_keyspace }}"
+    
+- name: Run dse_security ALTER KEYSPACE
+  shell: cqlsh _dse_security_alter_keyspace
+    
+- name: Create system_auth ALTER KEYSPACE string
+  set_fact:
+    _system_auth_alter_keyspace: "ALTER KEYSPACE system_auth WITH REPLICATION = { 'class' : 'NetworkToplogyStrategy', 'replication_factor' : {{ security_table_replication_factor }} }"
+    
+- name: Run system_auth ALTER KEYSPACE
+  shell: cqlsh _system_auth_alter_keyspace

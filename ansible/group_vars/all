@@ -62,5 +62,11 @@ opsc_ssl_dir: /var/lib/opscenter/ssl
 heap_xms: 4G
 heap_xmx: 4G
 
+### Key role: security_dse_unified_authentication settings:
+#DCs < 3x nodes use an RF=1
+#DCs < 9x nodes use an RF=3
+#DCs > 9x nodes use an RF=5
+security_table_replication_factor: 1
+
 
 
