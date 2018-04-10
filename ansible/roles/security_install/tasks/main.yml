@@ -8,6 +8,11 @@
     - "python-pip"
     - "python-dev"
     - "build-essential"
+    
+- name: Install pyOpenSSL via pip
+  pip:
+    name: pyOpenSSL
+    state: present
 
 - name: Install ruamel.yaml via pip ( used by ansible/library/yedit)
   pip:

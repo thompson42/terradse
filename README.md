@@ -223,7 +223,7 @@ For operational simplicity, a linux script file, ***runansi_extended.sh***, is p
 
 ## 5. Additional features introduced by this fork
 
-### 5.1 Addition of a configurable dse_security.yml playbook
+### 5.1 Addition of a configurable DSE Security (dse_security.yml) playbook
 
 This playbook concerns itself with security of DSE cluster nodes including required prerequisite table and replication configurations, installation of Python and Java security libraries, a shopping list of security items you want to implement, and a start/stop of DSE on the the nodes at the end to force the changes.
 
@@ -236,7 +236,7 @@ ansible-playbook -i hosts dse_security.yml --private-key=~/.ssh/id_rsa_aws
 
 ```
 
-### 5.2 Addition of a configurable opsc_security.yml playbook
+### 5.2 Addition of a configurable OpsCenter Security (opsc_security.yml) playbook
 
 This playbook concerns itself with web browser -> OpsCenter server SSL/TLS HTTPS access and OpsCenter server to Agents on DSE nodes.
 
@@ -247,7 +247,7 @@ ansible-playbook -i hosts opsc_security.yml --private-key=~/.ssh/id_rsa_aws
 
 ```
 
-### 5.3 Addition of a configurable spark_security.yml playbook
+### 5.3 Addition of a configurable Spark Secuirty (spark_security.yml) playbook
 
 This playbook concerns itself with forcing authentication at spark submit level, to block unauthorized access to the Spark service byt calling the role: security_spark, see section 5.7.2 "DSE Unified Authentication and Spark" below.
 
@@ -321,6 +321,32 @@ Note: DSE 5.1.4, DSE 5.1.5, and 5.1.6 users should refer to the release notes fo
 [Running spark-submit job with internal authentication](https://docs.datastax.com/en/dse/5.1/dse-dev/datastax_enterprise/spark/sparkInternalAuth.html)
 
 [Managing Spark application permissions](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuthSpark.html)
+
+## 6. SSL certificates
+
+SSL certificates can be sourced 2 ways:
+
+1. Self signed certificates (for Development, Test, CI, CD and other ephemeral  environments)
+2. Trusted CA signed certificates (for Production)
+
+Terrsdse works with both types, in the case of CA signed certificates you need to go thru the normal process of generating your cetificates and .csr files and uploading them to your CA provider.
+
+### 6.1 To generate self signed certificates:
+
+1. configure default settings for your self signed certificate in: [ansible/roles/security_selfsign_cert_generate/defaults/main.yml](ansible/roles/security_selfsign_cert_generate/defaults/main.yml)
+
+2. in the ansible/dse_security.yml playbook add the following line in the area indicated by: EDIT LIST
+
+```
+{ role: security_selfsign_cert_generate }
+```
+
+This will create certificate and private key in:
+
+- `/etc/ssl/myserver.mydomain.com.key`
+- `/etc/ssl/myserver.mydomain.com.pem`
+
+For more information on this module please read its [README.md](ansible/roles/security_selfsign_cert_generate/readme.md)
 
 
 

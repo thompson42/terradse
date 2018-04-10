@@ -4,4 +4,4 @@
   become: true
   become_method: sudo
   roles:
-    - { role: security_dse_unified_authentication }
+    - { role: security_selfsign_cert_generate }

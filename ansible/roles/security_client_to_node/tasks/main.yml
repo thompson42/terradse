@@ -8,7 +8,7 @@
     - key: client_encryption_options.optional
       value: false
     - key: client_encryption_options.keystore
-      value: resources/dse/conf/.keystore
+      value: "{{ cluster_keystore_path }}"
     - key: client_encryption_options.keystore_password
       value: "{{ cluster_keystore_password }}"
     state: present

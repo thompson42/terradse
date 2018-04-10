@@ -23,6 +23,7 @@
   become: true
   become_method: sudo
   roles:
+    - { role: security_selfsign_cert_generate }
     - { role: security_node_to_node }
     - { role: security_client_to_node }
     - { role: security_dse_unified_auth_config }

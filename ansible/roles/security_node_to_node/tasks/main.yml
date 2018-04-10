@@ -6,11 +6,11 @@
     - key: server_encryption_options.internode_encryption
       value: all
     - key: server_encryption_options.keystore
-      value: resources/dse/conf/.keystore
+      value: "{{ cluster_keystore_path }}"
     - key: server_encryption_options.keystore_password
       value: "{{ cluster_keystore_password }}"
     - key: server_encryption_options.truststore
-      value: resources/dse/conf/.truststore
+      value: "{{ cluster_truststore_path }}"
     - key: server_encryption_options.truststore_password
       value: "{{ cluster_truststore_password }}"
     state: present

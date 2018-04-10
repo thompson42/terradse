@@ -43,9 +43,11 @@ saved_caches_directory: /dse_data/saved_caches
 # consumed in osparm_change.yml
 ebs_devstr: xvda
 
-# Cluster security settings sed by server_encryption_options and client_encryption_options in cassandra.yaml
-cluster_keystore_password: cluster_keystore_password_here
-cluster_truststore_password: cluster_truststore_password_here
+# Cluster security settings set by server_encryption_options and client_encryption_options in cassandra.yaml
+cluster_keystore_path: "{{ dse_config_dir }}/.keystore"
+cluster_keystore_password: cluster_keystore_password_here #TODO - pull from ansible.vault
+cluster_truststore_path: "{{ dse_config_dir }}/.truststore"
+cluster_truststore_password: cluster_truststore_password_here #TODO - pull from ansible.vault
 
 ### Key opscenterd.conf security settings --------------------------------------
 
