@@ -329,24 +329,51 @@ SSL certificates can be sourced 2 ways:
 1. Self signed certificates (for Development, Test, CI, CD and other ephemeral  environments)
 2. Trusted CA signed certificates (for Production)
 
-Terrsdse works with both types, in the case of CA signed certificates you need to go thru the normal process of generating your cetificates and .csr files and uploading them to your CA provider.
+### 6.1 To generate and deploy self signed certificates to the ansible host:
 
-### 6.1 To generate self signed certificates:
+Note that is is NOT the distrtibution phase to target nodes, merely the creation and storage of SSL certificates on the ansible host in a known location. The distribution of SSL certs and keys out into the DSE cluster is takemn up by two additional roles: { role: security_create_keystores } and { role: security_create_truststores }
 
-1. configure default settings for your self signed certificate in: [ansible/roles/security_selfsign_cert_generate/defaults/main.yml](ansible/roles/security_selfsign_cert_generate/defaults/main.yml)
+1. Configure default settings for your self signed certificate in: [ansible/roles/security_selfsign_cert_generate/defaults/main.yml](ansible/roles/security_selfsign_cert_generate/defaults/main.yml)
 
-2. in the ansible/dse_security.yml playbook add the following line in the area indicated by: EDIT LIST
+2. In the ansible/dse_security.yml playbook add the following line in the area indicated by: EDIT LIST
 
 ```
 { role: security_selfsign_cert_generate }
 ```
 
-This will create certificate and private key in:
+This will create a certificate and private key in the following directories on the ansible host (NOT the target nodes):
 
 - `/etc/ssl/myserver.mydomain.com.key`
 - `/etc/ssl/myserver.mydomain.com.pem`
 
-For more information on this module please read its [README.md](ansible/roles/security_selfsign_cert_generate/readme.md)
+For more information on this module please read its [README.md](ansible/roles/security_selfsign_cert_generate/README.md) This module does habve the capability to deploy certs to nodes by using simple ansible copy commands, we do not use that functionality or it's other features in Terradse.
+
+### 6.2 To deploy CA signed certificates to the ansible host:
+
+In the case of CA signed certificates you need to go thru the normal process of generating your cetificates and .csr files and uploading them to your CA provider.
+
+Once you have the resulting .key and .pem files, please deply them to:
+
+- `/etc/ssl/myserver.mydomain.com.key`
+- `/etc/ssl/myserver.mydomain.com.pem`
+
+## 7. Create keystores on all nodes:
+
+Prerequisite: you must have completed either 6.1 or 6.2 prior to running this role, can't secure anything if you have no certificates!
+
+```
+{ role: security_create_keystores }
+```
+
+## 8. Create truststores on all nodes
+
+Prerequisite: you must have completed either 6.1 or 6.2 prior to running this role, can't secure anything if you have no certificates!
+
+```
+{ role: security_create_truststores }
+```
+
+
 
 
 
