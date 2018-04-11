@@ -86,7 +86,7 @@
     - "{{ saved_caches_directory }}"
 
 
-- name: Create Cassandra directory for hitns (only applicable to DSE 5.0+)
+- name: Create Cassandra directory for hints (only applicable to DSE 5.0+)
   when: dse_ver_target|version_compare('5.0', '>=') 
   file:
     path: "{{ item }}"

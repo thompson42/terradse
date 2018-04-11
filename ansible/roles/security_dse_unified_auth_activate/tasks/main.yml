@@ -50,22 +50,4 @@
     - key: role_management_options.mode
       value: internal
 
-# ON-HOLD LDAP -----------------------------------------------------------------
-# Configure selected authentication scheme options.
-# https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secLDAPScheme.html
-# Configure caching. 
-# Adjust the credentials_validity_in_ms and credentials_update_interval_in_ms as required for your environment in the dse.yaml.
-
-# ON-HOLD ----------------------------------------------------------------------
-# Set up JMX authentication to allow nodetool and dsetool operations.
-# https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html
-
-
-# Push in a Spark role and user
-# Beginning in DSE 5.1: Communication between Spark applications and the resource manager are now routed through
-# the CQL native protocol. Enabling client encryption in the cassandra.yaml will also enable encryption for
-# the communication with the DSE Spark Master.
-
-#spark_security_enabled option in dse.yaml.
-
 

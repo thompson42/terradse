@@ -1,5 +1,5 @@
 
-# Run CQL security table replication and strategy changes once only on a single DSE cluster node
+# Change security table replication and strategy, replace insecure SuperUser all via CQLSH on a single DSE cluster node
 - hosts: dse[0]
   any_errors_fatal: true
   become: true
@@ -8,7 +8,7 @@
     - { role: security_prerequisites }
 
 
-# Install and configure DSE security dependencies
+# Install DSE security software dependencies on all nodes
 - hosts: dse
   any_errors_fatal: true
   become: true
@@ -16,17 +16,26 @@
   roles:
     - { role: security_install }
     
+#generate and distribute self signed certificates OR CA certificates, keystores and truststores all off localhost
+- hosts: localhost
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_selfsign_cert_generate } #optional if CA certs supplied
+    - { role: security_create_truststores }
+    - { role: security_create_keystores }
+    
 
-# Install and configure DSE node security to your requirements <---- EDIT LIST
+# Install DSE security features on all nodes <---- EDIT LIST
 - hosts: dse
   any_errors_fatal: true
   become: true
   become_method: sudo
   roles:
-    - { role: security_selfsign_cert_generate }
     - { role: security_node_to_node }
     - { role: security_client_to_node }
-    - { role: security_dse_unified_auth_config }
+    - { role: security_dse_unified_auth_activate }
 
 
 #Stop and restart all nodes in seed order

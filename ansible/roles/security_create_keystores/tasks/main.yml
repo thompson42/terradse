@@ -1,0 +1,6 @@
+
+#loop over dse group
+
+#-> For each node in the cluster, create a keystore and key pair, and certificate signing request using FQDN of the node.
+
+#

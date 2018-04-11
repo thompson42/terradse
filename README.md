@@ -1,5 +1,9 @@
 # Automate the Launch of AWS Instances for a multi-DC DSE cluster with OpsCenter
 
+# This project has a TODO file here
+
+[TODO.md](TODO.md)
+
 # Quickstart steps:
 
 1. Set all params and cluster topology in terraform_extended/variables.tf
@@ -335,6 +339,13 @@ Note that is is NOT the distrtibution phase to target nodes, merely the creation
 
 1. Configure default settings for your self signed certificate in: [ansible/roles/security_selfsign_cert_generate/defaults/main.yml](ansible/roles/security_selfsign_cert_generate/defaults/main.yml)
 
+Pay special attention to the params:
+
+```
+ssl_certs_path_owner: "cassandra"
+ssl_certs_path_group: "cassandra"
+```
+
 2. In the ansible/dse_security.yml playbook add the following line in the area indicated by: EDIT LIST
 
 ```
@@ -343,8 +354,9 @@ Note that is is NOT the distrtibution phase to target nodes, merely the creation
 
 This will create a certificate and private key in the following directories on the ansible host (NOT the target nodes):
 
-- `/etc/ssl/myserver.mydomain.com.key`
-- `/etc/ssl/myserver.mydomain.com.pem`
+
+- `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.key` -> {myserver.mydomain.com} is passed in by {{ansible_fqdn}}
+- `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.pem`
 
 For more information on this module please read its [README.md](ansible/roles/security_selfsign_cert_generate/README.md) This module does habve the capability to deploy certs to nodes by using simple ansible copy commands, we do not use that functionality or it's other features in Terradse.
 
@@ -352,10 +364,10 @@ For more information on this module please read its [README.md](ansible/roles/se
 
 In the case of CA signed certificates you need to go thru the normal process of generating your cetificates and .csr files and uploading them to your CA provider.
 
-Once you have the resulting .key and .pem files, please deply them to:
+Once you have the resulting certificate and private key place them in the following directories on the ansible host (NOT the target nodes): 
 
-- `/etc/ssl/myserver.mydomain.com.key`
-- `/etc/ssl/myserver.mydomain.com.pem`
+- `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.key`
+- `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.pem`
 
 ## 7. Create keystores on all nodes:
 
