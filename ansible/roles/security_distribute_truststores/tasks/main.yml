@@ -1,0 +1,8 @@
+
+- name: Copy truststore to all DSE nodes
+  copy:
+    src: "/etc/ssl/{{ssl_certs_common_name}}/.truststore"
+    dest: "{{cluster_truststore_path}}/.truststore"
+    owner: "{{cassandra_owner}}"
+    group: "{{cassandra_group}}"
+    mode: 0644

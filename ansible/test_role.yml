@@ -1,7 +1,9 @@
 
-- hosts: localhost
+- hosts: dse
   any_errors_fatal: true
   become: true
   become_method: sudo
   roles:
-    - { role: security_create_keystores }
+#    - { role: security_create_selfsign_cert }
+#    - { role: security_create_truststores }
+    - { role: security_distribute_truststores }

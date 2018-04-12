@@ -8,15 +8,12 @@
 1. SSL on the OPsC web server will need to be bound to a specific Ip-address (SSL), check what the result of the full run is on the interface var in opscenterd.conf
 2. Need to check Vnode allocation on all types (core, search,analytic, graph) in a dry run.
 3. Do you need to change the listening port when SSL is enabled on a node? Goes for node->node. cleint-> node, opsc->agent, opsc HTTPS
+4. /genansinv_extended.sh: Test properly moves private_ip into public_ip if no public_ip exists
 
 # OpscCenter
 
 1. No keyspace will be created by this entire process, OpsC will need to be manually configured to use a keyspace and create a cluster.conf
 2. OpsC login account amnd security ?
-
-# /genansinv_extended.sh
-
-1. Test properly moves private_ip into public_ip if no public_ip exists
 
 # /ansible/group_vars/all
 
@@ -28,11 +25,11 @@
 2. need to remove cassandra default SuperUser
 3. need to login as super user and perform ALTER security table statements
 
-# /ansible/roles/security_selfsign_cert_generate: 
+# /ansible/roles/security_create_selfsign_cert: 
 
 1. need to check C, ST, L, O, CN against Datastax selfsign rootCA example: https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html
 2. need to check params/owner of ssl_certs_path_owner, ssl_certs_path_group
-3. should params in security_selfsign_cert_generate/defaults be moved to group_vars/all ??
+3. should params in security_create_selfsign_cert/defaults be moved to group_vars/all ??
 
 # /ansible/roles/security_create_truststores:
 

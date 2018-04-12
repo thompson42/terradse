@@ -7,7 +7,16 @@
 ansible_connection: ssh
 ansible_user: root
 
-### Datastax repository --------------------------------------------------------
+# File permissions -------------------------------------------------------------
+localhost_owner: root
+localhost_group: root
+
+cassandra_owner: cassandra
+cassandra_group: cassandra
+
+
+
+# Datastax repository --------------------------------------------------------
 dse_repo_file: /etc/apt/sources.list.d/datastax.sources.list
 
 #User name and password to download DSE (DataStax Academy)
@@ -17,11 +26,10 @@ dse_repo_password: <datastax_academy_passwd>
 # Target/Current DSE verson
 dse_ver_target:  5.1.5
 
-# DSE directory locations ----------------------------------------------------
+# DSE directory locations ------------------------------------------------------
 dse_config_dir: /etc/dse
 dse_default_dir: /etc/default
 dse_syslog_dir: /var/log/cassandra
-
 
 ### Key cassandra.yaml settings ------------------------------------------------
 
@@ -43,12 +51,6 @@ saved_caches_directory: /dse_data/saved_caches
 # consumed in osparm_change.yml
 ebs_devstr: xvda
 
-# Cluster security settings set by server_encryption_options and client_encryption_options in cassandra.yaml
-cluster_keystore_path: "{{ dse_config_dir }}/.keystore"
-cluster_keystore_password: cluster_keystore_password_here #TODO - pull from ansible.vault
-cluster_truststore_path: "{{ dse_config_dir }}/.truststore"
-cluster_truststore_password: cluster_truststore_password_here #TODO - pull from ansible.vault
-
 ### Key opscenterd.conf security settings --------------------------------------
 
 # security settings used by [agents] and [webserver] section
@@ -69,6 +71,55 @@ heap_xmx: 4G
 #DCs < 9x nodes use an RF=3
 #DCs > 9x nodes use an RF=5
 security_table_replication_factor: 1
+
+### Encryption settings --------------------------------------------------------
+
+#Make sure the SSL certificates, keystore, truststore are readable by the user who runs opscenter / cassandra on nodes
+security_owner: cassandra
+security_group: cassandra
+
+#local paths (i.e. paths on the ansible controller)
+
+# Cluster security settings set by server_encryption_options and client_encryption_options in cassandra.yaml
+cluster_keystore_path: "{{ dse_config_dir }}/.keystore"
+cluster_keystore_password: cluster_keystore_password_here #TODO - pull from ansible.vault
+cluster_truststore_path: "{{ dse_config_dir }}/.truststore"
+cluster_truststore_password: cluster_truststore_password_here #TODO - pull from ansible.vault
+ 
+# Self signed certs ------------------------------------------------------------
+# The self signed certs, .truststore and .keystores are created on the ansible controller node in the directory: /etc/ssl/SelfSignRootCA
+
+ssl_certs_country: "US"
+ssl_certs_locality: "Santa Clara"
+ssl_certs_organization: "Datastax"
+ssl_certs_state: "Santa Clara"
+ssl_certs_common_name: "SelfSignRootCA"
+ssl_certs_days: "365"
+ssl_certs_fields: "/C={{ssl_certs_country}}/ST={{ssl_certs_state}}/L={{ssl_certs_locality}}/O={{ssl_certs_organization}}/CN={{ssl_certs_common_name}}"
+
+ssl_certs_path: "/etc/ssl/{{ssl_certs_common_name}}"
+
+#must be an account and group available on localhost
+ssl_certs_path_owner: "{{localhost_owner}}"
+ssl_certs_path_group: "{{localhost_group}}"
+
+ssl_certs_privkey_path: "{{ssl_certs_path}}/{{ssl_certs_common_name}}.key"
+ssl_certs_cert_path: "{{ssl_certs_path}}/{{ssl_certs_common_name}}.pem"
+ssl_certs_csr_path: "{{ssl_certs_path}}/{{ssl_certs_common_name}}.csr"
+ssl_certs_dhparam_path: "{{ssl_certs_path}}/dhparam.pem"
+ssl_certs_mode: "0700"
+ssl_certs_force_replace: yes
+
+ssl_certs_local_privkey_path: "{{inventory_dir|default(playbook_dir)}}/files/ssl/{{ssl_certs_common_name}}.key"
+ssl_certs_local_cert_path: "{{inventory_dir|default(playbook_dir)}}/files/ssl/{{ssl_certs_common_name}}.pem"
+ssl_certs_local_privkey_data: ""
+ssl_certs_local_cert_data: ""
+
+ssl_certs_generate_self_signed: true
+ssl_certs_key_size: "2048"
+ssl_certs_generate_dh_param: false
+ssl_certs_dhparam_size: "2048"
+
 
 
 

@@ -1,13 +1,15 @@
 ---
-#WARNING: this task runs on the ansible host only: localhost 
+#WARNING: this role runs on the ansible host only: localhost 
 - name: Import SSL certificate to a local truststore, create truststore if it doesn't exist
   java_cert:
-    cert_alias: "{{ansible_fqdn}}"
-    cert_path: "/etc/ssl/{{ansible_fqdn}}/{{ansible_fqdn}}.pem"
-    keystore_path: /tmp/.truststore
-    keystore_pass: "{{ cluster_truststore_password }}"
+    cert_alias: "[[ssl_certs_common_name]]"
+    cert_path: "/etc/ssl/{{ssl_certs_common_name}}/{{ssl_certs_common_name}}.pem"
+    keystore_path: "/etc/ssl/{{ssl_certs_common_name}}/.truststore"
+    keystore_pass: "{{cluster_truststore_password}}"
     keystore_create: yes
     state: present
+    
+
 
     
     
