@@ -8,20 +8,18 @@ ansible_connection: ssh
 ansible_user: root
 
 # File permissions -------------------------------------------------------------
-localhost_owner: root
-localhost_group: root
+localhost_owner: "{{lookup('env','USER')}}"
+localhost_group: "{{lookup('env','USER')}}"
 
 cassandra_owner: cassandra
 cassandra_group: cassandra
-
-
 
 # Datastax repository --------------------------------------------------------
 dse_repo_file: /etc/apt/sources.list.d/datastax.sources.list
 
 #User name and password to download DSE (DataStax Academy)
-dse_repo_email: <datastax_academy_uesername>
-dse_repo_password: <datastax_academy_passwd>
+dse_repo_email: <datastax_academy_uesername> #TODO - pull from ansible.vault
+dse_repo_password: <datastax_academy_passwd> #TODO - pull from ansible.vault
 
 # Target/Current DSE verson
 dse_ver_target:  5.1.5
@@ -78,16 +76,18 @@ security_table_replication_factor: 1
 security_owner: cassandra
 security_group: cassandra
 
-#local paths (i.e. paths on the ansible controller)
-
 # Cluster security settings set by server_encryption_options and client_encryption_options in cassandra.yaml
-cluster_keystore_path: "{{ dse_config_dir }}/.keystore"
+cluster_keystore_path: "{{ dse_config_dir }}" #keystore.jks
 cluster_keystore_password: cluster_keystore_password_here #TODO - pull from ansible.vault
-cluster_truststore_path: "{{ dse_config_dir }}/.truststore"
+cluster_truststore_path: "{{ dse_config_dir }}" #truststore.jks
 cluster_truststore_password: cluster_truststore_password_here #TODO - pull from ansible.vault
+
+
  
 # Self signed certs ------------------------------------------------------------
 # The self signed certs, .truststore and .keystores are created on the ansible controller node in the directory: /etc/ssl/SelfSignRootCA
+
+ssl_key_password: ssl_key_password_here #TODO - pull from ansible.vault
 
 ssl_certs_country: "US"
 ssl_certs_locality: "Santa Clara"

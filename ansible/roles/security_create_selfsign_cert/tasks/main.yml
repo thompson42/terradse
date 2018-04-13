@@ -1,4 +1,8 @@
 ---
+#Although local, executes as a remote_user (root) via SSH as needs root access to /etc/ssl
+#then reverts cert file/directory ownership to user running ansible
+#EXPECTS: [hosts: localhost] [become: yes] [become_method: sudo] on playbook call
+
   - name: Ensure OpenSSL is installed
     package: name=openssl state=present
     tags: [ssl-certs,packages]

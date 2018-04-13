@@ -9,6 +9,7 @@
 2. Need to check Vnode allocation on all types (core, search,analytic, graph) in a dry run.
 3. Do you need to change the listening port when SSL is enabled on a node? Goes for node->node. cleint-> node, opsc->agent, opsc HTTPS
 4. /genansinv_extended.sh: Test properly moves private_ip into public_ip if no public_ip exists
+5. /genansinv_extended.sh: Test properly exposes private_dns in hosts file sourced from terraform.tfstate for each node. (used by role: security_create_keystores)
 
 # OpscCenter
 
@@ -27,19 +28,19 @@
 
 # /ansible/roles/security_create_selfsign_cert: 
 
-1. need to check C, ST, L, O, CN against Datastax selfsign rootCA example: https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html
-2. need to check params/owner of ssl_certs_path_owner, ssl_certs_path_group
-3. should params in security_create_selfsign_cert/defaults be moved to group_vars/all ??
+1. need to check (?) C, ST, L, O, CN against Datastax selfsign rootCA example: https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html
 
 # /ansible/roles/security_create_truststores:
 
 1. keystore_pass needs to be sourced from ansible.vault
-2. paths need to be centralised as configureable
-3. cert_alias needs to be checked against rootCA example
+
+# /ansible/roles/security_distribute_truststores:
+
+1. check ownership of /etc/dse/truststore.jks is cassandra:cassandra
 
 # /ansible/roles/security_create_keystores:
 
-1. not started
+1. need to pull FQDN off hosts file (/genansinv_extended.sh already modded to cater for [priavte_dns] and push in as CN=host_name on each cert, see role: security_create_keystores
 
 # /ansible/roles/security_dse_unified_auth_activate
 

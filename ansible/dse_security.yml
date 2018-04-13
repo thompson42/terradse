@@ -1,33 +1,48 @@
 
+# Install DSE security software dependencies on all nodes
+- hosts: dse
+  any_errors_fatal: true
+  become: yes
+  become_method: sudo
+  roles:
+    - { role: security_install }
+
 # Change security table replication and strategy, replace insecure SuperUser all via CQLSH on a single DSE cluster node
 - hosts: dse[0]
   any_errors_fatal: true
-  become: true
+  become: yes
   become_method: sudo
   roles:
     - { role: security_prerequisites }
 
 
-# Install DSE security software dependencies on all nodes
-- hosts: dse
-  any_errors_fatal: true
-  become: true
-  become_method: sudo
-  roles:
-    - { role: security_install }
-    
-#generate self signed certificates OR CA certificates, keystores and truststores all on localhost
+#generate self signed certificates OR CA certificates (local/remote)
 - hosts: localhost
   any_errors_fatal: true
-  become: true
+  become: yes
   become_method: sudo
   roles:
     - { role: security_create_selfsign_cert } #optional if CA certs supplied
+
+    
+#create truststores (local)
+- hosts: localhost
+  any_errors_fatal: true
+  become: no
+  connection: local
+  roles:
     - { role: security_create_truststores }
-    - { role: security_create_keystores }
 
 
-#distribute keystores and truststores to all dse nodes
+#distribute truststores (local/remote)
+- hosts: dse
+  any_errors_fatal: true
+  become: yes
+  become_method: sudo
+  roles:
+    - { role: security_distribute_truststores }
+    
+#create and distribute keystores
 - hosts: dse
   any_errors_fatal: true
   become: true
