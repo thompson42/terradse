@@ -30,10 +30,6 @@
 2. need to remove cassandra default SuperUser
 3. need to login as super user and perform ALTER security table statements
 
-### /ansible/roles/security_create_keystores:
-
-1. need to pull FQDN off hosts file (/genansinv_extended.sh already modded to cater for [priavte_dns] and push in as CN=host_name on each cert, see role: security_create_keystores
-
 ### /ansible/roles/security_dse_unified_auth_activate
 
 LDAP:

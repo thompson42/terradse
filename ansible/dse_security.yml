@@ -25,27 +25,20 @@
     - { role: security_create_selfsign_root_certificate } 
 
     
-#create truststores (local)
+#create truststores and keystores (local)
 - hosts: localhost
   any_errors_fatal: true
   become: no
   connection: local
   roles:
     - { role: security_create_truststores }
+    - { role: security_create_keystores }
 
 
-#distribute truststores (local/remote)
+#distribute truststores and keystores (local/remote)
 - hosts: dse
   any_errors_fatal: true
   become: yes
-  become_method: sudo
-  roles:
-    - { role: security_distribute_truststores }
-    
-#create and distribute keystores
-- hosts: dse
-  any_errors_fatal: true
-  become: true
   become_method: sudo
   roles:
     - { role: security_distribute_truststores }

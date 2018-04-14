@@ -1,19 +1,16 @@
+---
+#EXPECTS: [hosts: localhost] [become: no] [connection: local] in playbook call
+#uses hostvars[inventory_hostname].private_dns to pull the EC2 private_dns off the hosts file and push it in as the CN on each nodes cert/keystore
 
-- debug: msg="{{ groups['dse'] }}"
-
-#loop over dse group in hosts
-# alias: private_dns
-# keystore: private_dns
-# storepass: from all
-# keypass: from all
-# CN, OU, O, C pull in line with cert
+#- debug: msg="{{hostvars[item].private_dns}}"
+#  with_items: "{{ groups['dse'] }}"
 
 - name: For each node, generate a keystore with key pair
-  command: keytool -genkeypair -keyalg RSA -alias "{{item}}" -keystore "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-keystore.jks" -storepass "{{cluster_keystore_password}}" -keypass "{{ssl_key_password}}" -validity "{{ssl_certs_days}}" -keysize "{{ssl_certs_key_size}}" -dname "C={{ssl_certs_country}}/ST={{ssl_certs_state}}/L={{ssl_certs_locality}}/O={{ssl_certs_organization}}/CN={{ssl_certs_common_name}}"
+  command: keytool -genkeypair -keyalg RSA -alias "{{item}}" -keystore "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-keystore.jks" -storepass "{{cluster_keystore_password}}" -keypass "{{ssl_key_password}}" -validity "{{ssl_certs_days}}" -keysize "{{ssl_certs_key_size}}" -dname "C={{ssl_certs_country}}/ST={{ssl_certs_state}}/L={{ssl_certs_locality}}/O={{ssl_certs_organization}}/CN={{hostvars[item].private_dns}}"
   with_items: "{{ groups['dse'] }}"
   
 - name: Generate a signing request from each keystore
-  command: keytool -alias "{{item}}" -keystore "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-keystore.jks" -certreq -file "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-signing_request.csr" -storepass "{{cluster_keystore_password}}" -keypass "{{ssl_key_password}}" -dname "C={{ssl_certs_country}}/ST={{ssl_certs_state}}/L={{ssl_certs_locality}}/O={{ssl_certs_organization}}/CN={{ssl_certs_common_name}}"
+  command: keytool -alias "{{item}}" -keystore "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-keystore.jks" -certreq -file "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-signing_request.csr" -storepass "{{cluster_keystore_password}}" -keypass "{{ssl_key_password}}" -dname "C={{ssl_certs_country}}/ST={{ssl_certs_state}}/L={{ssl_certs_locality}}/O={{ssl_certs_organization}}/CN={{hostvars[item].private_dns}}"
   with_items: "{{ groups['dse'] }}"
   
 - name: BYO sign each nodes certificate

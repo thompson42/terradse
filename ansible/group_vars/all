@@ -1,20 +1,23 @@
 ---
 
-### Host connection 
+# Host connection
+#--------------------------------------------------------------------------------
 #   - connection type: SSH
 #   - default SSH user 
 #
 ansible_connection: ssh
 ansible_user: root
 
-# File permissions -------------------------------------------------------------
+# File permissions 
+#--------------------------------------------------------------------------------
 localhost_owner: "{{lookup('env','USER')}}"
 localhost_group: "{{lookup('env','USER')}}"
 
 cassandra_owner: cassandra
 cassandra_group: cassandra
 
-# Datastax repository --------------------------------------------------------
+# Datastax repository 
+#--------------------------------------------------------------------------------
 dse_repo_file: /etc/apt/sources.list.d/datastax.sources.list
 
 #User name and password to download DSE (DataStax Academy)
@@ -24,13 +27,14 @@ dse_repo_password: <datastax_academy_passwd> #TODO - pull from ansible.vault
 # Target/Current DSE verson
 dse_ver_target:  5.1.5
 
-# DSE directory locations ------------------------------------------------------
+# DSE directory locations 
+#--------------------------------------------------------------------------------
 dse_config_dir: /etc/dse
 dse_default_dir: /etc/default
 dse_syslog_dir: /var/log/cassandra
 
-### Key cassandra.yaml settings ------------------------------------------------
-
+# Key cassandra.yaml settings
+#--------------------------------------------------------------------------------
 # default vnode token_num setting for DSE Core/Cassandra and Graph/Graph
 vnode_token_num: 256
 
@@ -49,14 +53,14 @@ saved_caches_directory: /dse_data/saved_caches
 # consumed in osparm_change.yml
 ebs_devstr: xvda
 
-### Key opscenterd.conf security settings --------------------------------------
-
+# Key opscenterd.conf security settings
+#--------------------------------------------------------------------------------
 # security settings used by [agents] and [webserver] section
 opsc_config: /etc/opscenter/opscenterd.conf
 opsc_ssl_dir: /var/lib/opscenter/ssl
 
-### Key jvm.options settings ---------------------------------------------------
-
+# Key jvm.options settings
+#--------------------------------------------------------------------------------
 # JVM HEAP used by DSE
 #TODO: 
 #core/spark/graph should be 20G
@@ -64,13 +68,15 @@ opsc_ssl_dir: /var/lib/opscenter/ssl
 heap_xms: 4G
 heap_xmx: 4G
 
-### Key role: security_dse_unified_authentication settings:
+# Key role: security_dse_unified_authentication settings:
+#--------------------------------------------------------------------------------
 #DCs < 3x nodes use an RF=1
 #DCs < 9x nodes use an RF=3
 #DCs > 9x nodes use an RF=5
 security_table_replication_factor: 1
 
-### Encryption settings --------------------------------------------------------
+# Encryption settings
+#--------------------------------------------------------------------------------
 # The self signed certs, .truststore and .keystores are created on the ansible controller node in the directory: /etc/ssl/SelfSignRootCA
 
 #Make sure the SSL certificates, keystores, truststores are readable by the user who runs opscenter / cassandra on target nodes
@@ -83,9 +89,8 @@ cluster_keystore_password: cluster_keystore_password_here #TODO - pull from ansi
 cluster_truststore_path: "{{ dse_config_dir }}/truststore.jks"
 cluster_truststore_password: cluster_truststore_password_here #TODO - pull from ansible.vault
  
-# Self signed root certificate -------------------------------------------------
-# Further defaults are configureable under role: security_create_selfsign_root_certificate/default/main.yml
-# WARNING: editing the default pathways in the defualts will impact may roles that depemnd on /etc/ssl/ directory.
+# Self signed root certificate
+#--------------------------------------------------------------------------------
 ssl_certs_country: "US"
 ssl_certs_locality: "Santa Clara"
 ssl_certs_organization: "Datastax"
@@ -98,6 +103,33 @@ ssl_certs_path_owner: "{{localhost_owner}}"
 ssl_certs_path_group: "{{localhost_group}}"
 
 ssl_key_password: ssl_key_password_here #used by security_create_keystores TODO - pull from ansible.vault
+
+# WARNING: EDIT ONLY BELOW HERE FOR SSL CERTS IF YOU ARE WILLING TO REFACTOR VARIOUS ROLE PATHS
+
+ssl_certs_fields: "/C={{ssl_certs_country}}/ST={{ssl_certs_state}}/L={{ssl_certs_locality}}/O={{ssl_certs_organization}}/CN={{ssl_certs_common_name}}"
+
+ssl_certs_path: "/etc/ssl/{{ssl_certs_common_name}}"
+ssl_certs_privkey_path: "{{ssl_certs_path}}/{{ssl_certs_common_name}}.key"
+ssl_certs_cert_path: "{{ssl_certs_path}}/{{ssl_certs_common_name}}.pem"
+ssl_certs_csr_path: "{{ssl_certs_path}}/{{ssl_certs_common_name}}.csr"
+ssl_certs_dhparam_path: "{{ssl_certs_path}}/dhparam.pem"
+ssl_certs_mode: "0700"
+ssl_certs_force_replace: yes
+
+ssl_certs_local_privkey_path: "{{inventory_dir|default(playbook_dir)}}/files/ssl/{{ssl_certs_common_name}}.key"
+ssl_certs_local_cert_path: "{{inventory_dir|default(playbook_dir)}}/files/ssl/{{ssl_certs_common_name}}.pem"
+ssl_certs_local_privkey_data: ""
+ssl_certs_local_cert_data: ""
+
+ssl_certs_generate_self_signed: true
+ssl_certs_key_size: "2048"
+ssl_certs_generate_dh_param: false
+ssl_certs_dhparam_size: "2048"
+
+Other:
+#--------------------------------------------------------------------------------
+
+
 
 
 

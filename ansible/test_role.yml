@@ -1,8 +1,8 @@
 
-- hosts: dse
+- hosts: localhost
   any_errors_fatal: true
-  become: yes
-#  connection: local
-  become_method: sudo
+  become: no
+  connection: local
+#  become_method: sudo
   roles:
-    - { role: security_distribute_truststores }
+    - { role: security_create_keystores }
