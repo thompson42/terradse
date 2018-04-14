@@ -8,6 +8,15 @@
 ansible_connection: ssh
 ansible_user: root
 
+# DSE Superuser account
+#--------------------------------------------------------------------------------
+# NOTE: the default account username/password are public knowledge
+default_super_user_account: cassandra
+default_super_user_password: cassandra
+
+secure_super_user_account: some_account_here   #TODO - pull from ansible.vault
+secure_super_user_password: some_password_here #TODO - pull from ansible.vault
+
 # File permissions 
 #--------------------------------------------------------------------------------
 localhost_owner: "{{lookup('env','USER')}}"

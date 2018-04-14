@@ -7,7 +7,7 @@
   roles:
     - { role: security_install }
 
-# Change security table replication and strategy, replace insecure SuperUser all via CQLSH on a single DSE cluster node
+# Change security table replication and strategy, replace insecure SuperUser - all via CQLSH on a single DSE cluster node
 - hosts: dse[0]
   any_errors_fatal: true
   become: yes
