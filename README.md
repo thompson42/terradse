@@ -1,6 +1,6 @@
 # Automate the Launch of AWS Instances for a multi-DC DSE cluster with OpsCenter
 
-### This project has a TODO file here [TODO.md](TODO.md)
+This project has a TODO file here [TODO.md](TODO.md)
 
 # Quickstart steps:
 
