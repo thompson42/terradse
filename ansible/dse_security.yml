@@ -16,13 +16,13 @@
     - { role: security_prerequisites }
 
 
-#generate self signed certificates OR CA certificates (local/remote)
+#generate self signed certificates - OPTIONAL IF CA ROOT CERT SUPPLIED.
 - hosts: localhost
   any_errors_fatal: true
   become: yes
   become_method: sudo
   roles:
-    - { role: security_create_selfsign_cert } #optional if CA certs supplied
+    - { role: security_create_selfsign_root_certificate } 
 
     
 #create truststores (local)
