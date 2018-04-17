@@ -1,0 +1,24 @@
+---
+# Start DSE seed nodes 
+- hosts: dse
+  any_errors_fatal: true
+  name: Start seed node 
+  serial: 1
+  become: true
+  become_method: sudo
+  vars:
+    srvc_name: dse
+  roles:
+    - { role: start_srvc, when: seed == 'true' } 
+
+# Start DSE non-seed nodes 
+- hosts: dse
+  any_errors_fatal: true
+  name: Start non-seed node one by one
+  serial: 1
+  become: true
+  become_method: sudo
+  vars:
+    srvc_name: dse
+  roles:
+    - { role: start_srvc, when: seed == 'false' }

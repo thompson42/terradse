@@ -3,12 +3,12 @@ dse_core
 dse_search
 
 [dse_core]
-18.220.204.36 private_ip=172.31.10.221 seed=true dc=core_dc rack=RAC1 vnode=1 initial_token=
-18.216.134.200 private_ip=172.31.14.13 seed=false dc=core_dc rack=RAC1 vnode=1 initial_token=
+18.220.204.36 private_ip=172.31.10.221 seed=true dc=dse_core rack=RAC1 vnode=1 initial_token=
+18.216.134.200 private_ip=172.31.14.13 seed=false dc=dse_core rack=RAC1 vnode=1 initial_token=
 
 [dse_search]
-52.14.64.102 private_ip=172.31.3.196 seed=true dc=search_dc rack=RAC1 vnode=1 initial_token=
-18.221.222.116 private_ip=172.31.2.163 seed=false dc=search_dc rack=RAC1 vnode=1 initial_token=
+52.14.64.102 private_ip=172.31.3.196 seed=true dc=dse_search rack=RAC1 vnode=1 initial_token=
+18.221.222.116 private_ip=172.31.2.163 seed=false dc=dse_search rack=RAC1 vnode=1 initial_token=
 
 [dse:vars]
 cluster_name=MyAppCluster

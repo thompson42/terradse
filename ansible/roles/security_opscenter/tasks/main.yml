@@ -1,6 +1,8 @@
-
-#configure opsc agent cluster security
 ---
+
+#configure opsc_serber ->  agent cluster security
+#https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscEnableSSLpkg.html
+
 - name: Configure opsc cluster security - use_ssl
   ini_file:
     path: "{{ opsc_config }}"
@@ -44,6 +46,7 @@
     value: "{{ opsc_ssl_dir }}/agentKeyStore.der"
     
 #configure opsc webserver security
+#https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscConfiguringEnablingHttps_t.html
 
 - name: Configure opsc webserver security - ssl_keyfile
   ini_file:

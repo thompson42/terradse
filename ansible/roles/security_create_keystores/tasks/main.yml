@@ -1,26 +1,30 @@
 ---
 #EXPECTS: [hosts: localhost] [become: no] [connection: local] in playbook call
-#uses hostvars[inventory_hostname].private_dns to pull the EC2 private_dns off the hosts file and push it in as the CN on each nodes cert/keystore
+#uses hostvars[item].private_dns to pull the EC2 private_dns off the hosts file and push it in as the CN on each nodes cert/keystore
 
 #- debug: msg="{{hostvars[item].private_dns}}"
 #  with_items: "{{ groups['dse'] }}"
 
 - name: For each node, generate a keystore with key pair
-  command: keytool -genkeypair -keyalg RSA -alias "{{item}}" -keystore "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-keystore.jks" -storepass "{{cluster_keystore_password}}" -keypass "{{ssl_key_password}}" -validity "{{ssl_certs_days}}" -keysize "{{ssl_certs_key_size}}" -dname "C={{ssl_certs_country}}/ST={{ssl_certs_state}}/L={{ssl_certs_locality}}/O={{ssl_certs_organization}}/CN={{hostvars[item].private_dns}}"
+  command: keytool -genkeypair -keyalg RSA -alias "{{item}}" -keystore "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-keystore.jks" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}" -validity "{{ssl_certs_days}}" -keysize "{{ssl_certs_key_size}}" -dname "CN={{hostvars[item].private_dns}}, OU={{ssl_cluster_name}}, O={{ssl_certs_organization}}, C={{ssl_certs_country}}"
   with_items: "{{ groups['dse'] }}"
   
 - name: Generate a signing request from each keystore
-  command: keytool -alias "{{item}}" -keystore "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-keystore.jks" -certreq -file "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-signing_request.csr" -storepass "{{cluster_keystore_password}}" -keypass "{{ssl_key_password}}" -dname "C={{ssl_certs_country}}/ST={{ssl_certs_state}}/L={{ssl_certs_locality}}/O={{ssl_certs_organization}}/CN={{hostvars[item].private_dns}}"
+  command: keytool -alias "{{item}}" -keystore "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-keystore.jks" -certreq -file "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-signing_request.csr" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}" -dname "CN={{hostvars[item].private_dns}}, OU={{ssl_cluster_name}}, O={{ssl_certs_organization}}, C={{ssl_certs_country}}"
   with_items: "{{ groups['dse'] }}"
   
 - name: BYO sign each nodes certificate
-  command: openssl x509 -req -CA "/etc/ssl/{{ssl_certs_common_name}}/{{ssl_certs_common_name}}.pem" -CAkey "/etc/ssl/{{ssl_certs_common_name}}/{{ssl_certs_common_name}}.key" -in "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-signing_request.csr" -out "/etc/ssl/{{ssl_certs_common_name}}/{{item}}.crt_signed" -days "{{ssl_certs_days}}" -CAcreateserial -passin pass:"{{ssl_key_password}}"
+  command: openssl x509 -req -CA "/etc/ssl/{{ssl_certs_common_name}}/{{ssl_certs_common_name}}.pem" -CAkey "/etc/ssl/{{ssl_certs_common_name}}/{{ssl_certs_common_name}}.key" -in "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-signing_request.csr" -out "/etc/ssl/{{ssl_certs_common_name}}/{{item}}.crt_signed" -days "{{ssl_certs_days}}" -CAcreateserial -passin pass:"{{cluster_keystore_password}}"
   with_items: "{{ groups['dse'] }}"
   
 - name: Import the root certificate into each node's keystore
-  command: keytool -keystore "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-keystore.jks" -alias "{{ssl_certs_common_name}}" -importcert -file "/etc/ssl/{{ssl_certs_common_name}}/{{ssl_certs_common_name}}.pem" -noprompt  -storepass "{{cluster_keystore_password}}" -keypass "{{ssl_key_password}}"
+  command: keytool -keystore "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-keystore.jks" -alias "{{ssl_certs_common_name}}" -importcert -file "/etc/ssl/{{ssl_certs_common_name}}/{{ssl_certs_common_name}}.pem" -noprompt  -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}"
   with_items: "{{ groups['dse'] }}"
   
 - name: Import the node's signed certificate into corresponding keystore
-  command: keytool -keystore "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-keystore.jks" -alias "{{item}}" -importcert -noprompt -file "/etc/ssl/{{ssl_certs_common_name}}/{{item}}.crt_signed" -storepass "{{cluster_keystore_password}}" -keypass "{{ssl_key_password}}"
+  command: keytool -keystore "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-keystore.jks" -alias "{{item}}" -importcert -noprompt -file "/etc/ssl/{{ssl_certs_common_name}}/{{item}}.crt_signed" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}"
   with_items: "{{ groups['dse'] }}"
+  
+#- name: Convert all the keystores into pkcs12 keystores
+#  command: keytool -importkeystore -srckeystore "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-keystore.jks" -destkeystore "/etc/ssl/{{ssl_certs_common_name}}/{{item}}-pkcs12-keystore.jks" -deststoretype pkcs12 -storepass "{{cluster_keystore_password}}" -deststorepass "{{cluster_keystore_password}}"
+#  with_items: "{{ groups['dse'] }}"

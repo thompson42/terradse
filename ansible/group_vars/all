@@ -6,7 +6,7 @@
 #   - default SSH user 
 #
 ansible_connection: ssh
-ansible_user: root
+ansible_user: automaton
 
 # DSE Superuser account
 #--------------------------------------------------------------------------------
@@ -30,8 +30,8 @@ cassandra_group: cassandra
 dse_repo_file: /etc/apt/sources.list.d/datastax.sources.list
 
 #User name and password to download DSE (DataStax Academy)
-dse_repo_email: <datastax_academy_uesername> #TODO - pull from ansible.vault
-dse_repo_password: <datastax_academy_passwd> #TODO - pull from ansible.vault
+dse_repo_email: some#email.com #TODO - pull from ansible.vault
+dse_repo_password: xxx #TODO - pull from ansible.vault
 
 # Target/Current DSE verson
 dse_ver_target:  5.1.5
@@ -51,15 +51,15 @@ vnode_token_num: 256
 vnode_token_num_solr: 32
 vnode_token_num_spark: 32
 
-# data directories
-data_file_directories: /dse_data/cassandra
-hints_directory: /dse_data/hints
-commitlog_directory: /dse_data/commitlog
-saved_caches_directory: /dse_data/saved_caches
+# data directories - nned to modify these paths to reflect the mount point of your EBS drive/s OR ephemeral stores
+data_file_directories:  /var/lib/cassandra/data
+hints_directory: /var/lib/cassandra/hints
+commitlog_directory: /var/lib/cassandra/commitlog
+saved_caches_directory: /var/lib/cassandra/saved_caches
 
 
 # Block device string (xvd...) for the EBS volume attached for DSE data
-# consumed in osparm_change.yml
+# consumed in dse_osparm_change.yml and opsc_osparm_change.yml
 ebs_devstr: xvda
 
 # Key opscenterd.conf security settings
@@ -96,44 +96,25 @@ security_group: cassandra
 cluster_keystore_path: "{{ dse_config_dir }}/keystore.jks"
 cluster_keystore_password: cluster_keystore_password_here #TODO - pull from ansible.vault
 cluster_truststore_path: "{{ dse_config_dir }}/truststore.jks"
-cluster_truststore_password: cluster_truststore_password_here #TODO - pull from ansible.vault
+cluster_truststore_password: "{{cluster_keystore_password}}"
  
 # Self signed root certificate
 #--------------------------------------------------------------------------------
-ssl_certs_country: "US"
-ssl_certs_locality: "Santa Clara"
-ssl_certs_organization: "Datastax"
-ssl_certs_state: "Santa Clara"
-ssl_certs_common_name: "SelfSignRootCA"
+ssl_certs_common_name: "SelfSignRootCA" #CN
+ssl_cluster_name: "Test Cluster"        #OU
+ssl_certs_organization: "Datastax"      #O
+ssl_certs_country: "US"                 #C
+
 ssl_certs_days: "365"
 
 #must be an account and group available on localhost
 ssl_certs_path_owner: "{{localhost_owner}}"
 ssl_certs_path_group: "{{localhost_group}}"
 
-ssl_key_password: ssl_key_password_here #used by security_create_keystores TODO - pull from ansible.vault
-
 # WARNING: EDIT ONLY BELOW HERE FOR SSL CERTS IF YOU ARE WILLING TO REFACTOR VARIOUS ROLE PATHS
 
-ssl_certs_fields: "/C={{ssl_certs_country}}/ST={{ssl_certs_state}}/L={{ssl_certs_locality}}/O={{ssl_certs_organization}}/CN={{ssl_certs_common_name}}"
-
 ssl_certs_path: "/etc/ssl/{{ssl_certs_common_name}}"
-ssl_certs_privkey_path: "{{ssl_certs_path}}/{{ssl_certs_common_name}}.key"
-ssl_certs_cert_path: "{{ssl_certs_path}}/{{ssl_certs_common_name}}.pem"
-ssl_certs_csr_path: "{{ssl_certs_path}}/{{ssl_certs_common_name}}.csr"
-ssl_certs_dhparam_path: "{{ssl_certs_path}}/dhparam.pem"
-ssl_certs_mode: "0700"
-ssl_certs_force_replace: yes
-
-ssl_certs_local_privkey_path: "{{inventory_dir|default(playbook_dir)}}/files/ssl/{{ssl_certs_common_name}}.key"
-ssl_certs_local_cert_path: "{{inventory_dir|default(playbook_dir)}}/files/ssl/{{ssl_certs_common_name}}.pem"
-ssl_certs_local_privkey_data: ""
-ssl_certs_local_cert_data: ""
-
-ssl_certs_generate_self_signed: true
 ssl_certs_key_size: "2048"
-ssl_certs_generate_dh_param: false
-ssl_certs_dhparam_size: "2048"
 
 Other:
 #--------------------------------------------------------------------------------

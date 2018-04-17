@@ -4,6 +4,7 @@
 - name: Copy individual keystore to each DSE node
   copy:
     src: "/etc/ssl/{{ssl_certs_common_name}}/{{inventory_hostname}}-keystore.jks"
+#    src: "/etc/ssl/{{ssl_certs_common_name}}/{{inventory_hostname}}-pkcs12-keystore.jks"
     dest: "{{cluster_keystore_path}}"
     owner: "{{cassandra_owner}}"
     group: "{{cassandra_group}}"

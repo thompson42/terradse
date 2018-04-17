@@ -2,7 +2,6 @@
 - hosts: dse[0]
   any_errors_fatal: true
   become: yes
-#  connection: local
   become_method: sudo
   roles:
-    - { role: security_create_keystores }
+    - { role: security_prerequisites }

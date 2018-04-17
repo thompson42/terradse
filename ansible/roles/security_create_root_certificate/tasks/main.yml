@@ -1,0 +1,14 @@
+---
+#EXPECTS: [hosts: localhost] [become: no] [connection: local] in playbook call
+
+#empty the directory
+- name: Empty /etc/ssl/SelfSignRootCA directory
+  shell: cd /etc/ssl/{{ssl_certs_common_name}} && find -mindepth 1 -maxdepth 1 -print0 | xargs -0 rm -rf --
+
+#raw cmd line call: 
+#>cd /etc/ssl/SelfSignRootCA
+#>openssl req -new -x509 -nodes -subj /CN=SelfSignRootCA/OU=cluster_name/O=DataStax/C=US/ -keyout SelfSignRootCA.key -out SelfSignRootCA.pem -days 365
+- name: Generate self-signed SSL certificate
+  command: openssl req -new -x509 -nodes -subj "/CN={{ssl_certs_common_name}}/OU={{ssl_cluster_name}}/O={{ssl_certs_organization}}/C={{ssl_certs_country}}" -keyout "/etc/ssl/{{ssl_certs_common_name}}/{{ssl_certs_common_name}}".key -out "/etc/ssl/{{ssl_certs_common_name}}/{{ssl_certs_common_name}}".pem -days "{{ssl_certs_days}}"
+
+

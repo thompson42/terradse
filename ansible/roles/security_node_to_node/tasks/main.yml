@@ -1,4 +1,5 @@
 ---
+# WARNING internode_encryption off
 - name: Configure Node -> Node encryption in cassandra.yaml
   yedit:
     src: "{{ dse_config_dir }}/cassandra/cassandra.yaml"

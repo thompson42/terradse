@@ -99,17 +99,17 @@ do
    if [[ ${dse_nodetype[i]} == *"dse_core"* ]]; then
       if [[ $seedmarked < $SEED_PER_DC ]]; then
          if ["${#public_ip[@]}" -eq 0]; then
-            pmsg "${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=true dc=core_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+            pmsg "${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=true dc=dse_core rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
             seedmarked=$((seedmarked+1))
          else
-            pmsg "${public_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=true dc=core_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+            pmsg "${public_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=true dc=dse_core rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
             seedmarked=$((seedmarked+1))
          fi
       else
          if ["${#public_ip[@]}" -eq 0]; then
-             pmsg "${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=false dc=core_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             pmsg "${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=false dc=dse_core rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
          else
-             pmsg "${public_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=false dc=core_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             pmsg "${public_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=false dc=dse_core rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
          fi
       fi
    fi
@@ -123,17 +123,17 @@ do
    if [[ ${dse_nodetype[i]} == *"dse_search"* ]]; then
       if [[ $seedmarked < $SEED_PER_DC ]]; then
          if ["${#public_ip[@]}" -eq 0]; then
-             pmsg "${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=true dc=search_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             pmsg "${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=true dc=dse_search rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
              seedmarked=$((seedmarked+1))
          else
-             pmsg "${public_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=true dc=search_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             pmsg "${public_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=true dc=dse_search rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
              seedmarked=$((seedmarked+1))
          fi
       else
          if ["${#public_ip[@]}" -eq 0]; then
-             pmsg "${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=false dc=search_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             pmsg "${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=false dc=dse_search rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
          else
-             pmsg "${public_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=false dc=search_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             pmsg "${public_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=false dc=dse_search rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
          fi
       fi
    fi
@@ -147,17 +147,17 @@ do
    if [[ ${dse_nodetype[i]} == *"dse_graph"* ]]; then
       if [[ $seedmarked < $SEED_PER_DC ]]; then
          if ["${#public_ip[@]}" -eq 0]; then
-             pmsg "${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=true dc=graph_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             pmsg "${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=true dc=dse_graph rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
              seedmarked=$((seedmarked+1))
          else
-             pmsg "${public_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=true dc=graph_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             pmsg "${public_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=true dc=dse_graph rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
              seedmarked=$((seedmarked+1))
          fi
       else
          if ["${#public_ip[@]}" -eq 0]; then
-             pmsg "${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=false dc=graph_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             pmsg "${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=false dc=dse_graph rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
          else
-             pmsg "${public_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=false dc=graph_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             pmsg "${public_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=false dc=dse_graph rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
          fi
       fi
    fi
@@ -171,17 +171,17 @@ do
    if [[ ${dse_nodetype[i]} == *"dse_analytics"* ]]; then
       if [[ $seedmarked < $SEED_PER_DC ]]; then
          if ["${#public_ip[@]}" -eq 0]; then
-             pmsg "${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=true dc=analytics_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             pmsg "${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=true dc=dse_analytics rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
              seedmarked=$((seedmarked+1))
          else
-             pmsg "${public_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=true dc=analytics_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+             pmsg "${public_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=true dc=dse_analytics rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
              seedmarked=$((seedmarked+1))
          fi
       else
          if ["${#public_ip[@]}" -eq 0]; then
-            pmsg "${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=false dc=analytics_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+            pmsg "${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=false dc=dse_analytics rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
          else
-            pmsg "${public_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=false dc=analytics_dc rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
+            pmsg "${public_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=false dc=dse_analytics rack=RAC1 vnode=1 initial_token=" $DSE_ANSINV_FILE
          fi
       fi
    fi

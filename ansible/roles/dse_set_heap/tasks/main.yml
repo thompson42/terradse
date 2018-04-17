@@ -6,8 +6,8 @@
     name: "{{ dse_config_dir }}/cassandra/jvm.options"
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
-    owner: "{{owner}}"
-    group: "{{group}}"
+    owner: "{{cassandra_owner}}"
+    group: "{{cassandra_group}}"
     mode: 0644
   with_items:
     - { regexp: '#-Xms4G', line: '-Xms{{ heap_xms }}' }
