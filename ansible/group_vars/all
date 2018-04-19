@@ -1,7 +1,7 @@
 ---
 
 # Host connection
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 #   - connection type: SSH
 #   - default SSH user 
 #
@@ -9,7 +9,7 @@ ansible_connection: ssh
 ansible_user: automaton
 
 # DSE Superuser account
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # NOTE: the default account username/password are public knowledge
 default_super_user_account: cassandra
 default_super_user_password: cassandra
@@ -18,7 +18,7 @@ secure_super_user_account: some_account_here   #TODO - pull from ansible.vault
 secure_super_user_password: some_password_here #TODO - pull from ansible.vault
 
 # File permissions 
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 localhost_owner: "{{lookup('env','USER')}}"
 localhost_group: "{{lookup('env','USER')}}"
 
@@ -26,24 +26,25 @@ cassandra_owner: cassandra
 cassandra_group: cassandra
 
 # Datastax repository 
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 dse_repo_file: /etc/apt/sources.list.d/datastax.sources.list
 
 #User name and password to download DSE (DataStax Academy)
-dse_repo_email: some#email.com #TODO - pull from ansible.vault
+dse_repo_email: xxx #TODO - pull from ansible.vault
 dse_repo_password: xxx #TODO - pull from ansible.vault
 
 # Target/Current DSE verson
-dse_ver_target:  5.1.5
+dse_ver_target:  5.1.7-1  #requires the [-1] on the end of the version
+opsc_ver_target: 6.5.0    #opsc 6.5 is compatible with DSE 5.0,5.1,6.0
 
 # DSE directory locations 
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 dse_config_dir: /etc/dse
 dse_default_dir: /etc/default
 dse_syslog_dir: /var/log/cassandra
 
 # Key cassandra.yaml settings
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # default vnode token_num setting for DSE Core/Cassandra and Graph/Graph
 vnode_token_num: 256
 
@@ -63,13 +64,13 @@ saved_caches_directory: /var/lib/cassandra/saved_caches
 ebs_devstr: xvda
 
 # Key opscenterd.conf security settings
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # security settings used by [agents] and [webserver] section
 opsc_config: /etc/opscenter/opscenterd.conf
 opsc_ssl_dir: /var/lib/opscenter/ssl
 
 # Key jvm.options settings
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # JVM HEAP used by DSE
 #TODO: 
 #core/spark/graph should be 20G
@@ -78,16 +79,14 @@ heap_xms: 4G
 heap_xmx: 4G
 
 # Key role: security_dse_unified_authentication settings:
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 #DCs < 3x nodes use an RF=1
 #DCs < 9x nodes use an RF=3
 #DCs > 9x nodes use an RF=5
 security_table_replication_factor: 1
 
-# Encryption settings
-#--------------------------------------------------------------------------------
-# The self signed certs, .truststore and .keystores are created on the ansible controller node in the directory: /etc/ssl/SelfSignRootCA
-
+# Encryption settings for truststores / keystores
+#-------------------------------------------------------------------------------
 #Make sure the SSL certificates, keystores, truststores are readable by the user who runs opscenter / cassandra on target nodes
 security_owner: cassandra
 security_group: cassandra
@@ -98,8 +97,10 @@ cluster_keystore_password: cluster_keystore_password_here #TODO - pull from ansi
 cluster_truststore_path: "{{ dse_config_dir }}/truststore.jks"
 cluster_truststore_password: "{{cluster_keystore_password}}"
  
-# Self signed root certificate
-#--------------------------------------------------------------------------------
+# Root certificate
+#-------------------------------------------------------------------------------
+# The self signed certs, .truststore and .keystores are created on the ansible controller node in the directory: /etc/ssl/SelfSignRootCA
+
 ssl_certs_common_name: "SelfSignRootCA" #CN
 ssl_cluster_name: "Test Cluster"        #OU
 ssl_certs_organization: "Datastax"      #O
@@ -117,7 +118,7 @@ ssl_certs_path: "/etc/ssl/{{ssl_certs_common_name}}"
 ssl_certs_key_size: "2048"
 
 Other:
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 
 

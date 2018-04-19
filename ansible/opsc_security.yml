@@ -7,15 +7,32 @@
   roles:
     - { role: security_install }
     
-# Configure opscenter agents -> currently a noop, should auto pull config from opsc_server
-- hosts: dse
+    
+# Stop opsc_srv
+- hosts: opsc_srv
   any_errors_fatal: true
   become: true
   become_method: sudo
-  roles:
-    - { role: security_opscenter_agents }
+  tasks: 
+  - name: Stop OpsCenter service
+    service:
+      name: "opscenterd"
+      state: stopped
+      
+      
+# Stop all agents
+- hosts: datastax_agent 
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  tasks:
+  - name: Stop datastax-agent service
+    service:
+      name: "datastax-agent"
+      state: stopped
+    
 
-# Install and configure OpsCenter server->cluster security and webserver HTTPS security
+# Configure [opscenterd.conf]: OpsCenter server->agent security and webserver HTTPS security
 - hosts: opsc_srv
   any_errors_fatal: true
   become: true
@@ -23,6 +40,26 @@
   roles:
     - { role: security_opscenter }
     
- #TODO - need to restart opsc_srv then restart all agents
-    
 
+# Start opsc_srv
+- hosts: opsc_srv
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  tasks: 
+  - name: Start OpsCenter service
+    service:
+      name: "opscenterd"
+      state: started
+      
+# Start all agents
+- hosts: datastax_agent 
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  tasks:
+  - name: Start datastax-agent service
+    service:
+      name: "datastax-agent"
+      state: started
+      

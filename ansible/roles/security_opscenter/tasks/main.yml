@@ -1,6 +1,6 @@
 ---
 
-#configure opsc_serber ->  agent cluster security
+#configure opsc_server ->  agent cluster security
 #https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscEnableSSLpkg.html
 
 - name: Configure opsc cluster security - use_ssl
@@ -64,7 +64,7 @@
     
 - name: Configure opsc webserver security - ssl_port
   ini_file:
-    path: "/etc/opscenter/opscenterd.conf"
+    path: "{{ opsc_config }}"
     section: webserver
     option: ssl_port
     value: 8443

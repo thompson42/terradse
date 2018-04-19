@@ -1,0 +1,29 @@
+---
+#Configure spark_security_enabled in dse.yaml (/etc/dse/dse.yaml)
+- name: Configure spark_security_enabled in dse.yaml (/etc/dse/dse.yaml)
+  yedit:
+    src: "{{ dse_config_dir }}/dse.yaml"
+    edits:
+    - key: spark_security_enabled
+      value: true
+      
+#Configure spark_security_encryption_enabled in dse.yaml (/etc/dse/dse.yaml)
+- name: Configure spark_security_encryption_enabled in dse.yaml (/etc/dse/dse.yaml)
+  yedit:
+    src: "{{ dse_config_dir }}/dse.yaml"
+    edits:
+    - key: spark_security_encryption_enabled
+      value: true
+      
+- name: Configure spark.authenticate and spark.authenticate.enableSaslEncryption in /etc/dse/spark/spark-defaults.conf
+  lineinfile:
+    name: "{{ dse_config_dir }}/spark/spark-defaults.conf"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    owner: cassandra
+    group: cassandra
+    mode: 0644
+  with_items:
+#    - { regexp: '^fs.file-max',                             line: 'fs.file-max = 13100694' }
+    - { regexp: 'spark.authenticate                          false', line: 'spark.authenticate                          true' }
+    - { regexp: 'spark.authenticate.enableSaslEncryption     false', line: 'spark.authenticate.enableSaslEncryption     true' }

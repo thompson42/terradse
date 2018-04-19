@@ -1,11 +1,12 @@
 
-# Activate spark security
+# Activate spark authentication and encryption
+# 
 - hosts: dse_analytics
   any_errors_fatal: true
   become: true
   become_method: sudo
   roles:
-    - { role: security_spark }
+    - { role: security_spark_activate }
     
 #Stop and restart all dse_analytics nodes in seed order
 # Stop DSE seed nodes 

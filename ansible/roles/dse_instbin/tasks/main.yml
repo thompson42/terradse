@@ -1,9 +1,18 @@
 ---
-- name: Install DSE version 5.0+
+- name: Install DSE version "{{dse_ver_target}}"
   apt:
     name: "{{ item }}"
     state: present
     update_cache: yes
   with_items:
-    - "dse-full"
-    - "dse-demos"
+    - "dse={{dse_ver_target}}"
+#    - "dse-demos={{dse_ver_target}}"
+    - "dse-full={{dse_ver_target}}" 
+    - "dse-libcassandra={{dse_ver_target}}"
+    - "dse-libgraph={{dse_ver_target}}"
+    - "dse-libhadoop2-client-native={{dse_ver_target}}"
+    - "dse-libhadoop2-client={{dse_ver_target}}"
+    - "dse-liblog4j={{dse_ver_target}}" 
+    - "dse-libsolr={{dse_ver_target}}"
+    - "dse-libspark={{dse_ver_target}}"
+    - "dse-libtomcat={{dse_ver_target}}"

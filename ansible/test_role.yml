@@ -1,7 +1,11 @@
 
-- hosts: dse[0]
+# Start all agents
+- hosts: datastax_agent 
   any_errors_fatal: true
-  become: yes
+  become: true
   become_method: sudo
-  roles:
-    - { role: security_prerequisites }
+  tasks:
+  - name: Start datastax-agent service
+    service:
+      name: "datastax-agent"
+      state: started

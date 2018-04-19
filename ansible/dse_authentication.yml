@@ -1,0 +1,17 @@
+
+# Change security table replication and strategy, replace insecure SuperUser - all via CQLSH on a single DSE cluster node
+# We need to do this with the nodes up with no SSL 
+- hosts: dse[0]
+  any_errors_fatal: true
+  become: yes
+  become_method: sudo
+  roles:
+    - { role: security_prerequisites }
+
+# Activate DSE Unified Authentication
+- hosts: dse
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_dse_unified_auth_activate }

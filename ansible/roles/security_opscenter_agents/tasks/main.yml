@@ -1,3 +1,0 @@
-#configure opsc agents with security
-#in theory the agent should comm over ssl with the config given in opscenterd.conf
-#if not we may need to manually fix settings in the agents address.yaml or in the cluster.conf for opscenter
