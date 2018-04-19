@@ -1,7 +1,7 @@
 
 ## Users and OS accounts:
 
-2. Audit all final file ownership on ansible controller and targets (ctool comparable sys.)
+1. Audit all final file ownership on target dse nodes (ctool comparable sys.)
 
 ## Testing
 
@@ -10,23 +10,21 @@
 3. /genansinv_extended.sh: Test properly exposes private_dns in hosts file sourced from terraform.tfstate for each node. (used by role: security_create_keystores)
 4. /genansinv_extended.sh: Test properly indicates new DC names that are now same as block e.g.: [dse_core]
 
-# playbook: opsc_security =========
+## playbook: opsc_security.yml
 
-1. OpsC default superuser account replace? Roles?
+### Opscenter Transport Encryption (SSL/TLS)
 
-## Activating Transport Encryption (SSL/TLS)
-
-### opscenter -> agent
+#### opscenter -> agent
 
 [Link](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
 role: security_opscenter
 
-### browser -> opscenter web (HTTPS)
+#### browser -> opscenter web (HTTPS)
 
 [Link](https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscConfiguringEnablingHttps_t.html)
 role: security_opscenter
 
-## agent -> dse (trustsores / keystores) AND opscenter -> dse (trustsores / keystores) - TODO :shipit:
+#### agent -> dse (trustsores / keystores) AND opscenter -> dse (trustsores / keystores) - TODO :shipit:
 
 [Link](https://docs.datastax.com/en/opscenter/6.5/opsc/configure/opscClientToNode.html)
 
@@ -34,17 +32,21 @@ role: security_opscenter
 2. seed node
 3. create cluster_name.conf: security settings
 
-# playbook: dse_authentication.yml =========
+### Opscenter Authentication
+
+1. 1. OpsC default superuser account replace? Roles?
+
+## playbook: dse_authentication.yml
 
 Currently broken due to /ansible/roles/security_prerequisites - see below
 
-## Activate DSE Unified Authentication
+### DSE Unified Authentication
 
 STATUS: complete
 
 role: security_dse_unified_auth_activate
 
-### DSE Superuser role and security table replication automation - TODO :shipit:
+#### DSE Superuser role and security table replication automation - TODO :shipit:
 
 role: /ansible/roles/security_prerequisites
 
@@ -53,22 +55,22 @@ role: /ansible/roles/security_prerequisites
 ALTER KEYSPACE system_auth WITH REPLICATION = {'class' : 'NetworkTopologyStrategy', 'dc1' : 3, 'dc2' : 2};
 ```
 
-### Activating JMX Authentication - TODO :shipit:
+#### Activating JMX Authentication - TODO :shipit:
 
 1. Set up JMX authentication to allow nodetool and dsetool operations: [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html)
 2. This will cause JMX config required for Opscenter
 
-### Activating Spark Authentication - TODO :shipit:
+#### Activating Spark Authentication - TODO :shipit:
 
 1. Create a Spark role and user?
 2. Limit spark jobs by user ?
 
-### LDAP INTEGRATION
+#### LDAP INTEGRATION
 
 1. Configure selected authentication scheme options: [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secLDAPScheme.html)
 2. Adjust the credentials_validity_in_ms and credentials_update_interval_in_ms as required for your environment in the dse.yaml.
 
-### Connecting to DSE Authentication enabled clusters
+#### Connecting to DSE Authentication enabled clusters
 
 Covers:
 
@@ -83,20 +85,20 @@ Covers:
 
 [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secProvideCredentialsTOC.html)
 
-# playbook: dse_security.yml =========
+## playbook: dse_security.yml
 
-## Ansible vault - TODO :shipit:
+#### Ansible vault - TODO :shipit:
 
-### /ansible/group_vars/all
+#### /ansible/group_vars/all
 
 1. need to shift sensitive passwords to ansible.vault
 
-## Activating Transport Encryption (SSL/TLS)
+### Activating DSE Transport Encryption (SSL/TLS)
 
 FACT: For CA signed certs, change the name of the cert fields under "Root certificate" in group_vars/all and run dse_security with security_create_root_certificate
 commented out.
 
-### core ansible roles
+#### core ansible roles
 
 STATUS: complete
 [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
@@ -107,64 +109,64 @@ role: security_create_keystores
 role: security_distribute_truststores
 role: security_distribute_keystores
 
-### client -> node
+#### client -> node
 
 STATUS: complete
 [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptClientNodeSSL.html)
 
 role: security_client_to_node
 
-### node -> node
+#### node -> node
 
 STATUS: complete
 [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secInternodeSsl.html)
 
 role: security_node_to_node
 
-### cqlsh -> node (local and remote)
+#### cqlsh -> node (local and remote)
 
 FACT: ACCESS DISABLED BY DEFAULT
 [To acivate](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/usingCqlshSslAndKerberos.html)
 
-### jConsole (any client) -> JMX (local and remote) - TODO :shipit:
+#### jConsole (any client) -> JMX (local and remote) - TODO :shipit:
 
 FACT: REMOTE JMX ACCESS DISABLED BY DEFAULT
 LOCAL ACCESS ?
 
 https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html
 
-### nodetool, dse too, dse advrep -> JMX (local and remote) - TODO :shipit:
+#### nodetool, dse too, dse advrep -> JMX (local and remote) - TODO :shipit:
 
 FACT: REMOTE JMX ACCESS DISABLED BY DEFAULT
 LOCAL ACCESS ?
 
 https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html
 
-# playbook: spark_security.yml
+## playbook: spark_security.yml
 
-## Activating Spark Transport Encryption (SSL/TLS)
+### Activating Spark Transport Encryption (SSL/TLS)
 
 [Spark SSL]{https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptSparkSSL.html}
 
-### Spark: dse submit
+#### Spark: dse submit
 
 No transport phase.
 
-### Spark: Spark driver (app) -> DSE
+#### Spark: Spark driver (app) -> DSE
 
 STATUS: complete
 Encryption between the Spark driver and DSE is configured by enabling client encryption in cassandra.yaml
 
 role: security_client_to_node
 
-### Spark: spark master -> worker
+#### Spark: spark master -> worker
 
 STATUS: complete
 Encryption between Spark nodes, including between the Spark master and worker, is configured by enabling Spark security in dse.yaml.
 
 role: security_spark_activate
 
-### Spark: Spark driver (app) -> executors - TODO :shipit:
+#### Spark: Spark driver (app) -> executors - TODO :shipit:
 
 Encryption between the Spark driver and executors in client applications is configured by enabling Spark security in the application configuration properties, 
 or by default in /etc/dse/spark/spark-defaults.conf
@@ -173,21 +175,21 @@ or by default in /etc/dse/spark/spark-defaults.conf
 
 role: security_spark_activate
 
-### Spark:  JDBC driver -> Spark SQL Thrift Server - TODO (easy, truststore and keystore already exist) :shipit:
+#### Spark:  JDBC driver -> Spark SQL Thrift Server - TODO (easy, truststore and keystore already exist) :shipit:
 
 https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/spark/sslSparkSqlThriftserver.html
 
-### Spark: browser -> spark UI
+#### Spark: browser -> spark UI
 
 The Spark web UI by default uses client-to-cluster encryption settings to enable SSL security in the web interface.
 
-# playbook: solr_security - TODO 
+## playbook: solr_security - TODO 
 
-# playbook: graph_security - TODO 
+## playbook: graph_security - TODO 
 
-# Nice haves
+## Nice haves
 
-## CQL schema managment
+##  CQL schema managment
 
 ### /ansible/cql_schema_management (playbook):
 
