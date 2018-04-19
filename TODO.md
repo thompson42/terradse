@@ -14,17 +14,17 @@
 
 ### Opscenter Transport Encryption (SSL/TLS)
 
-#### opscenter -> agent - COMPLETE :applause:
+#### opscenter -> agent - COMPLETE :heavy_check_mark:
 
 [Link](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
 role: security_opscenter
 
-#### browser -> opscenter web (HTTPS) - COMPLETE :applause:
+#### browser -> opscenter web (HTTPS) - COMPLETE :heavy_check_mark:
 
 [Link](https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscConfiguringEnablingHttps_t.html)
 role: security_opscenter
 
-#### agent -> dse (trustsores / keystores) AND opscenter -> dse (trustsores / keystores) - TODO :angry:
+#### agent -> dse (trustsores / keystores) AND opscenter -> dse (trustsores / keystores) - TODO :x:
 
 [Link](https://docs.datastax.com/en/opscenter/6.5/opsc/configure/opscClientToNode.html)
 
@@ -32,7 +32,7 @@ role: security_opscenter
 2. seed node
 3. create cluster_name.conf: security settings
 
-### Opscenter Authentication - TODO :angry:
+### Opscenter Authentication - TODO :x:
 
 1. OpsC default superuser account replace
 2. Roles integration
@@ -41,11 +41,11 @@ role: security_opscenter
 
 Currently broken due to /ansible/roles/security_prerequisites - see below
 
-### DSE Unified Authentication  - COMPLETE :applause:
+### DSE Unified Authentication  - COMPLETE :heavy_check_mark:
 
 role: security_dse_unified_auth_activate
 
-#### DSE Superuser role and security table replication automation - TODO :angry:
+#### DSE Superuser role and security table replication automation - TODO :x:
 
 role: /ansible/roles/security_prerequisites
 
@@ -54,12 +54,12 @@ role: /ansible/roles/security_prerequisites
 ALTER KEYSPACE system_auth WITH REPLICATION = {'class' : 'NetworkTopologyStrategy', 'dc1' : 3, 'dc2' : 2};
 ```
 
-#### Activating JMX Authentication - TODO :angry:
+#### Activating JMX Authentication - TODO :x:
 
 1. Set up JMX authentication to allow nodetool and dsetool operations: [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html)
 2. This will cause JMX config required for Opscenter
 
-#### LDAP - TODO :angry:
+#### LDAP - TODO :x:
 
 1. Configure selected authentication scheme options: [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secLDAPScheme.html)
 2. Adjust the credentials_validity_in_ms and credentials_update_interval_in_ms as required for your environment in the dse.yaml.
@@ -81,7 +81,7 @@ Covers:
 
 ## playbook: dse_security.yml
 
-#### /ansible/group_vars/all - TODO :angry:
+#### /ansible/group_vars/all - TODO :x:
 
 1. need to shift sensitive passwords to ansible.vault
 
@@ -101,13 +101,13 @@ role: security_create_keystores
 role: security_distribute_truststores
 role: security_distribute_keystores
 
-#### client -> node - COMPLETE :applause:
+#### client -> node - COMPLETE :heavy_check_mark:
 
 [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptClientNodeSSL.html)
 
 role: security_client_to_node
 
-#### node -> node - COMPLETE :applause:
+#### node -> node - COMPLETE :heavy_check_mark:
 
 [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secInternodeSsl.html)
 
@@ -118,14 +118,14 @@ role: security_node_to_node
 FACT: ACCESS DISABLED BY DEFAULT
 [To acivate](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/usingCqlshSslAndKerberos.html)
 
-#### jConsole (any client) -> JMX (local and remote) - TODO :angry:
+#### jConsole (any client) -> JMX (local and remote) - TODO :x:
 
 FACT: REMOTE JMX ACCESS DISABLED BY DEFAULT
 LOCAL ACCESS ?
 
 https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html
 
-#### nodetool, dse too, dse advrep -> JMX (local and remote) - TODO :angry:
+#### nodetool, dse too, dse advrep -> JMX (local and remote) - TODO :x:
 
 FACT: REMOTE JMX ACCESS DISABLED BY DEFAULT
 LOCAL ACCESS ?
@@ -142,19 +142,19 @@ https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secu
 
 No transport phase.
 
-#### Spark: Spark driver (app) -> DSE - COMPLETE :applause:
+#### Spark: Spark driver (app) -> DSE - COMPLETE :heavy_check_mark:
 
 Encryption between the Spark driver and DSE is configured by enabling client encryption in cassandra.yaml
 
 role: security_client_to_node
 
-#### Spark: spark master -> worker - COMPLETE :applause:
+#### Spark: spark master -> worker - COMPLETE :heavy_check_mark:
 
 Encryption between Spark nodes, including between the Spark master and worker, is configured by enabling Spark security in dse.yaml.
 
 role: security_spark_activate
 
-#### Spark: Spark driver (app) -> executors - TODO :angry:
+#### Spark: Spark driver (app) -> executors - TODO :x:
 
 Encryption between the Spark driver and executors in client applications is configured by enabling Spark security in the application configuration properties, 
 or by default in /etc/dse/spark/spark-defaults.conf
@@ -163,15 +163,15 @@ or by default in /etc/dse/spark/spark-defaults.conf
 
 role: security_spark_activate
 
-#### Spark:  JDBC driver -> Spark SQL Thrift Server - TODO (easy, truststore and keystore already exist) :angry:
+#### Spark:  JDBC driver -> Spark SQL Thrift Server - TODO (easy, truststore and keystore already exist) :x:
 
 https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/spark/sslSparkSqlThriftserver.html
 
-#### Spark: browser -> spark UI - COMPLETE :applause:
+#### Spark: browser -> spark UI - COMPLETE :heavy_check_mark:
 
 The Spark web UI by default uses client-to-cluster encryption settings to enable SSL security in the web interface.
 
-### Activating Spark Authentication - TODO :angry:
+### Activating Spark Authentication - TODO :x:
 
 1. Create a Spark role and user?
 2. Limit spark jobs by user ?
