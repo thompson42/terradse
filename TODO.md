@@ -17,11 +17,13 @@
 #### opscenter -> agent - COMPLETE :heavy_check_mark:
 
 [Link](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
+
 role: security_opscenter
 
 #### browser -> opscenter web (HTTPS) - COMPLETE :heavy_check_mark:
 
 [Link](https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscConfiguringEnablingHttps_t.html)
+
 role: security_opscenter
 
 #### agent -> dse (trustsores / keystores) AND opscenter -> dse (trustsores / keystores) - TODO :x:
@@ -55,6 +57,8 @@ ALTER KEYSPACE system_auth WITH REPLICATION = {'class' : 'NetworkTopologyStrateg
 ```
 
 #### Activating JMX Authentication - TODO :x:
+
+[Support Link](https://support.datastax.com/hc/en-us/articles/204226179-Step-by-step-instructions-for-securing-JMX-authentication-for-nodetool-utility-OpsCenter-and-JConsole)
 
 1. Set up JMX authentication to allow nodetool and dsetool operations: [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html)
 2. This will cause JMX config required for Opscenter
@@ -90,9 +94,8 @@ Covers:
 FACT: For CA signed certs, change the name of the cert fields under "Root certificate" in group_vars/all and run dse_security with security_create_root_certificate
 commented out.
 
-#### core ansible roles
+#### core ansible roles - COMPLETE :heavy_check_mark:
 
-STATUS: complete
 [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
 
 role: security_create_root_certificate
@@ -113,22 +116,23 @@ role: security_client_to_node
 
 role: security_node_to_node
 
-#### cqlsh -> node (local and remote)
+#### cqlsh -> node (local and remote) - COMPLETE :heavy_check_mark:
 
-FACT: ACCESS DISABLED BY DEFAULT
+FACT: ACCESS DISABLED BY DEFAULT WHEN CLIENT->NODE ENABLED
+
 [To acivate](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/usingCqlshSslAndKerberos.html)
 
 #### jConsole (any client) -> JMX (local and remote) - TODO :x:
 
-FACT: REMOTE JMX ACCESS DISABLED BY DEFAULT
-LOCAL ACCESS ?
+1. REMOTE JMX ACCESS DISABLED BY DEFAULT
+2. LOCAL ACCESS?
 
-https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html
+[Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html)
 
 #### nodetool, dse too, dse advrep -> JMX (local and remote) - TODO :x:
 
-FACT: REMOTE JMX ACCESS DISABLED BY DEFAULT
-LOCAL ACCESS ?
+1. REMOTE JMX ACCESS DISABLED BY DEFAULT
+2. LOCAL ACCESS?
 
 https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html
 
@@ -136,9 +140,9 @@ https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secu
 
 ### Activating Spark Transport Encryption (SSL/TLS)
 
-[Spark SSL]{https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptSparkSSL.html}
+[to Activate](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptSparkSSL.html)
 
-#### Spark: dse submit
+#### Spark: dse submit  - COMPLETE :heavy_check_mark:
 
 No transport phase.
 
