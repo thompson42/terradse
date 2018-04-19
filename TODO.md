@@ -14,12 +14,12 @@
 
 ### Opscenter Transport Encryption (SSL/TLS)
 
-#### opscenter -> agent
+#### opscenter -> agent - COMPLETE :applause:
 
 [Link](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
 role: security_opscenter
 
-#### browser -> opscenter web (HTTPS)
+#### browser -> opscenter web (HTTPS) - COMPLETE :applause:
 
 [Link](https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscConfiguringEnablingHttps_t.html)
 role: security_opscenter
@@ -32,17 +32,16 @@ role: security_opscenter
 2. seed node
 3. create cluster_name.conf: security settings
 
-### Opscenter Authentication
+### Opscenter Authentication - TODO :angry:
 
-1. 1. OpsC default superuser account replace? Roles?
+1. OpsC default superuser account replace
+2. Roles integration
 
 ## playbook: dse_authentication.yml
 
 Currently broken due to /ansible/roles/security_prerequisites - see below
 
-### DSE Unified Authentication
-
-STATUS: complete
+### DSE Unified Authentication  - COMPLETE :applause:
 
 role: security_dse_unified_auth_activate
 
@@ -60,12 +59,7 @@ ALTER KEYSPACE system_auth WITH REPLICATION = {'class' : 'NetworkTopologyStrateg
 1. Set up JMX authentication to allow nodetool and dsetool operations: [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html)
 2. This will cause JMX config required for Opscenter
 
-#### Activating Spark Authentication - TODO :angry:
-
-1. Create a Spark role and user?
-2. Limit spark jobs by user ?
-
-#### LDAP INTEGRATION
+#### LDAP - TODO :angry:
 
 1. Configure selected authentication scheme options: [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secLDAPScheme.html)
 2. Adjust the credentials_validity_in_ms and credentials_update_interval_in_ms as required for your environment in the dse.yaml.
@@ -87,9 +81,7 @@ Covers:
 
 ## playbook: dse_security.yml
 
-#### Ansible vault - TODO :angry:
-
-#### /ansible/group_vars/all
+#### /ansible/group_vars/all - TODO :angry:
 
 1. need to shift sensitive passwords to ansible.vault
 
@@ -109,16 +101,14 @@ role: security_create_keystores
 role: security_distribute_truststores
 role: security_distribute_keystores
 
-#### client -> node
+#### client -> node - COMPLETE :applause:
 
-STATUS: complete
 [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptClientNodeSSL.html)
 
 role: security_client_to_node
 
-#### node -> node
+#### node -> node - COMPLETE :applause:
 
-STATUS: complete
 [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secInternodeSsl.html)
 
 role: security_node_to_node
@@ -152,16 +142,14 @@ https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secu
 
 No transport phase.
 
-#### Spark: Spark driver (app) -> DSE
+#### Spark: Spark driver (app) -> DSE - COMPLETE :applause:
 
-STATUS: complete
 Encryption between the Spark driver and DSE is configured by enabling client encryption in cassandra.yaml
 
 role: security_client_to_node
 
-#### Spark: spark master -> worker
+#### Spark: spark master -> worker - COMPLETE :applause:
 
-STATUS: complete
 Encryption between Spark nodes, including between the Spark master and worker, is configured by enabling Spark security in dse.yaml.
 
 role: security_spark_activate
@@ -179,9 +167,14 @@ role: security_spark_activate
 
 https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/spark/sslSparkSqlThriftserver.html
 
-#### Spark: browser -> spark UI
+#### Spark: browser -> spark UI - COMPLETE :applause:
 
 The Spark web UI by default uses client-to-cluster encryption settings to enable SSL security in the web interface.
+
+### Activating Spark Authentication - TODO :angry:
+
+1. Create a Spark role and user?
+2. Limit spark jobs by user ?
 
 ## playbook: solr_security - TODO 
 
