@@ -24,7 +24,7 @@ role: security_opscenter
 [Link](https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscConfiguringEnablingHttps_t.html)
 role: security_opscenter
 
-#### agent -> dse (trustsores / keystores) AND opscenter -> dse (trustsores / keystores) - TODO :shipit:
+#### agent -> dse (trustsores / keystores) AND opscenter -> dse (trustsores / keystores) - TODO :angry:
 
 [Link](https://docs.datastax.com/en/opscenter/6.5/opsc/configure/opscClientToNode.html)
 
@@ -46,7 +46,7 @@ STATUS: complete
 
 role: security_dse_unified_auth_activate
 
-#### DSE Superuser role and security table replication automation - TODO :shipit:
+#### DSE Superuser role and security table replication automation - TODO :angry:
 
 role: /ansible/roles/security_prerequisites
 
@@ -55,12 +55,12 @@ role: /ansible/roles/security_prerequisites
 ALTER KEYSPACE system_auth WITH REPLICATION = {'class' : 'NetworkTopologyStrategy', 'dc1' : 3, 'dc2' : 2};
 ```
 
-#### Activating JMX Authentication - TODO :shipit:
+#### Activating JMX Authentication - TODO :angry:
 
 1. Set up JMX authentication to allow nodetool and dsetool operations: [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html)
 2. This will cause JMX config required for Opscenter
 
-#### Activating Spark Authentication - TODO :shipit:
+#### Activating Spark Authentication - TODO :angry:
 
 1. Create a Spark role and user?
 2. Limit spark jobs by user ?
@@ -87,7 +87,7 @@ Covers:
 
 ## playbook: dse_security.yml
 
-#### Ansible vault - TODO :shipit:
+#### Ansible vault - TODO :angry:
 
 #### /ansible/group_vars/all
 
@@ -128,14 +128,14 @@ role: security_node_to_node
 FACT: ACCESS DISABLED BY DEFAULT
 [To acivate](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/usingCqlshSslAndKerberos.html)
 
-#### jConsole (any client) -> JMX (local and remote) - TODO :shipit:
+#### jConsole (any client) -> JMX (local and remote) - TODO :angry:
 
 FACT: REMOTE JMX ACCESS DISABLED BY DEFAULT
 LOCAL ACCESS ?
 
 https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html
 
-#### nodetool, dse too, dse advrep -> JMX (local and remote) - TODO :shipit:
+#### nodetool, dse too, dse advrep -> JMX (local and remote) - TODO :angry:
 
 FACT: REMOTE JMX ACCESS DISABLED BY DEFAULT
 LOCAL ACCESS ?
@@ -166,7 +166,7 @@ Encryption between Spark nodes, including between the Spark master and worker, i
 
 role: security_spark_activate
 
-#### Spark: Spark driver (app) -> executors - TODO :shipit:
+#### Spark: Spark driver (app) -> executors - TODO :angry:
 
 Encryption between the Spark driver and executors in client applications is configured by enabling Spark security in the application configuration properties, 
 or by default in /etc/dse/spark/spark-defaults.conf
@@ -175,7 +175,7 @@ or by default in /etc/dse/spark/spark-defaults.conf
 
 role: security_spark_activate
 
-#### Spark:  JDBC driver -> Spark SQL Thrift Server - TODO (easy, truststore and keystore already exist) :shipit:
+#### Spark:  JDBC driver -> Spark SQL Thrift Server - TODO (easy, truststore and keystore already exist) :angry:
 
 https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/spark/sslSparkSqlThriftserver.html
 
