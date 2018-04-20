@@ -28,13 +28,13 @@ role: cecurity_opsc_distribute_truststores
 
 #### browser -> opscenter web (HTTPS) - COMPLETE :heavy_check_mark:
 
-[Link](https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscConfiguringEnablingHttps_t.html)
+[Opscenter enabling HTTPS](https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscConfiguringEnablingHttps_t.html)
 
 role: security_opsc_configure
 
 #### configure opscenter -> agent encryption - TODO :x:
 
-[OpsCenter Enabling SSL](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
+[OpsCenter enabling SSL](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
 
 "OpsCenter requires the .der file format for SSL. If your existing [agents] ssl_certfile in opscenter.conf is in a .pem format, run the following command to convert the format"
 
@@ -82,12 +82,12 @@ ALTER KEYSPACE system_auth WITH REPLICATION = {'class' : 'NetworkTopologyStrateg
 
 [Support Link](https://support.datastax.com/hc/en-us/articles/204226179-Step-by-step-instructions-for-securing-JMX-authentication-for-nodetool-utility-OpsCenter-and-JConsole)
 
-1. Set up JMX authentication to allow nodetool and dsetool operations: [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html)
+1. Set up JMX authentication to allow nodetool and dsetool operations: [Enable JMX Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html)
 2. This will cause JMX config required for Opscenter
 
 #### LDAP - TODO :x:
 
-1. Configure selected authentication scheme options: [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secLDAPScheme.html)
+1. Configure selected authentication scheme options: [LDAP Schemes](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secLDAPScheme.html)
 2. Adjust the credentials_validity_in_ms and credentials_update_interval_in_ms as required for your environment in the dse.yaml.
 
 #### Connecting to DSE Authentication enabled clusters
@@ -103,7 +103,7 @@ Covers:
 7. kerberos enabled cqlsh
 8. DSE graph
 
-[Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secProvideCredentialsTOC.html)
+[Providing credentials](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secProvideCredentialsTOC.html)
 
 ## playbook: dse_security.yml
 
@@ -116,7 +116,7 @@ Covers:
 FACT: For CA signed certs, change the name of the cert fields under "Root certificate" in group_vars/all and run dse_security with security_create_root_certificate
 commented out.
 
-[Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
+[Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
 
 #### generate self signed certificates for DSE - COMPLETE :heavy_check_mark:
 
@@ -140,13 +140,13 @@ role: security_dse_distribute_keystores
 
 #### client -> node - COMPLETE :heavy_check_mark:
 
-[Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptClientNodeSSL.html)
+[Encrypting client -> node SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptClientNodeSSL.html)
 
 role: security_dse_client_to_node
 
 #### node -> node - COMPLETE :heavy_check_mark:
 
-[Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secInternodeSsl.html)
+[Internode encryption](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secInternodeSsl.html)
 
 role: security_dse_node_to_node
 
@@ -161,7 +161,7 @@ FACT: ACCESS DISABLED BY DEFAULT WHEN CLIENT->NODE ENABLED
 1. REMOTE JMX ACCESS DISABLED BY DEFAULT
 2. LOCAL ACCESS?
 
-[Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html)
+[Securing jConsole SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html)
 
 #### nodetool, dse too, dse advrep -> JMX (local and remote) - TODO :x:
 
