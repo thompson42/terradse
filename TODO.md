@@ -40,17 +40,17 @@ role: security_opsc_configure
 
 role: security_opsc_configure
 
-#### configure seperate opscenter storage cluster - TODO :x:
+#### configure seperate opscenter storage cluster - IN PROGRESS :bug:
 
 1. Run role: /ansible/roles/security_prerequisites for this cluster too.
 
 role: security_opsc_cluster_configure
 
-#### configure agent -> dse encrytption - TODO :x:
+#### configure agent -> dse encrytption - IN PROGRESS :bug:
 
 role: security_opsc_cluster_configure
 
-#### configure opscenter -> dse encryption - TODO :x:
+#### configure opscenter -> dse encryption - IN PROGRESS :bug:
 
 [OpsCenter Client->Node](https://docs.datastax.com/en/opscenter/6.5/opsc/configure/opscClientToNode.html)
 
@@ -67,7 +67,7 @@ role: security_opsc_cluster_configure
 
 role: security_dse_unified_auth_activate
 
-#### Automation - DSE Superuser role and security table replication - TODO :x:
+#### Automation - DSE Superuser role and security table replication - IN PROGRESS :bug:
 
 Currently commented out.
 
@@ -194,7 +194,7 @@ Encryption between Spark nodes, including between the Spark master and worker, i
 
 role: security_spark_activate
 
-#### Spark: Spark driver (app) -> executors - TODO :x:
+#### Spark: Spark driver (app) -> executors - IN PROGRESS :bug:
 
 Encryption between the Spark driver and executors in client applications is configured by enabling Spark security in the application configuration properties, 
 or by default in /etc/dse/spark/spark-defaults.conf
