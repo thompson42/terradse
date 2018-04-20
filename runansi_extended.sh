@@ -15,8 +15,8 @@ ansible-playbook -i hosts dse_install.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
-echo ">>>> Setup DSE OpsCenter cluster <<<<"
+echo ">>>> Setup DSE OpsCenter cluster - DISABLED <<<<"
 echo
-ansible-playbook -i hosts opsc_install.yml --private-key=~/.ssh/id_rsa_aws
+#ansible-playbook -i hosts opsc_install.yml --private-key=~/.ssh/id_rsa_aws
 
 cd ..

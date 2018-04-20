@@ -9,10 +9,10 @@ This project has a [TODO](TODO.md)
 3. Set all paths and vars in ansible/group_vars/all
 4. Run /runterra_extended.sh and check AWS instances that will be created - accept and run the plan
 5. Run /genansinv_extended.sh (it will generate the /ansible/hosts file)
-6. Run /runansi_extended.sh (it will run osparm_change, dse_install, opsc_install playbooks, it expects your key to be: ~/.ssh/id_rsa_aws)
-7. (Optional) Configure required DSE node security roles in ansible/dse_security.yml and run manually
-8. (Optional) Configure required OPSCENTER security roles in ansible/opsc_security.yml and run manually
-8. (Optional) Configure required SPARK security roles in ansible/spark_security.yml and run manually
+6. Run /runansi_extended.sh (it will run dse_osparm_change, dse_install playbooks, it expects your key to be: ~/.ssh/id_rsa_aws) (opsc_install currently disabled)
+7. (Optional) Configure required DSE node security features in ansible/dse_security.yml and run manually
+8. (Optional) Configure required SPARK security features in ansible/spark_security.yml and run manually
+9. (Not available yet) Configure required OPSCENTER security features in ansible/opsc_security.yml and run manually
 
 # Basic processes: 
 
@@ -238,7 +238,7 @@ ansible-playbook -i hosts dse_security.yml --private-key=~/.ssh/id_rsa_aws
 
 ```
 
-### 5.2 Addition of a configurable OpsCenter Security (opsc_security.yml) playbook
+### 5.2 Addition of a configurable OpsCenter Security (opsc_security.yml) playbook - DO NOT USE / WORK IN PROGRESS
 
 This playbook concerns itself with web browser -> OpsCenter server SSL/TLS HTTPS access and OpsCenter server to Agents on DSE nodes.
 
@@ -251,7 +251,7 @@ ansible-playbook -i hosts opsc_security.yml --private-key=~/.ssh/id_rsa_aws
 
 ### 5.3 Addition of a configurable Spark Secuirty (spark_security.yml) playbook
 
-This playbook concerns itself with forcing authentication at spark submit level, to block unauthorized access to the Spark service byt calling the role: security_spark, see section 5.7.2 "DSE Unified Authentication and Spark" below.
+This playbook concerns itself with forcing authentication at spark submit level, to block unauthorized access to the Spark service byt calling the role: security_spark_activate, see section 5.7.2 "DSE Unified Authentication and Spark" below.
 
 To run:
 ```
@@ -262,10 +262,11 @@ ansible-playbook -i hosts spark_security.yml --private-key=~/.ssh/id_rsa_aws
 
 ### 5.4 Creation of independently runnable Security_xyz encryption roles under ansible/roles to configure:
 
-1. Client -> node encryption: security_client_to_node
-2. Node -> node encryption: security_node_to_node
-3. Opscenter HTTPS access: security_opscenter
-4. Opscenter -> agent encryption: security_opscenter_agents
+1. Client -> node encryption: security_dse_client_to_node
+2. Node -> node encryption: security_dse_node_to_node
+3. Opscenter HTTPS access: security_opsc_configure
+4. Agent -> DSE encryption: security_opsc_agents_configure
+5. OpsCenter->Agent: security_opsc_cluster_configure
 
 ### 5.5 Introduction of spark and graph DSE datacenter types 
 
@@ -289,7 +290,7 @@ The default SCHEME is internal please re-configure for LDAP and Kerberos SCHEMES
 Special note: default install cassandra superuser account:
 
 1. This account needs to be removed and replaced with a new superuser on all exposed installs of DSE, it is there to facilitate initial install and user/role configuration.
-2. Automation of this superuser remove/replace is not currently available in this solution, please follow the nmanual process here: [Replace root account](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secCreateRootAccount.html)
+2. Automation of this superuser remove/replace is not currently available in this solution, please follow the manual process here: [Replace root account](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secCreateRootAccount.html)
 3. A possible automation approach is to use this user/role library: [ansible-module-cassandra](https://github.com/Ensighten/ansible-module-cassandra)
 4. A candidate role for this process is roles:security_prerequisites
 
@@ -305,7 +306,7 @@ CREATE ROLE jane WITH LOGIN = true AND PASSWORD = 'Abc123Jane';
 
 ### 5.7.2 DSE Unified Authentication and Spark Security
 
-Addition of role: security_spark
+Addition of role: security_spark_activate
 
 [DSE Analytics security checklist](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secChecklists.html#ariaid-title4)
 
@@ -352,11 +353,8 @@ ssl_certs_path_group: "cassandra"
 
 This will create a certificate and private key in the following directories on the ansible host (NOT the target nodes):
 
-
 - `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.key` -> {myserver.mydomain.com} is passed in by {{ansible_fqdn}}
 - `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.pem`
-
-For more information on this module please read its [README.md](ansible/roles/security_create_selfsign_root_certificate/README.md) This module does have the capability to deploy certs to nodes by using simple ansible copy commands, we do not use that functionality or it's other features in Terradse.
 
 ### 6.2 To deploy CA signed certificates to the ansible host:
 
@@ -367,20 +365,6 @@ Once you have the resulting certificate and private key place them in the follow
 - `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.key`
 - `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.pem`
 
-## 7. Create keystores on all nodes:
-
-Prerequisite: you must have completed either 6.1 or 6.2 prior to running this role, can't secure anything if you have no certificates!
-
-```
-{ role: security_create_keystores }
-```
-
-## 8. Create truststores on all nodes
-
-Prerequisite: you must have completed either 6.1 or 6.2 prior to running this role, can't secure anything if you have no certificates!
-
-```
-{ role: security_create_truststores }
 ```
 
 

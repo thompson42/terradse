@@ -16,15 +16,15 @@
 
 #### create opscenter keystores - COMPLETE :heavy_check_mark:
 
-role: cecurity_opsc_create_keystores
+role: security_opsc_create_keystores
 
 #### create opscenter truststores - COMPLETE :heavy_check_mark:
 
-role: cecurity_opsc_create_truststores
+role: security_opsc_create_truststores
 
 #### distribute opscenter truststores - COMPLETE :heavy_check_mark:
 
-role: cecurity_opsc_distribute_truststores
+role: security_opsc_distribute_truststores
 
 #### browser -> opscenter web (HTTPS) - COMPLETE :heavy_check_mark:
 
