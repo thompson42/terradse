@@ -7,7 +7,7 @@
 
 1. Need to check Vnode allocation on all types (core, search,analytic, graph) in a dry run.
 2. /genansinv_extended.sh: Test properly moves private_ip into public_ip if no public_ip exists
-3. /genansinv_extended.sh: Test properly exposes private_dns in hosts file sourced from terraform.tfstate for each node. (used by role: security_create_keystores)
+3. /genansinv_extended.sh: Test properly exposes private_dns in hosts file sourced from terraform.tfstate for each node. (used by role: security_dse_create_keystores)
 4. /genansinv_extended.sh: Test properly indicates new DC names that are now same as block e.g.: [dse_core]
 
 ## playbook: opsc_security.yml
@@ -41,6 +41,8 @@ role: security_opsc_configure
 role: security_opsc_configure
 
 #### configure seperate opscenter storage cluster - TODO :x:
+
+1. Run role: /ansible/roles/security_prerequisites for this cluster too.
 
 role: security_opsc_cluster_configure
 

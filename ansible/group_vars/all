@@ -14,10 +14,10 @@ ansible_user: automaton
 default_super_user_account: cassandra
 default_super_user_password: cassandra
 
-secure_super_user_account: some_account_here   #TODO - pull from ansible.vault
-secure_super_user_password: some_password_here #TODO - pull from ansible.vault
+secure_super_user_account: "{{default_super_user_account}}"   #TODO Change from default and pull from ansible.vault
+secure_super_user_password: "{{default_super_user_password}}" #TODO Change from default from ansible.vault
 
-# File permissions 
+# File permissions - don't confuse cassandra OS account with cassandra default internal superuser account
 #-------------------------------------------------------------------------------
 localhost_owner: "{{lookup('env','USER')}}"
 localhost_group: "{{lookup('env','USER')}}"

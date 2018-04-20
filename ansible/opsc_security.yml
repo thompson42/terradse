@@ -40,7 +40,7 @@
   roles:
     - { role: security_opsc_config }
     
-# Configure OpsCenter [cluster_name.conf]: storage_cassandra, monitoting_cassandra, security etc
+# Configure OpsCenter [cluster_name.conf]: storage_cassandra, monitoring_cassandra, security etc
 - hosts: opsc_srv
   any_errors_fatal: true
   become: true
