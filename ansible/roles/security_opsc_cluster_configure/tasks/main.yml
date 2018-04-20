@@ -1,3 +1,9 @@
 ---
 
 # This role configures the [/etc/opscenter/clusters/cluster_name.conf] file
+
+#configure seperate opscenter storage cluster
+
+#configure agent -> dse encrytption
+
+#configure opscenter -> dse encryption

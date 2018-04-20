@@ -30,7 +30,8 @@
 #hsts_enabled = True
 #hsts_max_age = 31536000
 
-# Configure opsc_server ->  agent cluster security - FAILS AND COMMENTED OUT - SEEMS TO CONFLICT WITH CLIENT->NODE ENCRYPTION
+
+# Configure opscenter -> agent encryption - FAILS AND COMMENTED OUT - SEEMS TO CONFLICT WITH CLIENT->NODE ENCRYPTION
 # https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscEnableSSLpkg.html
 
 #- name: Configure opsc cluster security - use_ssl

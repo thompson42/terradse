@@ -32,24 +32,32 @@ role: cecurity_opsc_distribute_truststores
 
 role: security_opsc_configure
 
-#### opscenter -> agent - TODO :x:
+#### configure opscenter -> agent encryption - TODO :x:
 
-[Link](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
+[OpsCenter Enabling SSL](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
+
+"OpsCenter requires the .der file format for SSL. If your existing [agents] ssl_certfile in opscenter.conf is in a .pem format, run the following command to convert the format"
 
 role: security_opsc_configure
 
-#### agent -> dse - TODO :x:
+#### configure seperate opscenter storage cluster - TODO :x:
 
 role: security_opsc_cluster_configure
 
-#### agent -> dse (trustsores / keystores) AND opscenter -> dse (trustsores / keystores) - TODO :x:
+#### configure agent -> dse encrytption - TODO :x:
 
-[Link](https://docs.datastax.com/en/opscenter/6.5/opsc/configure/opscClientToNode.html)
+role: security_opsc_cluster_configure
+
+#### configure opscenter -> dse encryption - TODO :x:
+
+[OpsCenter Client->Node](https://docs.datastax.com/en/opscenter/6.5/opsc/configure/opscClientToNode.html)
+
+role: security_opsc_cluster_configure
 
 ### Opscenter Authentication - TODO :x:
 
-1. OpsC default superuser account replace
-2. Roles integration
+1. Activate Opscenter authentication
+2. Replace Opscenter weak default superuser
 
 ## playbook: dse_authentication.yml
 
@@ -57,7 +65,7 @@ role: security_opsc_cluster_configure
 
 role: security_dse_unified_auth_activate
 
-#### DSE Superuser role and security table replication automation - TODO :x:
+#### Automation - DSE Superuser role and security table replication - TODO :x:
 
 Currently commented out.
 
