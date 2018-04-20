@@ -9,10 +9,14 @@ This project has a [TODO](TODO.md)
 3. Set all paths and vars in ansible/group_vars/all
 4. Run /runterra_extended.sh and check AWS instances that will be created - accept and run the plan
 5. Run /genansinv_extended.sh (it will generate the /ansible/hosts file)
-6. Run /runansi_extended.sh (it will run dse_osparm_change, dse_install playbooks, it expects your key to be: ~/.ssh/id_rsa_aws) (opsc_install currently disabled)
-7. (Optional) Configure required DSE node security features in ansible/dse_security.yml and run manually
-8. (Optional) Configure required SPARK security features in ansible/spark_security.yml and run manually
-9. (Not available yet) Configure required OPSCENTER security features in ansible/opsc_security.yml and run manually
+6. Run /runansi_extended.sh (it will run dse_osparm_change, dse_install, dse_security, dse_authentication and spark_security playbooks, it expects your key to be: ~/.ssh/id_rsa_aws) (opsc_install currently disabled)
+
+Or manually run each of the security features:
+
+1. Run DSE node security (encryption) features in ansible/dse_security.yml and run manually
+2. Run DSE authentication features in ansible/dse_authentication.yml and run manually
+3. (Experimental) Run SPARK security and authentication features in ansible/spark_security.yml and run manually
+4. (Not available yet) Configure required OPSCENTER security features in ansible/opsc_security.yml and run manually
 
 # Basic processes: 
 
