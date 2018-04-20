@@ -52,6 +52,7 @@
         line: "{{ item.line }}"
       with_items:
         - { regexp: 'stomp_interface', line: "stomp_interface: {{ groups['opsc_srv'][0] }}" }
+        - { regexp: '# use_ssl: 0', line: "use_ssl: true" }
         
     - name: Start datastax-agent service
       service:

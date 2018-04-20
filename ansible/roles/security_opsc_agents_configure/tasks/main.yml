@@ -1,0 +1,6 @@
+
+#on each dse node configure agent:/var/lib/datastax-agent/conf/address.yaml
+
+#
+#stomp_interface: 10.200.180.114
+## use_ssl: 0

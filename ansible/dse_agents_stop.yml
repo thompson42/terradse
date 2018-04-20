@@ -1,0 +1,10 @@
+# Stop all datastax agents
+- hosts: datastax_agent 
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  tasks:    
+    - name: Stop datastax-agent service
+      service:
+        name: "datastax-agent"
+        state: stopped

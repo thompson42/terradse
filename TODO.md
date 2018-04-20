@@ -14,25 +14,37 @@
 
 ### Opscenter Transport Encryption (SSL/TLS)
 
-#### opscenter -> agent - COMPLETE :heavy_check_mark:
+#### create opscenter keystores - COMPLETE :heavy_check_mark:
 
-[Link](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
+role: cecurity_opsc_create_keystores
 
-role: security_opscenter
+#### create opscenter truststores - COMPLETE :heavy_check_mark:
+
+role: cecurity_opsc_create_truststores
+
+#### distribute opscenter truststores - COMPLETE :heavy_check_mark:
+
+role: cecurity_opsc_distribute_truststores
 
 #### browser -> opscenter web (HTTPS) - COMPLETE :heavy_check_mark:
 
 [Link](https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscConfiguringEnablingHttps_t.html)
 
-role: security_opscenter
+role: security_opsc_configure
+
+#### opscenter -> agent - TODO :x:
+
+[Link](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
+
+role: security_opsc_configure
+
+#### agent -> dse - TODO :x:
+
+role: security_opsc_cluster_configure
 
 #### agent -> dse (trustsores / keystores) AND opscenter -> dse (trustsores / keystores) - TODO :x:
 
 [Link](https://docs.datastax.com/en/opscenter/6.5/opsc/configure/opscClientToNode.html)
-
-1. create cluster_name.conf: cluster_name: [dse:vars].cluster_name
-2. seed node
-3. create cluster_name.conf: security settings
 
 ### Opscenter Authentication - TODO :x:
 
@@ -41,13 +53,15 @@ role: security_opscenter
 
 ## playbook: dse_authentication.yml
 
-Currently broken due to /ansible/roles/security_prerequisites - see below
-
 ### DSE Unified Authentication  - COMPLETE :heavy_check_mark:
 
 role: security_dse_unified_auth_activate
 
 #### DSE Superuser role and security table replication automation - TODO :x:
+
+Currently commented out.
+
+This role needs to run prior to client->node encryption activation with the dse cluster up as uses cqlsh
 
 role: /ansible/roles/security_prerequisites
 
@@ -94,27 +108,39 @@ Covers:
 FACT: For CA signed certs, change the name of the cert fields under "Root certificate" in group_vars/all and run dse_security with security_create_root_certificate
 commented out.
 
-#### core ansible roles - COMPLETE :heavy_check_mark:
-
 [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
 
-role: security_create_root_certificate
-role: security_create_truststores
-role: security_create_keystores
-role: security_distribute_truststores
-role: security_distribute_keystores
+#### generate self signed certificates for DSE - COMPLETE :heavy_check_mark:
+
+role: security_dse_create_root_certificate
+
+#### create DSE truststores - COMPLETE :heavy_check_mark:
+
+role: security_dse_create_truststores
+
+#### create DSE keystores - COMPLETE :heavy_check_mark:
+
+role: security_dse_create_keystores
+
+#### distribute DSE truststores - COMPLETE :heavy_check_mark:
+
+role: security_dse_distribute_truststores
+
+#### distribute DSE keystores - COMPLETE :heavy_check_mark:
+
+role: security_dse_distribute_keystores
 
 #### client -> node - COMPLETE :heavy_check_mark:
 
 [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptClientNodeSSL.html)
 
-role: security_client_to_node
+role: security_dse_client_to_node
 
 #### node -> node - COMPLETE :heavy_check_mark:
 
 [Link](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secInternodeSsl.html)
 
-role: security_node_to_node
+role: security_dse_node_to_node
 
 #### cqlsh -> node (local and remote) - COMPLETE :heavy_check_mark:
 

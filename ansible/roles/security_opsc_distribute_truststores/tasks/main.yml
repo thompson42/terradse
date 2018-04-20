@@ -1,0 +1,11 @@
+
+---
+#EXPECTS: [hosts: opsc_srv] [become: yes] [become_method: sudo] on playbook call
+
+- name: Copy the truststore to opsc_srv
+  copy:
+    src: "/etc/ssl/{{ssl_certs_common_name}}/opscenter_truststore.jks"
+    dest: /var/lib/opscenter/ssl
+    owner: "{{opscenter_owner}}"
+    group: "{{opscenter_group}}"
+    mode: 0644

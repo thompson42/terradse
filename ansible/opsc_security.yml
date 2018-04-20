@@ -32,15 +32,54 @@
       state: stopped
     
 
-# Configure [opscenterd.conf]: OpsCenter server->agent security and webserver HTTPS security
+# Configure OpsCenter [opscenterd.conf]: webserver HTTPS security, OpsCenter server->agent security COMMNENTED OUT
 - hosts: opsc_srv
   any_errors_fatal: true
   become: true
   become_method: sudo
   roles:
-    - { role: security_opscenter }
+    - { role: security_opsc_config }
     
+# Configure OpsCenter [cluster_name.conf]: storage_cassandra, monitoting_cassandra, security etc
+- hosts: opsc_srv
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_opsc_cluster_configure }
+    
+# Configure Agent [address.yaml]: Agent SSL configuration on all dse
+- hosts: dse
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_opsc_agents_configure }
 
+# Create opsc -> DSE and agent -> dse keystore on opsc_srv node
+- hosts: opsc_srv
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_opsc_create_keystores }
+    
+# Create opsc truststore locally on ansible node
+- hosts: localhost
+  any_errors_fatal: true
+  become: no
+  connection: local
+  roles:
+    - { role: security_opsc_create_truststores }
+    
+# Move opsc truststore to opsc_server
+- hosts: opsc_srv
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_opsc_distribute_truststores }
+    
 # Start opsc_srv
 - hosts: opsc_srv
   any_errors_fatal: true

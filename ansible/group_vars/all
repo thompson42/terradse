@@ -25,13 +25,16 @@ localhost_group: "{{lookup('env','USER')}}"
 cassandra_owner: cassandra
 cassandra_group: cassandra
 
+opscenter_owner: opscenter
+opscenter_group: opscenter
+
 # Datastax repository 
 #-------------------------------------------------------------------------------
 dse_repo_file: /etc/apt/sources.list.d/datastax.sources.list
 
 #User name and password to download DSE (DataStax Academy)
-dse_repo_email: xxx #TODO - pull from ansible.vault
-dse_repo_password: xxx #TODO - pull from ansible.vault
+dse_repo_email: alex.thompson@datastax.com #TODO - pull from ansible.vault
+dse_repo_password: Pan1naro #TODO - pull from ansible.vault
 
 # Target/Current DSE verson
 dse_ver_target:  5.1.7-1  #requires the [-1] on the end of the version
