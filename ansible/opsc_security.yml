@@ -1,13 +1,4 @@
 
-# Install DSE security software dependencies on all opscenter storage nodes
-- hosts: opsc_dsecore
-  any_errors_fatal: true
-  become: true
-  become_method: sudo
-  roles:
-    - { role: security_install }
-    
-    
 # Stop opsc_srv
 - hosts: opsc_srv
   any_errors_fatal: true
@@ -18,8 +9,7 @@
     service:
       name: "opscenterd"
       state: stopped
-      
-      
+          
 # Stop all agents
 - hosts: datastax_agent 
   any_errors_fatal: true
@@ -30,9 +20,16 @@
     service:
       name: "datastax-agent"
       state: stopped
-    
 
-# Configure OpsCenter [opscenterd.conf]: webserver HTTPS security, OpsCenter server->agent security COMMNENTED OUT
+# Install DSE security software dependencies on all opscenter storage nodes
+- hosts: opsc_dsecore
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_install }
+       
+# Configure OpsCenter [opscenterd.conf]: webserver HTTPS security
 - hosts: opsc_srv
   any_errors_fatal: true
   become: true
@@ -40,45 +37,23 @@
   roles:
     - { role: security_opsc_config }
     
-# Configure OpsCenter [cluster_name.conf]: storage_cassandra, monitoring_cassandra, security etc
+#distribute core DSE truststores and keystores to OPSC nodes - Deployed but not currently used.
+- hosts: opsc_dsecore
+  any_errors_fatal: true
+  become: yes
+  become_method: sudo
+  roles:
+    - { role: security_distribute_truststores }
+    - { role: security_distribute_keystores }
+    
+    
+# Configure the monitored and storage cluster via an API call to OpsCenter
 - hosts: opsc_srv
   any_errors_fatal: true
   become: true
   become_method: sudo
   roles:
     - { role: security_opsc_cluster_configure }
-    
-# Configure Agent [address.yaml]: Agent SSL configuration on all dse
-- hosts: dse
-  any_errors_fatal: true
-  become: true
-  become_method: sudo
-  roles:
-    - { role: security_opsc_agents_configure }
-
-# Create opsc -> DSE and agent -> dse keystore on opsc_srv node
-- hosts: opsc_srv
-  any_errors_fatal: true
-  become: true
-  become_method: sudo
-  roles:
-    - { role: security_opsc_create_keystores }
-    
-# Create opsc truststore locally on ansible node
-- hosts: localhost
-  any_errors_fatal: true
-  become: no
-  connection: local
-  roles:
-    - { role: security_opsc_create_truststores }
-    
-# Move opsc truststore to opsc_server
-- hosts: opsc_srv
-  any_errors_fatal: true
-  become: true
-  become_method: sudo
-  roles:
-    - { role: security_opsc_distribute_truststores }
     
 # Start opsc_srv
 - hosts: opsc_srv

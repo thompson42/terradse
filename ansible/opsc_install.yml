@@ -32,14 +32,14 @@
       name: "opscenterd"
       state: started
 
-# Install and configure datastax-agent
+# Install and configure datastax-agent on DSE cluster nodes
 - hosts: datastax_agent 
   any_errors_fatal: true
   become: true
   become_method: sudo
   tasks:
   
-    - name: Install datastax-agent
+    - name: Install datastax-agent on DSE nodes
       apt:
         name: "datastax-agent={{opsc_ver_target}}"
         state: present

@@ -1,14 +1,35 @@
 ---
 
-# This role configures the [/etc/opscenter/clusters/cluster_name.conf] file
+# https://docs.datastax.com/en/opscenter/6.5/opsc/configure/opscClientToNode.html
 
 #configure seperate opscenter storage cluster
 #configure agent -> dse encrytption
 #configure opscenter -> dse encryption
 
-- name: populate cluster_name.conf
-  template:
-    src: cluster_name.j2
-    dest: "/etc/opscenter/clusters/{{hostvars[groups['dse'][0]]['cluster_name']}}.conf"
+#EXPECTS: [hosts: localhost] [become: no] [connection: local] in playbook call
+# This method configures the monitored and storage cluster via a REST API call to OpsCenter
+- set_fact: json_template="cluster_name_json_{{dse_major_version}}.j2"
+#- set_fact: content_type="Content-Type application/json"
+
+- name: Configure the monitored and storage cluster via an API call top OpsCenter
+  uri:
+    url: "https://{{groups['opsc_srv'][0]}}:{{opsc_web_port}}/cluster-configs"
+    method: POST
+    user: "{{opscenter_username}}"
+    password: "{{opscenter_password}}"
+    body: "{{ lookup('template', json_template) }}"
+    force_basic_auth: yes
+    status_code: 201
+    body_format: json
+    validate_certs: false
+    
+# raw curl test
+#curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json" -X POST http://localhost:3000/data
+#- name: Run the curl command
+#  command: curl -d "{{json_template}}" -H "Content-Type: application/json" -X POST "https://{{groups['opsc_srv'][0]}}:{{opsc_web_port}}/cluster-configs" --insecure
+
+
+
+
     
     

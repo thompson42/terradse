@@ -1,7 +1,7 @@
 ---
-#EXPECTS: [hosts: dse] [become: yes] [become_method: sudo] on playbook call
+#EXPECTS: [hosts: dse] or [hosts: opsc_dsecore],  [become: yes] [become_method: sudo] on playbook call
 
-- name: Copy individual keystore to each DSE node
+- name: Copy individual keystore to each [hosts dse] or [hosts opsc_dsecore] node
   copy:
     src: "/etc/ssl/{{ssl_certs_common_name}}/{{inventory_hostname}}-keystore.jks"
 #    src: "/etc/ssl/{{ssl_certs_common_name}}/{{inventory_hostname}}-pkcs12-keystore.jks"

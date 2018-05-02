@@ -10,6 +10,12 @@
 3. /genansinv_extended.sh: Test properly exposes private_dns in hosts file sourced from terraform.tfstate for each node. (used by role: security_dse_create_keystores)
 4. /genansinv_extended.sh: Test properly indicates new DC names that are now same as block e.g.: [dse_core]
 
+## convenience shell scripts
+
+### runansi_extended.sh
+
+Currently has experimental Spark authentication
+
 ## playbook: opsc_security.yml
 
 ### Opscenter Transport Encryption (SSL/TLS)
@@ -40,19 +46,13 @@ role: security_opsc_configure
 
 role: security_opsc_configure
 
-#### configure seperate opscenter storage cluster - IN PROGRESS :bug:
+#### configure seperate opscenter storage cluster - TODO :x:
 
 1. Run role: /ansible/roles/security_prerequisites for this cluster too.
 
 role: security_opsc_cluster_configure
 
-#### configure agent -> dse encrytption - IN PROGRESS :bug:
-
-role: security_opsc_cluster_configure
-
-#### configure opscenter -> dse encryption - IN PROGRESS :bug:
-
-[OpsCenter Client->Node](https://docs.datastax.com/en/opscenter/6.5/opsc/configure/opscClientToNode.html)
+#### configure opscenter -> dse encryption - COMPLETE :heavy_check_mark:
 
 role: security_opsc_cluster_configure
 

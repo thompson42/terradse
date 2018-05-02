@@ -1,6 +1,9 @@
 ---
+
+#NOT CURRENTLY USED
+
 #EXPECTS: [hosts: localhost] [become: no] [connection: local] in playbook call
-- name: Create a truststore on the ansible machine and import each node's public certificate.
-  command: keytool -import -v -trustcacerts -noprompt -alias "{{item}}" -file "/etc/ssl/{{ssl_certs_common_name}}/{{item}}.crt_signed" -keystore "/etc/ssl/{{ssl_certs_common_name}}/opscenter_truststore.jks" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}"
+- name: Create an OPSC truststore on the ansible machine and import each node's public certificate.
+  command: keytool -import -v -trustcacerts -noprompt -alias "{{item}}" -file "/etc/ssl/{{ssl_certs_common_name}}/{{item}}.crt_signed" -keystore "/etc/ssl/{{ssl_certs_common_name}}/opscenter_truststore.jks" -storepass "{{cluster_truststore_password}}" -keypass "{{cluster_truststore_password}}"
   with_items: "{{ groups['dse'] }}"
 

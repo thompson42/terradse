@@ -5,7 +5,7 @@
   become: yes
   become_method: sudo
   roles:
-#    - { role: security_install }
+    - { role: security_install }
 
 #generate self signed certificates - OPTIONAL IF CA ROOT CERT SUPPLIED.
 - hosts: localhost
@@ -13,27 +13,27 @@
   become: no
   connection: local
   roles:
-    - { role: security_dse_create_root_certificate } 
+    - { role: security_create_root_certificate } 
 
     
-#create truststores and keystores (local)
+#create core DSE / OPSC storage node truststores and keystores (local)
 - hosts: localhost
   any_errors_fatal: true
   become: no
   connection: local
   roles:
-    - { role: security_dse_create_truststores }
-    - { role: security_dse_create_keystores }
+    - { role: security_create_truststores }
+    - { role: security_create_keystores }
 
 
-#distribute truststores and keystores (local/remote)
+#distribute core DSE truststores and keystores (local/remote)
 - hosts: dse
   any_errors_fatal: true
   become: yes
   become_method: sudo
   roles:
-    - { role: security_dse_distribute_truststores }
-    - { role: security_dse_distribute_keystores }
+    - { role: security_distribute_truststores }
+    - { role: security_distribute_keystores }
 
     
 # Install DSE security features on all nodes <---- EDIT LIST
@@ -42,8 +42,8 @@
   become: true
   become_method: sudo
   roles:
-    - { role: security_dse_node_to_node }
-    - { role: security_dse_client_to_node }
+    - { role: security_node_to_node }
+    - { role: security_client_to_node }
     
 
 

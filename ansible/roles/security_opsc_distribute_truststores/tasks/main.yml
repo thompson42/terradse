@@ -1,5 +1,7 @@
-
 ---
+
+#NOT CURRENTLY USED
+
 #EXPECTS: [hosts: opsc_srv] [become: yes] [become_method: sudo] on playbook call
 
 - name: Copy the truststore to opsc_srv

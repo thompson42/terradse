@@ -37,6 +37,7 @@ dse_repo_email: xxx #TODO - pull from ansible.vault
 dse_repo_password: xxx #TODO - pull from ansible.vault
 
 # Target/Current DSE verson
+dse_major_version: 5.1    #used to choose the correct configuration templates
 dse_ver_target:  5.1.7-1  #requires the [-1] on the end of the version
 opsc_ver_target: 6.5.0    #opsc 6.5 is compatible with DSE 5.0,5.1,6.0
 
@@ -61,16 +62,22 @@ hints_directory: /var/lib/cassandra/hints
 commitlog_directory: /var/lib/cassandra/commitlog
 saved_caches_directory: /var/lib/cassandra/saved_caches
 
-
 # Block device string (xvd...) for the EBS volume attached for DSE data
 # consumed in dse_osparm_change.yml and opsc_osparm_change.yml
 ebs_devstr: xvda
 
-# Key opscenterd.conf security settings
+# Key Opscenter settings
 #-------------------------------------------------------------------------------
-# security settings used by [agents] and [webserver] section
+opsc_web_port: 8443 #the port used by Opsc webserver AND API (unsecured 8888, secured 8443)
 opsc_config: /etc/opscenter/opscenterd.conf
 opsc_ssl_dir: /var/lib/opscenter/ssl
+opscenter_username: opscenter_username_here
+opscenter_password: opscenter_password_here
+
+# Key JMX settings
+#-------------------------------------------------------------------------------
+jmx_username: jmx_username
+jmx_password: jmx_password
 
 # Key jvm.options settings
 #-------------------------------------------------------------------------------

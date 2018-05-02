@@ -1,11 +1,15 @@
+---
+
+#NOT CURRENTLY USED
+
 #EXPECTS: [hosts: opsc_srv] [become: yes] in playbook call
 # the opscenter.pem file is auto-created on opsc install
-- name: Import SSL certificate to a local keystore, create keystore if it doesn't exist
+- name: Create opsc -> DSE and agent -> dse opscenter_keystore on opsc_srv node
   java_cert:
     cert_alias: "opscenter"
     cert_path: "/var/lib/opscenter/ssl/opscenter.pem"
     keystore_path: "/var/lib/opscenter/ssl/opscenter_keystore.jks"
-    keystore_pass: "{{cluster_truststore_password}}"
+    keystore_pass: "{{cluster_keystore_password}}"
     keystore_create: yes
     state: present
 

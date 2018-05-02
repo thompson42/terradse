@@ -1,4 +1,4 @@
-# Configure OpsCenter [cluster_name.conf]: storage_cassandra, monitoring_cassandra, security etc
+# Configure the monitored and storage cluster via an API call top OpsCenter
 - hosts: opsc_srv
   any_errors_fatal: true
   become: true
