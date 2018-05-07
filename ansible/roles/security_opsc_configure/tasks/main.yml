@@ -3,32 +3,19 @@
 # This role configures the [/etc/opscenter/opscenterd.conf] file
 
 # Configure opsc webserver security
-# https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscConfiguringEnablingHttps_t.html
+# https://docs.datastax.com/en/opscenter/6.5/opsc/configure/opscConfiguringEnablingHttps_t.html
 
-- name: Configure opsc webserver security - ssl_keyfile
-  ini_file:
-    path: "{{ opsc_config }}"
-    section: webserver
-    option: ssl_keyfile
-    value: "{{ opsc_ssl_dir }}/opscenter.key"
+# Configure opsc -> agent security
+# https://docs.datastax.com/en/opscenter/6.5/opsc/configure/opscEnableSSLpkg.html
 
-- name: Configure opsc webserver security - ssl_certificate
-  ini_file:
-    path: "{{ opsc_config }}"
-    section: webserver
-    option: ssl_certfile
-    value: "{{ opsc_ssl_dir }}/opscenter.der"
-    
-- name: Configure opsc webserver security - ssl_port
-  ini_file:
-    path: "{{ opsc_config }}"
-    section: webserver
-    option: ssl_port
-    value: 8443
-      
-#More settings for [webserver] section:
-#hsts_enabled = True
-#hsts_max_age = 31536000
+- set_fact: opscenterd_conf_template="opscenterd_conf_{{dse_major_version}}.j2"
+
+- template:
+    src: "templates/{{opscenterd_conf_template}}"
+    dest: /etc/opscenter/opscenterd.conf
+    owner: "{{opscenter_owner}}"
+    group: "{{opscenter_group}}"
+    mode: 0644
 
 
 

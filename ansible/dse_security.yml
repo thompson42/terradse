@@ -26,7 +26,8 @@
     - { role: security_create_keystores }
 
 
-#distribute core DSE truststores and keystores (local/remote)
+# Distribute combined OPSC DSECore / DSE truststores and keystores to DSE nodes 
+# - (OPSC DSECore K/T Stores deployed but not currently used)
 - hosts: dse
   any_errors_fatal: true
   become: yes

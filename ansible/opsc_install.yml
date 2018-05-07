@@ -1,6 +1,6 @@
 ---
 
-# Install DSE Core/Cassandra on all Opsc nodes
+# Install DSE Core/Cassandra on all OPSC DSECore nodes
 - hosts: opsc_dsecore
   any_errors_fatal: true
   become: true
@@ -13,7 +13,7 @@
     - { role: dse_updcfg }
     
 
-# Presumes DSE servers are down
+# Presumes all OPSC DSECore servers are down
 # Install OpsCenter server
 - hosts: opsc_srv
   any_errors_fatal: true
@@ -59,7 +59,7 @@
         name: "datastax-agent"
         state: started
 
-# Start DSE seed nodes
+# Start DSE cluster seed nodes
 - hosts: opsc_dsecore
   any_errors_fatal: true
   name: Start seed node
@@ -72,7 +72,7 @@
     - { role: start_srvc, when: seed == 'true' }
 
 
-# Start DSE non-seed nodes
+# Start DSE cluster non-seed nodes
 - hosts: opsc_dsecore
   any_errors_fatal: true
   name: Start non-seed node one by one

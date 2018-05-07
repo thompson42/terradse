@@ -21,7 +21,7 @@
       name: "datastax-agent"
       state: stopped
 
-# Install DSE security software dependencies on all opscenter storage nodes
+# Install DSE security software dependencies on all OPSC DSECore nodes
 - hosts: opsc_dsecore
   any_errors_fatal: true
   become: true
@@ -29,7 +29,7 @@
   roles:
     - { role: security_install }
        
-# Configure OpsCenter [opscenterd.conf]: webserver HTTPS security
+# Configure OPSC SERVER [opscenterd.conf]: webserver HTTPS security, OPSC->Agent security
 - hosts: opsc_srv
   any_errors_fatal: true
   become: true
@@ -37,7 +37,8 @@
   roles:
     - { role: security_opsc_config }
     
-#distribute core DSE truststores and keystores to OPSC nodes - Deployed but not currently used.
+# Distribute combined OPSC DSECore / DSE truststores and keystores to OPSC nodes 
+# - (OPSC DSECore K/T Stores deployed but not currently used)
 - hosts: opsc_dsecore
   any_errors_fatal: true
   become: yes
@@ -46,8 +47,7 @@
     - { role: security_distribute_truststores }
     - { role: security_distribute_keystores }
     
-    
-# Configure the monitored and storage cluster via an API call to OpsCenter
+# Configure the monitored and storage cluster via an API call to OPSC SERVER
 - hosts: opsc_srv
   any_errors_fatal: true
   become: true
@@ -55,7 +55,15 @@
   roles:
     - { role: security_opsc_cluster_configure }
     
-# Start opsc_srv
+# TODO: Configure all DSE agents - need AWS environment
+- hosts: opsc_srv
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_opsc_agents_configure }
+
+# Start OPSC SERVER
 - hosts: opsc_srv
   any_errors_fatal: true
   become: true
@@ -66,7 +74,7 @@
       name: "opscenterd"
       state: started
       
-# Start all agents
+# Start all DSE agents
 - hosts: datastax_agent 
   any_errors_fatal: true
   become: true

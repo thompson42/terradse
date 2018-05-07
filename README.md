@@ -15,7 +15,7 @@ Or manually run each of the security features:
 
 1. Run DSE node security (encryption) features in ansible/dse_security.yml and run manually
 2. Run DSE authentication features in ansible/dse_authentication.yml and run manually
-3. (Experimental) Run SPARK security and authentication features in ansible/spark_security.yml and run manually
+3. (Run SPARK security and authentication features in ansible/spark_security.yml and run manually
 4. (Not available yet) Configure required OPSCENTER security features in ansible/opsc_security.yml and run manually
 
 # Basic processes: 

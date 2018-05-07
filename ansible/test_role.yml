@@ -1,7 +1,7 @@
-# Configure the monitored and storage cluster via an API call top OpsCenter
-- hosts: opsc_srv
+
+- hosts: dse_analytics
   any_errors_fatal: true
   become: true
   become_method: sudo
   roles:
-    - { role: security_opsc_cluster_configure }
+    - { role: security_spark_activate }

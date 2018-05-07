@@ -9,57 +9,68 @@
 2. /genansinv_extended.sh: Test properly moves private_ip into public_ip if no public_ip exists
 3. /genansinv_extended.sh: Test properly exposes private_dns in hosts file sourced from terraform.tfstate for each node. (used by role: security_dse_create_keystores)
 4. /genansinv_extended.sh: Test properly indicates new DC names that are now same as block e.g.: [dse_core]
+5. Client->node should now uncomment truststore correctly allowing Spark thrift server secure access.
+6. Need to test opsc_security.yml end to end (may need rolling restarts due to SSL changes?)
 
 ## convenience shell scripts
 
-### runansi_extended.sh
+## playbook: opsc_security.yml --------
 
-Currently has experimental Spark authentication
+### Opscenter transport encryption (SSL/TLS)
 
-## playbook: opsc_security.yml
-
-### Opscenter Transport Encryption (SSL/TLS)
-
-#### create opscenter keystores - COMPLETE :heavy_check_mark:
+#### Create opscenter keystores - COMPLETE :heavy_check_mark:
 
 role: security_opsc_create_keystores
 
-#### create opscenter truststores - COMPLETE :heavy_check_mark:
+#### Create opscenter truststores - COMPLETE :heavy_check_mark:
 
 role: security_opsc_create_truststores
 
-#### distribute opscenter truststores - COMPLETE :heavy_check_mark:
+#### Distribute opscenter truststores - COMPLETE :heavy_check_mark:
 
 role: security_opsc_distribute_truststores
 
-#### browser -> opscenter web (HTTPS) - COMPLETE :heavy_check_mark:
+#### Browser -> Opscenter web (HTTPS) - COMPLETE :heavy_check_mark:
 
 [Opscenter enabling HTTPS](https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscConfiguringEnablingHttps_t.html)
 
 role: security_opsc_configure
 
-#### configure opscenter -> agent encryption - TODO :x:
+#### Configure seperate opscenter storage cluster - COMPLETE :heavy_check_mark:
+
+role: security_opsc_cluster_configure
+
+#### Configure Opscenter -> Agent encryption at OPSC SERVER level - COMPLETE :heavy_check_mark:
 
 [OpsCenter enabling SSL](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
 
-"OpsCenter requires the .der file format for SSL. If your existing [agents] ssl_certfile in opscenter.conf is in a .pem format, run the following command to convert the format"
-
 role: security_opsc_configure
 
-#### configure seperate opscenter storage cluster - TODO :x:
+#### Configure Opscenter -> Agent encryption at Agent level - TODO :x:
 
-1. Run role: /ansible/roles/security_prerequisites for this cluster too.
+[OpsCenter enabling SSL](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
 
-role: security_opsc_cluster_configure
+1. Need AWS environment to develop.
 
-#### configure opscenter -> dse encryption - COMPLETE :heavy_check_mark:
+role: security_opsc_agents_configure
 
-role: security_opsc_cluster_configure
+#### Configure OPSC SERVER -> DSE encryption and OPSC DSECORE -> DSE encryption - TODO :x:
+
+Various roles including: 
+
+1. security_create_keystores
+2. security_create_truststores
+3. security_create_opsc_keystores
+4. security_create_opsc_truststores
+5. security_opsc_cluster_configure
+
+## playbook: opsc_authentication.yml
 
 ### Opscenter Authentication - TODO :x:
 
 1. Activate Opscenter authentication
 2. Replace Opscenter weak default superuser
+3. Replace DSE weak superuser: Run role: /ansible/roles/security_prerequisites for the OPSC DSECore cluster too.
 
 ## playbook: dse_authentication.yml
 
@@ -80,14 +91,14 @@ role: /ansible/roles/security_prerequisites
 ALTER KEYSPACE system_auth WITH REPLICATION = {'class' : 'NetworkTopologyStrategy', 'dc1' : 3, 'dc2' : 2};
 ```
 
-#### Activating JMX Authentication - TODO :x:
+#### JMX Authentication - TODO :x:
 
 [Support Link](https://support.datastax.com/hc/en-us/articles/204226179-Step-by-step-instructions-for-securing-JMX-authentication-for-nodetool-utility-OpsCenter-and-JConsole)
 
 1. Set up JMX authentication to allow nodetool and dsetool operations: [Enable JMX Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html)
 2. This will cause JMX config required for Opscenter
 
-#### LDAP - TODO :x:
+#### LDAP Authentication - TODO :x:
 
 1. Configure selected authentication scheme options: [LDAP Schemes](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secLDAPScheme.html)
 2. Adjust the credentials_validity_in_ms and credentials_update_interval_in_ms as required for your environment in the dse.yaml.
@@ -178,43 +189,49 @@ https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secu
 
 [to Activate](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptSparkSSL.html)
 
-#### Spark: dse submit  - COMPLETE :heavy_check_mark:
+#### browser -> spark UI - COMPLETE :heavy_check_mark:
+
+The Spark web UI by default uses client-to-cluster encryption settings to enable SSL security in the web interface.
+
+#### dse submit  - COMPLETE :heavy_check_mark:
 
 No transport phase.
 
-#### Spark: Spark driver (app) -> DSE - COMPLETE :heavy_check_mark:
+#### Spark driver (app) -> DSE - COMPLETE :heavy_check_mark:
 
 Encryption between the Spark driver and DSE is configured by enabling client encryption in cassandra.yaml
 
 role: security_client_to_node
 
-#### Spark: spark master -> worker - COMPLETE :heavy_check_mark:
+#### Spark master -> worker - COMPLETE :heavy_check_mark:
 
 Encryption between Spark nodes, including between the Spark master and worker, is configured by enabling Spark security in dse.yaml.
 
 role: security_spark_activate
 
-#### Spark: Spark driver (app) -> executors - IN PROGRESS :bug:
+#### Spark driver (app) -> executors - COMPLETE :heavy_check_mark:
 
 Encryption between the Spark driver and executors in client applications is configured by enabling Spark security in the application configuration properties, 
 or by default in /etc/dse/spark/spark-defaults.conf
 
-1. Works but small annoying BUG: The regex read/write is duplicating keys in the file on idempotent runs, see:
-
 role: security_spark_activate
 
-#### Spark:  JDBC driver -> Spark SQL Thrift Server - TODO (easy, truststore and keystore already exist) :x:
+#### ODBC/JDBC driver -> Spark SQL Thrift Server - TODO (easy, truststore and keystore already exist) - TODO :x:
 
 https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/spark/sslSparkSqlThriftserver.html
 
-#### Spark: browser -> spark UI - COMPLETE :heavy_check_mark:
+#### Client -> AlwaysOnSQL port - TODO :x:
 
-The Spark web UI by default uses client-to-cluster encryption settings to enable SSL security in the web interface.
+https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/spark/sslSparkSqlThriftserver.html
 
-### Activating Spark Authentication - TODO :x:
+### Spark Authentication - COMPLETE :heavy_check_mark:
+
+role: security_spark_activate
+
+### Spark Authorization - TODO :x:
 
 1. Create a Spark role and user?
-2. Limit spark jobs by user ?
+2. Limit spark jobs by user?
 
 ## playbook: solr_security - TODO 
 

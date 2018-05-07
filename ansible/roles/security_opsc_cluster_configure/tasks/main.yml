@@ -8,8 +8,7 @@
 
 #EXPECTS: [hosts: localhost] [become: no] [connection: local] in playbook call
 # This method configures the monitored and storage cluster via a REST API call to OpsCenter
-- set_fact: json_template="cluster_name_json_{{dse_major_version}}.j2"
-#- set_fact: content_type="Content-Type application/json"
+- set_fact: cluster_name_json_template="cluster_name_json_{{dse_major_version}}.j2"
 
 - name: Configure the monitored and storage cluster via an API call top OpsCenter
   uri:
@@ -17,7 +16,7 @@
     method: POST
     user: "{{opscenter_username}}"
     password: "{{opscenter_password}}"
-    body: "{{ lookup('template', json_template) }}"
+    body: "{{ lookup('template', cluster_name_json_template) }}"
     force_basic_auth: yes
     status_code: 201
     body_format: json
