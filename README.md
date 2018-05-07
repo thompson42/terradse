@@ -8,15 +8,28 @@ This project has a [TODO](TODO.md)
 2. Set all port rules and security in terraform_extended/ec2.tf, for AMZN VPC's you will need to modify this file
 3. Set all paths and vars in ansible/group_vars/all
 4. Run /runterra_extended.sh and check AWS instances that will be created - accept and run the plan
-5. Run /genansinv_extended.sh (it will generate the /ansible/hosts file)
-6. Run /runansi_extended.sh (it will run dse_osparm_change, dse_install, dse_security, dse_authentication and spark_security playbooks, it expects your key to be: ~/.ssh/id_rsa_aws) (opsc_install currently disabled)
+5. Run /genansinv_extended.sh (it will generate the required /ansible/hosts file)
+6. Run /runansi_extended.sh (expects your key to be: ~/.ssh/id_rsa_aws)
 
-Or manually run each of the security features:
+Or manually activate security as required :
 
-1. Run DSE node security (encryption) features in ansible/dse_security.yml and run manually
-2. Run DSE authentication features in ansible/dse_authentication.yml and run manually
-3. (Run SPARK security and authentication features in ansible/spark_security.yml and run manually
-4. (Not available yet) Configure required OPSCENTER security features in ansible/opsc_security.yml and run manually
+DSE CLUSTER SECURITY: 
+
+1. Run DSE transport encryption lock down via ansible/dse_security.yml
+2. Run DSE authentication lock down via ansible/dse_authentication.yml
+3. Run DSE authorisation lock down via ansible/dse_authorisation_roles.yml
+
+OPSCENTER SECURITY:
+
+1. Run OPSCENTER transport encryption lock down via ansible/opsc_security.yml
+2. Run OPSCENTER authentication lock down via ansible/opsc_authentication.yml
+3. Run OPSCENTER authorisation lock down via ansible/opsc_authorisation_roles.yml
+
+SPARK SECURITY:
+
+1. Run SPARK transport encryption lock down via ansible/spark_security.yml
+2. Run SPARK authentication lock down via ansible/spark_authentication.yml
+3. Run SPARK authorisation lock down via ansible/spark_authorisation_roles.yml
 
 # Basic processes: 
 

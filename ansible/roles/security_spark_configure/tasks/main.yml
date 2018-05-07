@@ -14,13 +14,3 @@
     edits:
     - key: spark_security_encryption_enabled
       value: true
-
-# Configure spark authentication in spark-defaults.conf
-- set_fact: spark_defaults_conf_template="spark_defaults_conf_{{dse_major_version}}.j2"
-- name: Configure spark.authenticate and spark.authenticate.enableSaslEncryption in spark-defaults.conf
-  template:
-    src: "templates/{{spark_defaults_conf_template}}"
-    dest: /etc/dse/spark/spark-defaults.conf
-    owner: "{{cassandra_owner}}"
-    group: "{{cassandra_group}}"
-    mode: 0644

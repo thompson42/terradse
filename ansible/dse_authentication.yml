@@ -14,4 +14,4 @@
   become: true
   become_method: sudo
   roles:
-    - { role: security_dse_unified_auth_activate }
+    - { role: security_dse_auth_activate }
