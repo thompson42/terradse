@@ -1,5 +1,7 @@
 ---
 
+# THIS ROLE ISUSED BY BOTH OPSC AND DSE
+
 # https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuthAndRbacAbout.html
 # https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secEnableDseAuthenticator.html
   

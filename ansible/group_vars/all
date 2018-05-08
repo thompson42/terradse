@@ -14,10 +14,14 @@ ansible_user: automaton
 default_super_user_account: cassandra
 default_super_user_password: cassandra
 
-secure_super_user_account: "{{default_super_user_account}}"   #TODO Change from default and pull from ansible.vault
-secure_super_user_password: "{{default_super_user_password}}" #TODO Change from default from ansible.vault
+secure_super_user_account: TestAdmin
+secure_super_user_password: TestAdminPassword
 
-# File permissions - don't confuse cassandra OS account with cassandra default internal superuser account
+#secure_super_user_account: "{{default_super_user_account}}"                     #EDIT: Change from default (TODO: pull from ansible.vault)
+#secure_super_user_password: "{{default_super_user_password}}"                   #EDIT: Change from default (TODO: pull from ansible.vault)
+
+# File permissions
+# Don't confuse cassandra OS account with cassandra internal superuser account
 #-------------------------------------------------------------------------------
 localhost_owner: "{{lookup('env','USER')}}"
 localhost_group: "{{lookup('env','USER')}}"
@@ -33,13 +37,13 @@ opscenter_group: opscenter
 dse_repo_file: /etc/apt/sources.list.d/datastax.sources.list
 
 #User name and password to download DSE (DataStax Academy)
-dse_repo_email: xxx #TODO - pull from ansible.vault
-dse_repo_password: xxx #TODO - pull from ansible.vault
+dse_repo_email: xxx                                                             #EDIT: Change from default (TODO: pull from ansible.vault)
+dse_repo_password: xxx                                                          #EDIT: Change from default (TODO: pull from ansible.vault)
 
 # Target/Current DSE verson
-dse_major_version: 5.1    #used to choose the correct configuration templates
-dse_ver_target:  5.1.7-1  #requires the [-1] on the end of the version
-opsc_ver_target: 6.5.0    #opsc 6.5 is compatible with DSE 5.0,5.1,6.0
+dse_major_version: 5.1                                                          #used to choose the correct configuration templates
+dse_ver_target:  5.1.7-1                                                        #requires the [-1] on the end of the version
+opsc_ver_target: 6.5.0                                                          #opsc 6.5 is compatible with DSE 5.0,5.1,6.0
 
 # DSE directory locations 
 #-------------------------------------------------------------------------------
@@ -56,7 +60,8 @@ vnode_token_num: 256
 vnode_token_num_solr: 32
 vnode_token_num_spark: 32
 
-# data directories - nned to modify these paths to reflect the mount point of your EBS drive/s OR ephemeral stores
+# data directories - need to modify these paths to reflect the mount point of 
+# your EBS drive/s OR ephemeral stores
 data_file_directories:  /var/lib/cassandra/data
 hints_directory: /var/lib/cassandra/hints
 commitlog_directory: /var/lib/cassandra/commitlog
@@ -68,16 +73,16 @@ ebs_devstr: xvda
 
 # Key Opscenter settings
 #-------------------------------------------------------------------------------
-opsc_web_port: 8443 #the port used by Opsc webserver AND API (unsecured 8888, secured 8443)
+opsc_web_port: 8443 #Opsc webserver AND API (unsecured 8888, secured 8443)
 opsc_config: /etc/opscenter/opscenterd.conf
 opsc_ssl_dir: /var/lib/opscenter/ssl
-opscenter_username: opscenter_username_here
-opscenter_password: opscenter_password_here
+opscenter_username: opscenter_username_here                                     #EDIT: Change from default (TODO: pull from ansible.vault)
+opscenter_password: opscenter_password_here                                     #EDIT: Change from default (TODO: pull from ansible.vault)
 
 # Key JMX settings
 #-------------------------------------------------------------------------------
-jmx_username: jmx_username
-jmx_password: jmx_password
+jmx_username: jmx_username                                                      #EDIT: Change from default (TODO: pull from ansible.vault)
+jmx_password: jmx_password                                                      #EDIT: Change from default (TODO: pull from ansible.vault)
 
 # Key jvm.options settings
 #-------------------------------------------------------------------------------
@@ -88,7 +93,7 @@ jmx_password: jmx_password
 heap_xms: 4G
 heap_xmx: 4G
 
-# Key role: security_dse_unified_authentication settings:
+# Key role: security_dse_unified_authentication settings (TODO):
 #-------------------------------------------------------------------------------
 #DCs < 3x nodes use an RF=1
 #DCs < 9x nodes use an RF=3
@@ -97,28 +102,29 @@ security_table_replication_factor: 1
 
 # Encryption settings for truststores / keystores
 #-------------------------------------------------------------------------------
-#Make sure the SSL certificates, keystores, truststores are readable by the user who runs opscenter / cassandra on target nodes
+# Make sure the SSL certificates, keystores, truststores are readable by the user 
+# who runs opscenter / cassandra on target nodes
 security_owner: cassandra
 security_group: cassandra
 
-# Cluster security settings set by server_encryption_options and client_encryption_options in cassandra.yaml
+# Cluster security settings set by server_encryption_options 
+# and client_encryption_options in cassandra.yaml
 cluster_keystore_path: "{{ dse_config_dir }}/keystore.jks"
-cluster_keystore_password: cluster_keystore_password_here #TODO - pull from ansible.vault
+cluster_keystore_password: cluster_keystore_password_here                       #EDIT: Change from default (TODO: pull from ansible.vault)
 cluster_truststore_path: "{{ dse_config_dir }}/truststore.jks"
-cluster_truststore_password: "{{cluster_keystore_password}}"
+cluster_truststore_password: "{{cluster_keystore_password}}"                    #EDIT: Change from default (TODO: pull from ansible.vault)
  
 # Root certificate
 #-------------------------------------------------------------------------------
-# The self signed certs, .truststore and .keystores are created on the ansible controller node in the directory: /etc/ssl/SelfSignRootCA
+# The self signed certs, .truststore and .keystores are created on the ansible 
+# controller node in the directory: /etc/ssl/<ssl_certs_common_name>
 
-ssl_certs_common_name: "SelfSignRootCA" #CN
-ssl_cluster_name: "Test Cluster"        #OU
-ssl_certs_organization: "Datastax"      #O
-ssl_certs_country: "US"                 #C
+ssl_certs_common_name: "SelfSignRootCA" #CN                                     #EDIT: Change from default if CA certs
+ssl_cluster_name: "Test Cluster"        #OU                                     #EDIT: Change from default if CA certs
+ssl_certs_organization: "Datastax"      #O                                      #EDIT: Change from default if CA certs
+ssl_certs_country: "US"                 #C                                      #EDIT: Change from default if CA certs
 
-ssl_certs_days: "365"
-
-#must be an account and group available on localhost
+# must be an account and group available on localhost
 ssl_certs_path_owner: "{{localhost_owner}}"
 ssl_certs_path_group: "{{localhost_group}}"
 
@@ -126,6 +132,7 @@ ssl_certs_path_group: "{{localhost_group}}"
 
 ssl_certs_path: "/etc/ssl/{{ssl_certs_common_name}}"
 ssl_certs_key_size: "2048"
+ssl_certs_days: "365"
 
 Other:
 #-------------------------------------------------------------------------------

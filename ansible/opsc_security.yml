@@ -10,7 +10,7 @@
       name: "opscenterd"
       state: stopped
           
-# Stop all agents
+# Stop all DSE agents
 - hosts: datastax_agent 
   any_errors_fatal: true
   become: true
@@ -47,15 +47,7 @@
     - { role: security_distribute_truststores }
     - { role: security_distribute_keystores }
     
-# Configure the monitored and storage cluster via an API call to OPSC SERVER
-- hosts: opsc_srv
-  any_errors_fatal: true
-  become: true
-  become_method: sudo
-  roles:
-    - { role: security_opsc_cluster_configure }
-    
-# TODO: Configure all DSE agents - need AWS environment
+# TODO: Configure all DSE agents with Transport security - need AWS environment
 - hosts: opsc_srv
   any_errors_fatal: true
   become: true
@@ -84,4 +76,6 @@
     service:
       name: "datastax-agent"
       state: started
+
+
       

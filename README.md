@@ -1,5 +1,10 @@
 # Automate the Launch of AWS Instances for a multi-DC DSE cluster with OpsCenter
 
+#Requires the following python libraries on the Ansible machine
+
+1. pip install ruamel.yaml
+2. pip install cassandra-driver
+
 This project has a [TODO](TODO.md)
 
 # Quickstart steps:

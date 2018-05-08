@@ -1,0 +1,21 @@
+
+  - name: CREATE new secure superuser account
+    cassandra_role:
+      state: present
+      name: "{{secure_super_user_account}}"
+      superuser: True
+      enable_login: True
+      password: "{{secure_super_user_password}}"
+      login_hosts: "{{cql_target}}"
+      login_user: "{{default_super_user_account}}"
+      login_password: "{{default_super_user_password}}"
+      
+#  - name: DROP default insecure cassandra/cassandra superuser account
+#    cassandra_role:
+#      state: absent
+#      name: "{{default_super_user_account}}"
+#      login_hosts: "{{cql_target}}"
+#      login_user: "{{secure_super_user_account}}"
+#      login_password: "{{secure_super_user_password}}"
+
+  

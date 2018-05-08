@@ -13,8 +13,7 @@
     - { role: dse_updcfg }
     
 
-# Presumes all OPSC DSECore servers are down
-# Install OpsCenter server
+# Install OpsCenter server and start it (Presumes all OPSC DSECore servers are down)
 - hosts: opsc_srv
   any_errors_fatal: true
   become: true
@@ -31,6 +30,7 @@
     service:
       name: "opscenterd"
       state: started
+
 
 # Install and configure datastax-agent on DSE cluster nodes
 - hosts: datastax_agent 
@@ -52,35 +52,10 @@
         line: "{{ item.line }}"
       with_items:
         - { regexp: 'stomp_interface', line: "stomp_interface: {{ groups['opsc_srv'][0] }}" }
-        - { regexp: '# use_ssl: 0', line: "use_ssl: true" }
+        - { regexp: '# use_ssl: 0', line: "use_ssl: false" }
         
     - name: Start datastax-agent service
       service:
         name: "datastax-agent"
         state: started
-
-# Start DSE cluster seed nodes
-- hosts: opsc_dsecore
-  any_errors_fatal: true
-  name: Start seed node
-  serial: 1
-  become: true
-  become_method: sudo
-  vars:
-    srvc_name: dse
-  roles:
-    - { role: start_srvc, when: seed == 'true' }
-
-
-# Start DSE cluster non-seed nodes
-- hosts: opsc_dsecore
-  any_errors_fatal: true
-  name: Start non-seed node one by one
-  serial: 1
-  become: true
-  become_method: sudo
-  vars:
-    srvc_name: dse
-  roles:
-    - { role: start_srvc, when: seed == 'false' }
 

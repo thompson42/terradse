@@ -1,0 +1,7 @@
+# Activate DSE Unified Authentication on OPSC DSECore nodes
+- hosts: opsc_dsecore
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_unified_auth_activate }

@@ -1,0 +1,10 @@
+
+
+- hosts: localhost
+  any_errors_fatal: true
+  become: no
+  connection: local
+  roles:
+    - { role: security_change_superuser}
+  vars:
+    cql_target: "{{ groups['opsc_dsecore'][0] }}"

@@ -1,7 +1,9 @@
 
-- hosts: dse_analytics
+- hosts: localhost
   any_errors_fatal: true
-  become: true
-  become_method: sudo
+  become: no
+  connection: local
   roles:
-    - { role: security_spark_activate }
+    - { role: security_change_superuser}
+  vars:
+    cql_target: "{{ groups['dse'][0] }}"

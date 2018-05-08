@@ -1,20 +1,6 @@
 ---
 # WARNING: This role should only be run once per cluster on a single DSE node
 
-# Change the defult superuser account
-# https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secCreateRootAccount.html
-- name: Login as the defult superuser and create the new superuser
-  command: cqlsh -u {{default_super_user_account}} -p {{default_super_user_password}}
-  with_items:
-    - CREATE ROLE {{secure_super_user_account}} with SUPERUSER = true AND LOGIN = true and PASSWORD = '{{secure_super_user_password}}';
-    - EXIT;
-  
-- name: Login as the new superuser and drop the default superuser
-  command: cqlsh -u {{secure_super_user_name}} -p {{secure_super_user_password}}
-  with_items:
-    - DROP ROLE cassandra;
-    - EXIT;
-
 # Change system_auth and dse_security RF to 3-5 for each DC and change to NetworkToplogyStrategy from SimpleStrategy.
 # https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuthAndRbacAbout.html
 # https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secEnableDseAuthenticator.html

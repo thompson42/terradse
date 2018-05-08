@@ -8,10 +8,10 @@
 #  roles:
 #    - { role: security_prerequisites }
 
-# Activate DSE Unified Authentication
+# Activate DSE Unified Authentication on DSE nodes
 - hosts: dse
   any_errors_fatal: true
   become: true
   become_method: sudo
   roles:
-    - { role: security_dse_auth_activate }
+    - { role: security_unified_auth_activate }
