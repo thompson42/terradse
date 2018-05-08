@@ -70,11 +70,15 @@ role: security_dse_auth_activate
 
 ### DSE cluster Authorisation and Roles -> playbook: dse_authorisation_roles.yml
 
-#### Superuser role and security table replication - IN PROGRESS :bug:
+#### Superuser role replacement - IN PROGRESS :bug:
 
-Currently commented out.
+Currently commented out, working on SSL usage of librabry/cassandra_roles.py
 
-This role needs to run prior to client->node encryption activation with the dse cluster up as uses cqlsh
+Used by dse_authorisation_roles.yml and opsc_authorisation_roles.py
+
+role: /ansible/roles/security_change_superuser 
+
+#### Security table replication - TODO :x:
 
 role: /ansible/roles/security_prerequisites
 
@@ -117,7 +121,7 @@ role: security_opsc_configure
 
 [OpsCenter enabling SSL](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
 
-1. Need AWS environment to develop.
+1. Need AWS environment to develop/test.
 
 role: security_opsc_agents_configure
 
@@ -200,13 +204,9 @@ or by default in /etc/dse/spark/spark-defaults.conf
 
 role: security_spark_configure
 
-#### ODBC/JDBC driver -> Spark SQL Thrift Server - TODO (easy, truststore and keystore already exist) - TODO :x:
-
-https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/spark/sslSparkSqlThriftserver.html
-
 #### Client -> AlwaysOnSQL port - TODO :x:
 
-https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/spark/sslSparkSqlThriftserver.html
+???
 
 ### Spark Authentication -> playbook: spark_authentication - COMPLETE :heavy_check_mark:
 

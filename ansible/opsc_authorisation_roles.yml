@@ -8,3 +8,4 @@
     - { role: security_change_superuser}
   vars:
     cql_target: "{{ groups['opsc_dsecore'][0] }}"
+    is_cql_target_ssl: false

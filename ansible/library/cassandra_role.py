@@ -28,6 +28,14 @@ options:
       - Create the user as a superuser?
     required: false
     default: False
+  is_ssl:
+    description:
+      - Whether SSL encryption is required for connections
+    required: true
+  cert_path:
+    description:
+      - Path to the SSL cert for the python driver
+    required: false
   login_hosts:
     description:
       - List of hosts to login to Cassandra with
@@ -65,10 +73,12 @@ EXAMPLES = '''
 - cassandra_role: name='foo' state=absent login_hosts=localhost login_pass=cassandra login_user=cassandra
 '''
 
+import ssl
+
 try:
-    from cassandra.cluster import Cluster
-    from cassandra.auth import PlainTextAuthProvider
-    from cassandra.query import dict_factory
+    from dse.cluster import Cluster
+    from dse.auth import PlainTextAuthProvider
+    from dse.query import dict_factory
 except ImportError:
     cassandra_dep_found = False
 else:
@@ -155,6 +165,14 @@ def main():
                 'default': 9042,
                 'type': 'int'
             },
+            'is_ssl': {
+                'required': True,
+                'type': 'bool'
+            },
+            'cert_path': {
+                'required': False,
+                'type': 'str'
+            },
             'name': {
                 'required': True,
                 'aliases': ['role']
@@ -178,6 +196,9 @@ def main():
         },
         supports_check_mode=True
     )
+    
+    is_ssl = module.params["is_ssl"]
+    cert_path = module.params["cert_path"]
     login_user = module.params["login_user"]
     login_password = module.params["login_password"]
     login_hosts = module.params["login_hosts"]
@@ -193,13 +214,20 @@ def main():
 
     session = None
     changed = False
+    ssl_options=dict(certfile=cert_path, ssl_version=ssl.PROTOCOL_TLSv1)
+                                   
     try:
         if not login_user:
             cluster = Cluster(login_hosts, port=login_port)
 
         else:
             auth_provider = PlainTextAuthProvider(username=login_user, password=login_password)
-            cluster = Cluster(login_hosts, auth_provider=auth_provider, protocol_version=3.3, port=login_port)
+            
+            if is_ssl:
+                cluster = Cluster(login_hosts, auth_provider=auth_provider, protocol_version=3.3, port=login_port)
+            else:
+                cluster = Cluster(login_hosts, auth_provider=auth_provider, protocol_version=3.3, port=login_port, ssl_options=ssl_options)
+            
             session = cluster.connect()
             session.row_factory = dict_factory
     except Exception, e:
