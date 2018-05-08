@@ -27,35 +27,35 @@ commented out.
 
 #### generate self signed certificates for DSE - COMPLETE :heavy_check_mark:
 
-role: security_dse_create_root_certificate
+role: security_create_root_certificate
 
 #### create DSE truststores - COMPLETE :heavy_check_mark:
 
-role: security_dse_create_truststores
+role: security_create_truststores
 
 #### create DSE keystores - COMPLETE :heavy_check_mark:
 
-role: security_dse_create_keystores
+role: security_create_keystores
 
 #### distribute DSE truststores - COMPLETE :heavy_check_mark:
 
-role: security_dse_distribute_truststores
+role: security_distribute_truststores
 
 #### distribute DSE keystores - COMPLETE :heavy_check_mark:
 
-role: security_dse_distribute_keystores
+role: security_distribute_keystores
 
 #### client -> node - COMPLETE :heavy_check_mark:
 
 [Encrypting client -> node SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptClientNodeSSL.html)
 
-role: security_dse_client_to_node
+role: security_client_to_node
 
 #### node -> node - COMPLETE :heavy_check_mark:
 
 [Internode encryption](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secInternodeSsl.html)
 
-role: security_dse_node_to_node
+role: security_node_to_node
 
 #### cqlsh -> node (local and remote) - COMPLETE :heavy_check_mark:
 
@@ -66,7 +66,7 @@ FACT: ACCESS DISABLED BY DEFAULT WHEN CLIENT->NODE ENABLED
 
 ### DSE cluster Authentication -> playbook: dse_authentication.yml - COMPLETE :heavy_check_mark:
 
-role: security_dse_auth_activate
+role: security_unified_auth_activate
 
 ### DSE cluster Authorisation and Roles -> playbook: dse_authorisation_roles.yml
 
@@ -131,8 +131,8 @@ Various roles including:
 
 1. security_create_keystores
 2. security_create_truststores
-3. security_create_opsc_keystores
-4. security_create_opsc_truststores
+3. security_opsc_create_keystores
+4. security_opsc_create_truststores
 5. security_opsc_cluster_configure
 
 

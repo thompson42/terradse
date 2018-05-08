@@ -11,7 +11,7 @@ This project has a [TODO](TODO.md)
 
 1. Set all params and cluster topology in terraform_extended/variables.tf
 2. Set all port rules and security in terraform_extended/ec2.tf, for AMZN VPC's you will need to modify this file
-3. Set all paths and vars in ansible/group_vars/all
+3. Set all paths and vars in ansible/group_vars/all mared with [EDIT] only
 4. Run /runterra_extended.sh and check AWS instances that will be created - accept and run the plan
 5. Run /genansinv_extended.sh (it will generate the required /ansible/hosts file)
 6. Run /runansi_extended.sh (expects your key to be: ~/.ssh/id_rsa_aws)
@@ -22,19 +22,19 @@ DSE CLUSTER SECURITY:
 
 1. Run DSE transport encryption lock down via ansible/dse_security.yml
 2. Run DSE authentication lock down via ansible/dse_authentication.yml
-3. Run DSE authorisation lock down via ansible/dse_authorisation_roles.yml
+3. Run DSE authorisation lock down via ansible/dse_authorisation_roles.yml - Currently DISADLED
 
 OPSCENTER SECURITY:
 
 1. Run OPSCENTER transport encryption lock down via ansible/opsc_security.yml
 2. Run OPSCENTER authentication lock down via ansible/opsc_authentication.yml
-3. Run OPSCENTER authorisation lock down via ansible/opsc_authorisation_roles.yml
+3. Run OPSCENTER authorisation lock down via ansible/opsc_authorisation_roles.yml - Currently DISADLED
 
 SPARK SECURITY:
 
 1. Run SPARK transport encryption lock down via ansible/spark_security.yml
 2. Run SPARK authentication lock down via ansible/spark_authentication.yml
-3. Run SPARK authorisation lock down via ansible/spark_authorisation_roles.yml
+3. Run SPARK authorisation lock down via ansible/spark_authorisation_roles.yml - Currently DISADLED
 
 # Basic processes: 
 
