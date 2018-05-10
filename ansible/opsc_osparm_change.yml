@@ -5,12 +5,13 @@
   become_method: sudo
   tasks: 
   
-  - name: Change SSD device settings 
-    shell: echo "{{ item.value }}" > /sys/block/{{ ebs_devstr }}/queue/"{{ item.parm }}"
-    with_items:
-#    - { parm: 'scheduler', value: 'deadline' }
-    - { parm: 'rotational', value: '0' }
-    - { parm: 'read_ahead_kb', value: '8' }
+# TODO: Uncomment only if using directly attached SSDs:
+#  - name: Change SSD device settings 
+#    shell: echo "{{ item.value }}" > /sys/block/{{ ebs_devstr }}/queue/"{{ item.parm }}"
+#    with_items:
+#   - { parm: 'scheduler', value: 'deadline' }
+#    - { parm: 'rotational', value: '0' }
+#    - { parm: 'read_ahead_kb', value: '8' }
     
   - name: Change OS Kernel parameters by modifying sysctl.conf file
     lineinfile:
