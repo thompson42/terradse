@@ -23,9 +23,15 @@ ansible-playbook -i hosts dse_security.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
-echo ">>>> Activate DSE cluster Authentication <<<<"
+echo ">>>> Activate DSE cluster Unified Authentication <<<<"
 echo
 ansible-playbook -i hosts dse_authentication.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
+echo
+echo ">>>> Activate DSE cluster JMX Unified Authentication <<<<"
+echo
+ansible-playbook -i hosts jmx_authentication.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
@@ -54,7 +60,7 @@ echo
 ansible-playbook -i hosts opsc_install.yml --private-key=~/.ssh/id_rsa_aws
 
 echo
-echo ">>>> Setup storage cluster (OPSC DSECore) Authentication <<<<"
+echo ">>>> Setup Opscenter storage cluster (OPSC DSECore) Authentication <<<<"
 echo
 ansible-playbook -i hosts opsc_authentication.yml --private-key=~/.ssh/id_rsa_aws
 echo
@@ -66,7 +72,7 @@ ansible-playbook -i hosts opsc_security.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
-echo ">>>> Inject Opscenter cluster configuration via API call <<<<"
+echo ">>>> Inject Opscenter cluster configuration via API call -> cluster_name.conf <<<<"
 echo
 ansible-playbook -i hosts opsc_cluster_configure.yml --private-key=~/.ssh/id_rsa_aws
 echo

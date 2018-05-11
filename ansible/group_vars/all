@@ -81,6 +81,9 @@ opscenter_password: opscenter_password_here                                     
 jmx_username: jmx_username                                                      #EDIT: Change from default (TODO: pull from ansible.vault)
 jmx_password: jmx_password                                                      #EDIT: Change from default (TODO: pull from ansible.vault)
 
+# path fix for JMX/JAAS/cassandra-env.sh
+jaas_path: "{{dse_config_dir}}/cassandra/cassandra-jaas.config"
+
 # Key jvm.options settings
 #-------------------------------------------------------------------------------
 # JVM HEAP used by DSE

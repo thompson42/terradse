@@ -136,37 +136,41 @@ Various roles including:
 5. security_opsc_cluster_configure
 
 
-### Opscenter Authentication - playbook: opsc_authentication.yml - TODO :x:
+### Opscenter Authentication - playbook: opsc_authentication.yml
 
-1. Activate Opscenter authentication
+#### Activate Opscenter internal authentication - TODO :x:
 
-### Opscenter Authorisation and Roles - playbook: opsc_authorisation_roles.yml - TODO :x:
+#### Activate OPSC DSECore Unified Authentication  - COMPLETE :heavy_check_mark:
 
-1. Replace Opscenter weak default superuser
-3. Replace OPSC DSECore weak superuser: Run role: /ansible/roles/security_prerequisites for the OPSC DSECore cluster too.
+role: /ansible/roles/security_unified_auth_activate
 
+### Opscenter Authorisation and Roles - playbook: opsc_authorisation_roles.yml
 
-### JMX Authentication - TODO :x:
+#### Replace Opscenter weak default user - TODO :x:
 
-[Support Link](https://support.datastax.com/hc/en-us/articles/204226179-Step-by-step-instructions-for-securing-JMX-authentication-for-nodetool-utility-OpsCenter-and-JConsole)
+role: /ansible/roles/security_opsc_??
 
-1. Set up JMX authentication to allow nodetool and dsetool operations: [Enable JMX Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html)
-2. This will cause JMX config required for Opscenter
+#### Replace OPSC DSECore weak superuser - COMPLETE :heavy_check_mark:
 
-jConsole (any client) -> JMX (local and remote)
+NOTE: Currently disabled in runansi_extended.sh due to work not complete on replacing via SSL DSE cluster superuser
 
-1. REMOTE JMX ACCESS DISABLED BY DEFAULT
-2. LOCAL ACCESS?
+role: /ansible/roles/security_change_superuser
+
+### JMX Authentication -> playbook: jmx_authentication.yml
+
+[Enable JMX Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html)
+[Support Link](https://support.datastax.com/hc/en-us/articles/204226179-Step-by-step-instructions-for-securing-JMX-authentication-for-nodetool-utility-OpsCenter-and-JConsole
+
+#### Activate JMX Authentication - COMPLETE :heavy_check_mark:
+
+[Managing JMX Access Control to MBeans](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secJmxAccessControl.html)
+
+role: /ansible/roles/security_jmx_auth_activate
+
+#### Client -> JMX over SSL - TODO :x:
 
 [Securing jConsole SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html)
-
-nodetool, dse too, dse advrep -> JMX (local and remote)
-
-1. REMOTE JMX ACCESS DISABLED BY DEFAULT
-2. LOCAL ACCESS?
-
-https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html
-
+[Securing NodeTool SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html)
 
 ### LDAP Authentication - TODO :x:
 

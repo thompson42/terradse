@@ -13,7 +13,9 @@
       "ssl_keystore_password": "{{cluster_keystore_password}}"
     },
     "jmx": {
-      "port": 7199
+      "port": 7199,
+      "username": "{{secure_super_user_account}}",
+      "password": "{{secure_super_user_password}}"
     },
     "agents": {
     
@@ -35,11 +37,13 @@
       "seed_hosts": "{{groups['opsc_srv'][0]}}",
       "keyspace": "OpsCenter_{{hostvars[groups['dse'][0]]['cluster_name']}}",
       
-      #STORAGE CLUSTER'S KEYSTORE/TRUSTSTORE - NOT CURRENTLY USED
-      #"ssl_truststore": "{{opsc_ssl_dir}}/opscenter_truststore.jks",
-      #"ssl_truststore_password": "{{cluster_truststore_password}}",
+      #STORAGE CLUSTER'S KEYSTORE - NOT CURRENTLY USED
       #"ssl_keystore": "{{opsc_ssl_dir}}/opscenter_keystore.jks",
-      #"ssl_keystore_password": "{{cluster_keystore_password}}"
+      #"ssl_keystore_password": "{{cluster_keystore_password}}",
+      
+      #STORAGE CLUSTER'S TRUSTSTORE - NOT CURRENTLY USED
+      #"ssl_truststore": "{{opsc_ssl_dir}}/opscenter_truststore.jks",
+      #"ssl_truststore_password": "{{cluster_truststore_password}}"
     }
 }
 

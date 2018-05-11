@@ -1,0 +1,8 @@
+
+- name: Activate DSE Unified Authentication for JMX on DSE cluster -> cassandra-env.sh
+  template:
+    src: "templates/cassandra_env_sh_{{dse_major_version}}.j2"
+    dest: /etc/dse/cassandra/cassandra-env.sh
+    owner: "{{cassandra_owner}}"
+    group: "{{cassandra_group}}"
+    mode: 0644
