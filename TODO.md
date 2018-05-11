@@ -12,13 +12,15 @@
 5. Client->node should now uncomment truststore correctly allowing Spark thrift server secure access.
 6. Need to test opsc_security.yml end to end (may need rolling restarts due to SSL changes?)
 
-#### /ansible/group_vars/all - TODO :x:
+### Ansible Vault
 
-1. need to shift sensitive passwords to ansible.vault
+#### shift sensitive passwords to ansible vault
 
+vars: /ansible/group_vars/all - TODO :x:
 
+### DSE cluster Transport Encryption 
 
-### DSE cluster Transport Encryption -> playbook: dse_security.yml
+-> playbook: dse_security.yml
 
 FACT: For CA signed certs, change the name of the cert fields under "Root certificate" in group_vars/all and run dse_security with security_create_root_certificate
 commented out.
@@ -64,17 +66,29 @@ FACT: ACCESS DISABLED BY DEFAULT WHEN CLIENT->NODE ENABLED
 [To acivate](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/usingCqlshSslAndKerberos.html)
 
 
-### DSE cluster Authentication -> playbook: dse_authentication.yml - COMPLETE :heavy_check_mark:
+### DSE cluster Authentication 
+
+-> playbook: dse_authentication.yml
+
+#### Activate DSE cluster Unified Authentication - COMPLETE :heavy_check_mark:
 
 role: security_unified_auth_activate
 
-### DSE cluster Authorisation and Roles -> playbook: dse_authorisation_roles.yml
+### DSE cluster Authorisation and Roles 
 
-#### Superuser role replacement - IN PROGRESS :bug:
+-> playbook: dse_authorisation_roles.yml
+
+#### Superuser role replacement unencrypted - COMPLETE :heavy_check_mark:
+
+Used by opsc_authorisation_roles.py
+
+role: /ansible/roles/security_change_superuser
+
+#### Superuser role replacement encrypted SSL - IN PROGRESS :bug:
 
 Currently commented out, working on SSL usage of librabry/cassandra_roles.py
 
-Used by dse_authorisation_roles.yml and opsc_authorisation_roles.py
+Used by dse_authorisation_roles.yml
 
 role: /ansible/roles/security_change_superuser 
 
@@ -86,8 +100,9 @@ role: /ansible/roles/security_prerequisites
 ```
 ALTER KEYSPACE system_auth WITH REPLICATION = {'class' : 'NetworkTopologyStrategy', 'dc1' : 3, 'dc2' : 2};
 ```
+### Opscenter Transport Encryption 
 
-### Opscenter Transport Encryption -> playbook: opsc_security.yml
+-> playbook: opsc_security.yml
 
 #### Create opscenter keystores - COMPLETE :heavy_check_mark:
 
@@ -111,13 +126,13 @@ role: security_opsc_configure
 
 role: security_opsc_cluster_configure
 
-#### Configure Opscenter -> Agent encryption at OPSC SERVER level - COMPLETE :heavy_check_mark:
+#### Configure Opscenter -> Agent encryption at OPSC SERVER level - IN PROGRESS :bug:
 
 [OpsCenter enabling SSL](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
 
 role: security_opsc_configure
 
-#### Configure Opscenter -> Agent encryption at Agent level - TODO :x:
+#### Configure Opscenter -> Agent encryption at Agent level - IN PROGRESS :bug:
 
 [OpsCenter enabling SSL](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
 
@@ -125,7 +140,7 @@ role: security_opsc_configure
 
 role: security_opsc_agents_configure
 
-#### Configure OPSC SERVER -> DSE encryption and OPSC DSECORE -> DSE encryption - TODO :x:
+#### Configure OPSC SERVER -> DSE encryption and OPSC DSECORE -> DSE encryption - IN PROGRESS :bug:
 
 Various roles including: 
 
@@ -136,7 +151,9 @@ Various roles including:
 5. security_opsc_cluster_configure
 
 
-### Opscenter Authentication - playbook: opsc_authentication.yml
+### Opscenter Authentication
+
+playbook: opsc_authentication.yml
 
 #### Activate Opscenter internal authentication - TODO :x:
 
@@ -156,7 +173,16 @@ NOTE: Currently disabled in runansi_extended.sh due to work not complete on repl
 
 role: /ansible/roles/security_change_superuser
 
-### JMX Authentication -> playbook: jmx_authentication.yml
+### JMX Transport Encryption  - TODO :x:
+
+-> playbook: jmx_security.yml
+
+[Securing jConsole SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html)
+[Securing NodeTool SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html)
+
+### JMX Unified Authentication 
+
+-> playbook: jmx_authentication.yml
 
 [Enable JMX Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html)
 [Support Link](https://support.datastax.com/hc/en-us/articles/204226179-Step-by-step-instructions-for-securing-JMX-authentication-for-nodetool-utility-OpsCenter-and-JConsole
@@ -166,11 +192,6 @@ role: /ansible/roles/security_change_superuser
 [Managing JMX Access Control to MBeans](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secJmxAccessControl.html)
 
 role: /ansible/roles/security_jmx_auth_activate
-
-#### Client -> JMX over SSL - TODO :x:
-
-[Securing jConsole SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html)
-[Securing NodeTool SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html)
 
 ### LDAP Authentication - TODO :x:
 
@@ -216,52 +237,56 @@ role: security_spark_configure
 
 role: security_spark_auth_activate
 
-### Spark Authorization and Roles -> playbook: spark_authoroisation_roles.yml - TODO :x:
+### Spark Authorization and Roles 
+
+-> playbook: spark_authoroisation_roles.yml - TODO :x:
 
 1. Create a Spark role and user?
 2. Limit spark jobs by user?
 
-## playbook: solr_security - TODO 
+TODO:
 
-## playbook: graph_security - TODO 
+playbook: solr_security.yml
 
-## Nice haves
+playbook: graph_security.yml
 
-##  CQL schema managment
+###  CQL schema managment
 
-### /ansible/cql_schema_management (playbook):
+-> playbook: cql_schema_management.yml
 
 #### /ansible/roles/create_cql_schema
 
 #### /ansible/roles/modify_cql_schema
 
-## SOLR schema management
+### SOLR schema management
 
-### /ansible/solr_schema_management (playbook):
+-> playbook: solr_schema_management.yml
 
 #### /ansible/roles/create_solr_schema
 
 #### /ansible/roles/modify_solr_schema
 
-## Graph schema management
+### Graph schema management
 
-### /ansible/graph_schema_management (playbook):
+-> playbook: graph_schema_management.yml
 
 #### /ansible/roles/create_graph_schema
 
 #### /ansible/roles/modify_graph_schema
 
-## DSE role management
+### Role management
 
-### /ansible/role_management (playbook):
+-> playbook: role_management.yml
 
 #### /ansible/roles/create_role
 
 #### /ansible/roles/modify_role
 
-## Nodetool access
+### Nodetool access
 
-### /ansible/roles/nodetool_command
+-> playbook: nodetool_access.yml
+
+#### /ansible/roles/nodetool_command
 
 
 
