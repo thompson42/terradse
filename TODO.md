@@ -18,11 +18,11 @@
 
 vars: /ansible/group_vars/all - TODO :x:
 
-### DSE cluster Transport Encryption 
+# DSE cluster Transport Encryption 
 
 -> playbook: dse_security.yml
 
-FACT: For CA signed certs, change the name of the cert fields under "Root certificate" in group_vars/all and run dse_security with security_create_root_certificate
+FACT: For CA signed certs (Not self signed certs), change the name of the cert fields under "Root certificate" in /ansible/group_vars/all and run dse_security with security_create_root_certificate
 commented out.
 
 [Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
@@ -66,7 +66,7 @@ FACT: ACCESS DISABLED BY DEFAULT WHEN CLIENT->NODE ENABLED
 [To acivate](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/usingCqlshSslAndKerberos.html)
 
 
-### DSE cluster Authentication 
+# DSE cluster Authentication 
 
 -> playbook: dse_authentication.yml
 
@@ -74,7 +74,7 @@ FACT: ACCESS DISABLED BY DEFAULT WHEN CLIENT->NODE ENABLED
 
 role: security_unified_auth_activate
 
-### DSE cluster Authorisation and Roles 
+# DSE cluster Authorisation and Roles 
 
 -> playbook: dse_authorisation_roles.yml
 
@@ -100,7 +100,7 @@ role: /ansible/roles/security_prerequisites
 ```
 ALTER KEYSPACE system_auth WITH REPLICATION = {'class' : 'NetworkTopologyStrategy', 'dc1' : 3, 'dc2' : 2};
 ```
-### Opscenter Transport Encryption 
+# Opscenter Transport Encryption 
 
 -> playbook: opsc_security.yml
 
@@ -151,7 +151,7 @@ Various roles including:
 5. security_opsc_cluster_configure
 
 
-### Opscenter Authentication
+# Opscenter Authentication
 
 playbook: opsc_authentication.yml
 
@@ -161,7 +161,9 @@ playbook: opsc_authentication.yml
 
 role: /ansible/roles/security_unified_auth_activate
 
-### Opscenter Authorisation and Roles - playbook: opsc_authorisation_roles.yml
+# Opscenter Authorisation and Roles
+
+-> playbook: opsc_authorisation_roles.yml
 
 #### Replace Opscenter weak default user - TODO :x:
 
@@ -173,14 +175,14 @@ NOTE: Currently disabled in runansi_extended.sh due to work not complete on repl
 
 role: /ansible/roles/security_change_superuser
 
-### JMX Transport Encryption  - TODO :x:
+# JMX Transport Encryption  - TODO :x:
 
 -> playbook: jmx_security.yml
 
 [Securing jConsole SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html)
 [Securing NodeTool SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html)
 
-### JMX Unified Authentication 
+# JMX Unified Authentication 
 
 -> playbook: jmx_authentication.yml
 
@@ -198,7 +200,9 @@ role: /ansible/roles/security_jmx_auth_activate
 1. Configure selected authentication scheme options: [LDAP Schemes](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secLDAPScheme.html)
 2. Adjust the credentials_validity_in_ms and credentials_update_interval_in_ms as required for your environment in the dse.yaml.
 
-### Spark Transport Encryption -> playbook: spark_security.yml
+# Spark Transport Encryption 
+
+-> playbook: spark_security.yml
 
 [to Activate](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptSparkSSL.html)
 
@@ -233,13 +237,17 @@ role: security_spark_configure
 
 ???
 
-### Spark Authentication -> playbook: spark_authentication - COMPLETE :heavy_check_mark:
+# Spark Authentication 
+
+-> playbook: spark_authentication 
+
+#### Activate Spark Authentication - COMPLETE :heavy_check_mark:
 
 role: security_spark_auth_activate
 
-### Spark Authorization and Roles 
+# Spark Authorization and Roles 
 
--> playbook: spark_authoroisation_roles.yml - TODO :x:
+-> playbook: spark_authorisation_roles.yml - TODO :x:
 
 1. Create a Spark role and user?
 2. Limit spark jobs by user?
