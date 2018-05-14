@@ -25,7 +25,7 @@ vars: /ansible/group_vars/all - TODO :x:
 FACT: For CA signed certs (Not self signed certs), change the name of the cert fields under "Root certificate" in /ansible/group_vars/all and run dse_security with security_create_root_certificate
 commented out.
 
-[Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
+1. [Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
 
 #### generate self signed certificates for DSE - COMPLETE :heavy_check_mark:
 
@@ -49,13 +49,13 @@ role: security_distribute_keystores
 
 #### client -> node - COMPLETE :heavy_check_mark:
 
-[Encrypting client -> node SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptClientNodeSSL.html)
+1. [Encrypting Client -> Node SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptClientNodeSSL.html)
 
 role: security_client_to_node
 
 #### node -> node - COMPLETE :heavy_check_mark:
 
-[Internode encryption](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secInternodeSsl.html)
+1. [Internode Ecryption](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secInternodeSsl.html)
 
 role: security_node_to_node
 
@@ -63,7 +63,7 @@ role: security_node_to_node
 
 FACT: ACCESS DISABLED BY DEFAULT WHEN CLIENT->NODE ENABLED
 
-[To acivate](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/usingCqlshSslAndKerberos.html)
+1. [To Acivate](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/usingCqlshSslAndKerberos.html)
 
 
 # DSE cluster Authentication 
@@ -80,11 +80,11 @@ role: security_unified_auth_activate
 
 #### Superuser role replacement unencrypted - COMPLETE :heavy_check_mark:
 
-Used by opsc_authorisation_roles.py
+Used also by opsc_authorisation_roles.py
 
 role: /ansible/roles/security_change_superuser
 
-#### Superuser role replacement encrypted SSL - IN PROGRESS :bug:
+#### Superuser role replacement encrypted SSL - ON HOLD
 
 Currently commented out, working on SSL usage of librabry/cassandra_roles.py
 
@@ -118,7 +118,7 @@ role: security_opsc_distribute_truststores
 
 #### Browser -> Opscenter web (HTTPS) - COMPLETE :heavy_check_mark:
 
-[Opscenter enabling HTTPS](https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscConfiguringEnablingHttps_t.html)
+1. [Opscenter Enabling HTTPS](https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscConfiguringEnablingHttps_t.html)
 
 role: security_opsc_configure
 
@@ -128,19 +128,17 @@ role: security_opsc_cluster_configure
 
 #### Configure Opscenter -> Agent encryption at OPSC SERVER level - IN PROGRESS :bug:
 
-[OpsCenter enabling SSL](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
+1. [OpsCenter Enabling SSL](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
 
 role: security_opsc_configure
 
 #### Configure Opscenter -> Agent encryption at Agent level - IN PROGRESS :bug:
 
-[OpsCenter enabling SSL](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
-
 1. Need AWS environment to develop/test.
 
 role: security_opsc_agents_configure
 
-#### Configure OPSC SERVER -> DSE encryption and OPSC DSECORE -> DSE encryption - IN PROGRESS :bug:
+#### Configure OPSC SERVER -> DSE encryption and OPSC DSECORE -> DSE encryption - ON HOLD
 
 Various roles including: 
 
@@ -171,27 +169,25 @@ role: /ansible/roles/security_opsc_??
 
 #### Replace OPSC DSECore weak superuser - COMPLETE :heavy_check_mark:
 
-NOTE: Currently disabled in runansi_extended.sh due to work not complete on replacing via SSL DSE cluster superuser
-
 role: /ansible/roles/security_change_superuser
 
 # JMX Transport Encryption  - TODO :x:
 
 -> playbook: jmx_security.yml
 
-[Securing jConsole SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html)
-[Securing NodeTool SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html)
+1. [Securing jConsole SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html)
+2. [Securing NodeTool SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html)
 
 # JMX Unified Authentication 
 
 -> playbook: jmx_authentication.yml
 
-[Enable JMX Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html)
-[Support Link](https://support.datastax.com/hc/en-us/articles/204226179-Step-by-step-instructions-for-securing-JMX-authentication-for-nodetool-utility-OpsCenter-and-JConsole
+1. [Enable JMX Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html)
+2. [Support Link](https://support.datastax.com/hc/en-us/articles/204226179-Step-by-step-instructions-for-securing-JMX-authentication-for-nodetool-utility-OpsCenter-and-JConsole)
 
 #### Activate JMX Authentication - COMPLETE :heavy_check_mark:
 
-[Managing JMX Access Control to MBeans](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secJmxAccessControl.html)
+1. [Managing JMX Access Control to MBeans](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secJmxAccessControl.html)
 
 role: /ansible/roles/security_jmx_auth_activate
 
@@ -204,7 +200,7 @@ role: /ansible/roles/security_jmx_auth_activate
 
 -> playbook: spark_security.yml
 
-[to Activate](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptSparkSSL.html)
+1. [To Activate](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptSparkSSL.html)
 
 #### Browser -> Spark UI - COMPLETE :heavy_check_mark:
 

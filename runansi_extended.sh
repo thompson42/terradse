@@ -17,6 +17,24 @@ ansible-playbook -i hosts dse_install.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
+echo ">>>> Start DSE cluster in insecure mode... <<<<"
+echo
+ansible-playbook -i hosts dse_cluster_start.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
+echo
+echo ">>>> Configure DSE cluster Authorisation and Roles <<<<"
+echo
+ansible-playbook -i hosts dse_authorisation_roles.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
+echo
+echo ">>>> Stop DSE cluster... <<<<"
+echo
+ansible-playbook -i hosts dse_cluster_stop.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
+echo
 echo ">>>> Setup DSE cluster Transport Encryption <<<<"
 echo
 ansible-playbook -i hosts dse_security.yml --private-key=~/.ssh/id_rsa_aws
@@ -40,11 +58,7 @@ echo
 ansible-playbook -i hosts dse_cluster_start.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
-echo
-echo ">>>> Configure DSE cluster Authorisation and Roles - DISABLED <<<<"
-echo
-#ansible-playbook -i hosts dse_authorisation_roles.yml --private-key=~/.ssh/id_rsa_aws
-echo
+
 
 echo "---- Setup seperate Opscenter storage cluster and Opscenter server ----"
 
@@ -78,9 +92,9 @@ ansible-playbook -i hosts opsc_cluster_configure.yml --private-key=~/.ssh/id_rsa
 echo
 
 echo
-echo ">>>> Setup 1) Opscenter Authorisation/Roles and 2) OPSC DSECore Authorisation/Roles - DISABLED <<<<"
+echo ">>>> Setup 1) Opscenter Authorisation/Roles and 2) OPSC DSECore Authorisation/Roles <<<<"
 echo
-#ansible-playbook -i hosts opsc_authorisation_roles.yml --private-key=~/.ssh/id_rsa_aws
+ansible-playbook -i hosts opsc_authorisation_roles.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo ">>>> Configure Spark security...  <<<<"
