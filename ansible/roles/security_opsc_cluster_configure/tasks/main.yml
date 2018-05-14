@@ -8,17 +8,27 @@
 
 #EXPECTS: [hosts: localhost] [become: no] [connection: local] in playbook call
 # This method configures the monitored and storage cluster via a REST API call to OpsCenter
+
+- name: Start an authenticated session with OPSC via an API call
+  uri:
+    url: "https://{{groups['opsc_srv'][0]}}:{{opsc_web_port}}/login"
+    method: POST
+    body: {"username": "{{opscenter_username}}","password": "{{default_opscenter_password}}"}
+    status_code: 200
+    body_format: json
+    validate_certs: false
+    return_content: yes
+  register: session_json
+  
 - set_fact: cluster_name_json_template="cluster_name_json_{{dse_major_version}}.j2"
 
 - name: Configure the monitored and storage cluster via an API call top OpsCenter
   uri:
     url: "https://{{groups['opsc_srv'][0]}}:{{opsc_web_port}}/cluster-configs"
     method: POST
-    user: "{{opscenter_username}}"
-    password: "{{opscenter_password}}"
+    HEADER_opscenter-session: "{{session_json.json.sessionid}}"
     body: "{{ lookup('template', cluster_name_json_template) }}"
-    force_basic_auth: yes
-    status_code: 201
+    status_code: 200
     body_format: json
     validate_certs: false
     

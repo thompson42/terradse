@@ -71,10 +71,13 @@ ebs_devstr: xvda
 # Key Opscenter settings
 #-------------------------------------------------------------------------------
 opsc_web_port: 8443 #Opsc webserver AND API (unsecured 8888, secured 8443)
+
 opsc_config: /etc/opscenter/opscenterd.conf
 opsc_ssl_dir: /var/lib/opscenter/ssl
-opscenter_username: opscenter_username_here                                     #EDIT: Change from default (TODO: pull from ansible.vault)
-opscenter_password: opscenter_password_here                                     #EDIT: Change from default (TODO: pull from ansible.vault)
+
+opscenter_username: admin
+default_opscenter_password: admin
+secure_opscenter_password: opscenter_password_here                              #EDIT: Change from default (TODO: pull from ansible.vault)
 
 # Key JMX settings
 #-------------------------------------------------------------------------------

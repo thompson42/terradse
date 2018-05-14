@@ -29,7 +29,10 @@
   roles:
     - { role: security_install }
        
-# Configure OPSC SERVER [opscenterd.conf]: webserver HTTPS security, OPSC->Agent security
+# Configure OPSC SERVER [opscenterd.conf]: 
+# webserver HTTPS security, 
+# OPSC authentication activate
+# OPSC -> Agent security
 - hosts: opsc_srv
   any_errors_fatal: true
   become: true

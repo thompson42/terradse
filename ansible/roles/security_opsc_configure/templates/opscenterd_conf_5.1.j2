@@ -5,15 +5,15 @@ interface = 0.0.0.0
 # web application. Change these values to point to the ssl certificate and key
 # that you wish to use for your OpsCenter install, as well as the port you would like
 # to serve ssl traffic from.
-ssl_keyfile = "{{ opsc_ssl_dir }}/opscenter.key"
-ssl_certfile = "{{ opsc_ssl_dir }}/opscenter.der"
+ssl_keyfile = "{{ opsc_ssl_dir }}"/opscenter.key
+ssl_certfile = "{{ opsc_ssl_dir }}"/opscenter.der
 ssl_port = 8443
 
 [authentication]
 # Set this option to True to enable OpsCenter authentication.  A default admin
 # account will be created with the username "admin" and password "admin".
 # Accounts and roles can then be created and modified from within the web UI.
-enabled = False
+enabled = True
 
 # To help us better understand the needs of users and to improve OpsCenter, OpsCenter
 # reports information about itself and the clusters it manages to a central DataStax
@@ -26,10 +26,10 @@ enabled = False
 # interval = 86400 # 24 hours
 
 [agents]
-use_ssl = false
-ssl_keyfile =  "{{ opsc_ssl_dir }}/opscenter.key"
-ssl_certfile = "{{ opsc_ssl_dir }}/opscenter.der"
-agent_keyfile = "{{ opsc_ssl_dir }}/agentKeyStore"
-agent_keyfile_raw = "{{ opsc_ssl_dir }}/agentKeyStore.key" # for non-Java clients
-agent_certfile = "{{ opsc_ssl_dir }}/agentKeyStore.der"
+#use_ssl = False
+#ssl_keyfile =  "{{ opsc_ssl_dir }}"/opscenter.key
+#ssl_certfile = "{{ opsc_ssl_dir }}"/opscenter.der
+#agent_keyfile = "{{ opsc_ssl_dir }}"/agentKeyStore
+#agent_keyfile_raw = "{{ opsc_ssl_dir }}"/agentKeyStore.key # for non-Java clients
+#agent_certfile = "{{ opsc_ssl_dir }}"/agentKeyStore.der
 

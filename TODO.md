@@ -14,7 +14,7 @@
 
 ### Ansible Vault
 
-#### shift sensitive passwords to ansible vault
+#### Shift sensitive passwords to ansible vault
 
 vars: /ansible/group_vars/all - TODO :x:
 
@@ -27,39 +27,39 @@ commented out.
 
 1. [Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
 
-#### generate self signed certificates for DSE - COMPLETE :heavy_check_mark:
+#### Generate self signed certificates for DSE - COMPLETE :heavy_check_mark:
 
 role: security_create_root_certificate
 
-#### create DSE truststores - COMPLETE :heavy_check_mark:
+#### Create DSE truststores - COMPLETE :heavy_check_mark:
 
 role: security_create_truststores
 
-#### create DSE keystores - COMPLETE :heavy_check_mark:
+#### Create DSE keystores - COMPLETE :heavy_check_mark:
 
 role: security_create_keystores
 
-#### distribute DSE truststores - COMPLETE :heavy_check_mark:
+#### Distribute DSE truststores - COMPLETE :heavy_check_mark:
 
 role: security_distribute_truststores
 
-#### distribute DSE keystores - COMPLETE :heavy_check_mark:
+#### Distribute DSE keystores - COMPLETE :heavy_check_mark:
 
 role: security_distribute_keystores
 
-#### client -> node - COMPLETE :heavy_check_mark:
+#### Client -> Node - COMPLETE :heavy_check_mark:
 
 1. [Encrypting Client -> Node SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptClientNodeSSL.html)
 
 role: security_client_to_node
 
-#### node -> node - COMPLETE :heavy_check_mark:
+#### Node -> Node - COMPLETE :heavy_check_mark:
 
 1. [Internode Ecryption](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secInternodeSsl.html)
 
 role: security_node_to_node
 
-#### cqlsh -> node (local and remote) - COMPLETE :heavy_check_mark:
+#### CQLSH -> Node (local and remote) - COMPLETE :heavy_check_mark:
 
 FACT: ACCESS DISABLED BY DEFAULT WHEN CLIENT->NODE ENABLED
 
@@ -78,13 +78,13 @@ role: security_unified_auth_activate
 
 -> playbook: dse_authorisation_roles.yml
 
-#### Superuser role replacement unencrypted - COMPLETE :heavy_check_mark:
+#### Superuser role replacement via unencrypted driver call - COMPLETE :heavy_check_mark:
 
 Used also by opsc_authorisation_roles.py
 
 role: /ansible/roles/security_change_superuser
 
-#### Superuser role replacement encrypted SSL - ON HOLD
+#### Superuser role replacement via encrypted SSL driver call - ON HOLD
 
 Currently commented out, working on SSL usage of librabry/cassandra_roles.py
 
@@ -126,19 +126,20 @@ role: security_opsc_configure
 
 role: security_opsc_cluster_configure
 
-#### Configure Opscenter -> Agent encryption at OPSC SERVER level - IN PROGRESS :bug:
+#### Configure Opscenter -> Agent encryption at OPSC SERVER level - IN PROGRESS :x:
 
 1. [OpsCenter Enabling SSL](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
+1. Need AWS environment to develop/test.
 
 role: security_opsc_configure
 
-#### Configure Opscenter -> Agent encryption at Agent level - IN PROGRESS :bug:
+#### Configure Opscenter -> Agent encryption at Agent level - IN PROGRESS :x:
 
 1. Need AWS environment to develop/test.
 
 role: security_opsc_agents_configure
 
-#### Configure OPSC SERVER -> DSE encryption and OPSC DSECORE -> DSE encryption - ON HOLD
+#### Configure OPSC SERVER -> DSE encryption and OPSC DSECORE -> DSE encryption - IN PROGRESS :x:
 
 Various roles including: 
 
@@ -153,7 +154,9 @@ Various roles including:
 
 playbook: opsc_authentication.yml
 
-#### Activate Opscenter internal authentication - TODO :x:
+#### Activate Opscenter internal authentication - COMPLETE :heavy_check_mark:
+
+role: /ansible/roles/security_opsc_configure
 
 #### Activate OPSC DSECore Unified Authentication  - COMPLETE :heavy_check_mark:
 
@@ -163,9 +166,9 @@ role: /ansible/roles/security_unified_auth_activate
 
 -> playbook: opsc_authorisation_roles.yml
 
-#### Replace Opscenter weak default user - TODO :x:
+#### Replace Opscenter weak default user - COMPLETE :heavy_check_mark:
 
-role: /ansible/roles/security_opsc_??
+role: /ansible/roles/security_opsc_change_admin
 
 #### Replace OPSC DSECore weak superuser - COMPLETE :heavy_check_mark:
 

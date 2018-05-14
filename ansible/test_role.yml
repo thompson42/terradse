@@ -1,8 +1,8 @@
 
-# Activate DSE Unified Authentication on DSE nodes
-- hosts: dse[0]
+# change the password for the weak OPSC default admin account
+- hosts: opsc_srv
   any_errors_fatal: true
   become: true
   become_method: sudo
   roles:
-    - { role: security_jmx_auth_activate }
+    - { role: security_opsc_change_admin }
