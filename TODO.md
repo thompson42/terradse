@@ -171,9 +171,9 @@ role: /ansible/roles/security_opsc_??
 
 role: /ansible/roles/security_change_superuser
 
-# JMX Transport Encryption  - TODO :x:
+# JMX Transport Encryption
 
--> playbook: jmx_security.yml
+-> playbook: jmx_security.yml - TODO :x:
 
 1. [Securing jConsole SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html)
 2. [Securing NodeTool SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html)

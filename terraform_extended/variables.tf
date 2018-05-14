@@ -72,7 +72,7 @@ variable "instance_count" {
    default = {
       opsc      = 2
       cassandra = 0
-      solr      = 3
+      solr      = 0
       graph     = 3
       spark     = 0
    }
