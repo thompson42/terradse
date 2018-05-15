@@ -171,7 +171,6 @@ def main():
             
     try:
         replication_dc_str = calculate_keyspace_replication(replication_dc)
-
         query_str = "ALTER KEYSPACE " + keyspace_name + " WITH REPLICATION = {\'class\': \'" + replication_class + "\'" + replication_dc_str + "};"
         #session.execute(query_str)
     except Exception, e:

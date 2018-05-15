@@ -3,10 +3,11 @@
 # Host connection
 #-------------------------------------------------------------------------------
 #   - connection type: SSH
-#   - default SSH user 
+#   - default SSH user for ctool: automaton
+#   - defauklt user for openstack/AWS: ubuntu
 #
 ansible_connection: ssh
-ansible_user: automaton
+ansible_user: ubuntu
 
 # DSE Superuser account
 #-------------------------------------------------------------------------------
@@ -91,7 +92,7 @@ jaas_path: "{{dse_config_dir}}/cassandra/cassandra-jaas.config"
 #-------------------------------------------------------------------------------
 # JVM HEAP used by DSE
 #TODO: 
-#core/spark/graph should be 20G
+#dsecore/spark/graph should be 20G
 #solr should be 32GB (on larger nodes)
 heap_xms: 4G
 heap_xmx: 4G
