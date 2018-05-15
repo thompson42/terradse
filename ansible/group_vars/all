@@ -34,8 +34,8 @@ opscenter_group: opscenter
 dse_repo_file: /etc/apt/sources.list.d/datastax.sources.list
 
 #User name and password to download DSE (DataStax Academy)
-dse_repo_email: alex.thompson@datastax.com                                                             #EDIT: Change from default (TODO: pull from ansible.vault)
-dse_repo_password: Pan1naro                                                          #EDIT: Change from default (TODO: pull from ansible.vault)
+dse_repo_email: xxx                                                             #EDIT: Change from default (TODO: pull from ansible.vault)
+dse_repo_password: xxx                                                          #EDIT: Change from default (TODO: pull from ansible.vault)
 
 # Target/Current DSE verson
 dse_major_version: 5.1                                                          #used to choose the correct configuration templates

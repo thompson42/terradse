@@ -66,7 +66,7 @@ FACT: ACCESS DISABLED BY DEFAULT WHEN CLIENT->NODE ENABLED
 1. [To Acivate](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/usingCqlshSslAndKerberos.html)
 
 
-# DSE cluster Authentication 
+# DSE cluster Unified Authentication 
 
 -> playbook: dse_authentication.yml
 
@@ -92,7 +92,7 @@ Used by dse_authorisation_roles.yml
 
 role: /ansible/roles/security_change_superuser 
 
-#### Security table replication - TODO :x:
+#### Security table replication - COMPLETE :heavy_check_mark:
 
 role: /ansible/roles/security_prerequisites
 
@@ -126,20 +126,20 @@ role: security_opsc_configure
 
 role: security_opsc_cluster_configure
 
-#### Configure Opscenter -> Agent encryption at OPSC SERVER level - IN PROGRESS :x:
+#### Configure Opscenter -> Agent encryption at OPSC SERVER level - IN TESTING :?:
 
 1. [OpsCenter Enabling SSL](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
 1. Need AWS environment to develop/test.
 
 role: security_opsc_configure
 
-#### Configure Opscenter -> Agent encryption at Agent level - IN PROGRESS :x:
+#### Configure Opscenter -> Agent encryption at Agent level - IN TESTING :?:
 
 1. Need AWS environment to develop/test.
 
 role: security_opsc_agents_configure
 
-#### Configure OPSC SERVER -> DSE encryption and OPSC DSECORE -> DSE encryption - IN PROGRESS :x:
+#### Configure OPSC SERVER -> DSE encryption and OPSC DSECORE -> DSE encryption - IN TESTING :?:
 
 Various roles including: 
 
