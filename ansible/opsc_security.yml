@@ -38,7 +38,7 @@
   become: true
   become_method: sudo
   roles:
-    - { role: security_opsc_config }
+    - { role: security_opsc_configure }
     
 # Distribute combined OPSC DSECore / DSE truststores and keystores to OPSC nodes 
 # - (OPSC DSECore K/T Stores deployed but not currently used)
@@ -51,12 +51,12 @@
     - { role: security_distribute_keystores }
     
 # TODO: Configure all DSE agents with Transport security - need AWS environment
-- hosts: opsc_srv
-  any_errors_fatal: true
-  become: true
-  become_method: sudo
-  roles:
-    - { role: security_opsc_agents_configure }
+#- hosts: opsc_srv
+#  any_errors_fatal: true
+#  become: true
+#  become_method: sudo
+#  roles:
+#    - { role: security_opsc_agents_configure }
 
 # Start OPSC SERVER
 - hosts: opsc_srv

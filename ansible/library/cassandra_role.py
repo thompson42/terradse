@@ -224,9 +224,9 @@ def main():
             auth_provider = PlainTextAuthProvider(username=login_user, password=login_password)
             
             if is_ssl:
-                cluster = Cluster(login_hosts, auth_provider=auth_provider, protocol_version=3.3, port=login_port)
-            else:
                 cluster = Cluster(login_hosts, auth_provider=auth_provider, protocol_version=3.3, port=login_port, ssl_options=ssl_options)
+            else:
+                cluster = Cluster(login_hosts, auth_provider=auth_provider, protocol_version=3.3, port=login_port)
             
             session = cluster.connect()
             session.row_factory = dict_factory

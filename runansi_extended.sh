@@ -23,6 +23,12 @@ ansible-playbook -i hosts dse_cluster_start.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
+echo ">>>> Configure DSE Security Keyspaces - Strategy and Replication <<<<"
+echo
+ansible-playbook -i hosts dse_security_keyspaces_configure.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
+echo
 echo ">>>> Configure DSE cluster Authorisation and Roles <<<<"
 echo
 ansible-playbook -i hosts dse_authorisation_roles.yml --private-key=~/.ssh/id_rsa_aws

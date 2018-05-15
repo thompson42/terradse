@@ -5,8 +5,8 @@ interface = 0.0.0.0
 # web application. Change these values to point to the ssl certificate and key
 # that you wish to use for your OpsCenter install, as well as the port you would like
 # to serve ssl traffic from.
-ssl_keyfile = "{{ opsc_ssl_dir }}"/opscenter.key
-ssl_certfile = "{{ opsc_ssl_dir }}"/opscenter.der
+ssl_keyfile = {{ opsc_ssl_dir }}/opscenter.key
+ssl_certfile = {{ opsc_ssl_dir }}/opscenter.der
 ssl_port = 8443
 
 [authentication]
@@ -27,9 +27,9 @@ enabled = True
 
 [agents]
 #use_ssl = False
-#ssl_keyfile =  "{{ opsc_ssl_dir }}"/opscenter.key
-#ssl_certfile = "{{ opsc_ssl_dir }}"/opscenter.der
-#agent_keyfile = "{{ opsc_ssl_dir }}"/agentKeyStore
-#agent_keyfile_raw = "{{ opsc_ssl_dir }}"/agentKeyStore.key # for non-Java clients
-#agent_certfile = "{{ opsc_ssl_dir }}"/agentKeyStore.der
+#ssl_keyfile =  {{ opsc_ssl_dir }}/opscenter.key
+#ssl_certfile = {{ opsc_ssl_dir }}/opscenter.der
+#agent_keyfile = {{ opsc_ssl_dir }}/agentKeyStore
+#agent_keyfile_raw = {{ opsc_ssl_dir }}/agentKeyStore.key # for non-Java clients
+#agent_certfile = {{ opsc_ssl_dir }}/agentKeyStore.der
 

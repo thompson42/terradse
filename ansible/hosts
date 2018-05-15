@@ -43,8 +43,8 @@ graph_enabled=1
 auto_bootstrap=1
 
 [opsc_dsecore]
-10.200.180.114 private_ip=10.200.180.114 private_dns=ip-10.200.180.114.datastax.lan seed=true dc=DC1 rack=RAC1 vnode=1 initial_token=
-10.200.180.115 private_ip=10.200.180.115 private_dns=ip-10.200.180.115.datastax.lan seed=false dc=DC1 rack=RAC1 vnode=1 initial_token=
+10.200.182.112 private_ip=10.200.182.112 private_dns=ip-10.200.182.112.datastax.lan seed=true dc=DC1 rack=RAC1 vnode=1 initial_token=
+10.200.182.110 private_ip=10.200.182.110 private_dns=ip-10.200.182.110.datastax.lan seed=false dc=DC1 rack=RAC1 vnode=1 initial_token=
 
 [opsc_dsecore:vars]
 cluster_name=OpscCluster
@@ -54,12 +54,12 @@ graph_enabled=0
 auto_bootstrap=1
 
 [opsc_srv]
-10.200.180.114 private_ip=10.200.180.114
+10.200.182.110 private_ip=10.200.182.110
 
 [datastax_agent]
-10.200.182.54 private_ip=10.200.182.54  opsc_srv_ip=10.200.180.114
-10.200.182.55 private_ip=10.200.182.55  opsc_srv_ip=10.200.180.114
-10.200.182.57 private_ip=10.200.182.57 opsc_srv_ip=10.200.180.114
+10.200.182.54 private_ip=10.200.182.54  opsc_srv_ip=10.200.182.110
+10.200.182.55 private_ip=10.200.182.55  opsc_srv_ip=10.200.182.110
+10.200.182.57 private_ip=10.200.182.57 opsc_srv_ip=10.200.182.110
 
 [osparmchg:children]
 dse

@@ -5,9 +5,9 @@
     state: present
     update_cache: yes
   with_items:
-    - "dse={{dse_ver_target}}"
-#    - "dse-demos={{dse_ver_target}}"
     - "dse-full={{dse_ver_target}}" 
+    - "dse={{dse_ver_target}}"
+#    - "dse-demos={{dse_ver_target}}"    
     - "dse-libcassandra={{dse_ver_target}}"
     - "dse-libgraph={{dse_ver_target}}"
     - "dse-libhadoop2-client-native={{dse_ver_target}}"

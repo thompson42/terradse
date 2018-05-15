@@ -1,8 +1,7 @@
 
-# change the password for the weak OPSC default admin account
 - hosts: opsc_srv
   any_errors_fatal: true
   become: true
   become_method: sudo
   roles:
-    - { role: security_opsc_change_admin }
+    - { role: security_opsc_configure }

@@ -1,10 +1,11 @@
 
+
 - hosts: localhost
   any_errors_fatal: true
   become: no
   connection: local
   roles:
-    - { role: security_cassandra_change_superuser}
+    - { role: security_keyspaces_configure}
   vars:
     cql_target: "{{ groups['dse'][0] }}"
     is_cql_target_ssl: false

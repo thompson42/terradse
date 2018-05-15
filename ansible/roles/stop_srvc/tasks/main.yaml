@@ -2,12 +2,12 @@
 - name: Gracefully shutdown cassandra node
   command: "{{ item }}"
   with_items:
-    - "nodetool flush"
+    - "nodetool -u {{secure_super_user_account}} -pw {{secure_super_user_password}} flush"
 #    - "nodetool snapshot"
 #    - "nodetool disablethrift"
-    - "nodetool disablebinary"
-    - "nodetool disablegossip"
-    - "nodetool drain"
+    - "nodetool -u {{secure_super_user_account}} -pw {{secure_super_user_password}} disablebinary"
+    - "nodetool -u {{secure_super_user_account}} -pw {{secure_super_user_password}} disablegossip"
+    - "nodetool -u {{secure_super_user_account}} -pw {{secure_super_user_password}} drain"
 
 - name: Shut down "cassandra/dse" service
   service:
