@@ -1,13 +1,20 @@
 [dse:children]
 dse_core
 dse_search
+dse_analytics
+dse_graph
 
 [dse_core]
-192.168.1.9 private_ip=192.168.1.9  private_dns=ip-192-168-1-9.ec2.internal seed=true dc=core_dc rack=RAC1 vnode=1 initial_token=
+192.168.1.9 private_ip=192.168.1.9  private_dns=ip-192-168-1-9.ec2.internal seed=true dc=dse_core rack=RAC1 vnode=1 initial_token=
 
 [dse_search]
 
+[dse_analytics]
+
+[dse_graph]
+
 [dse:vars]
+ansible_python_interpreter=/usr/bin/python3
 cluster_name=MyAppCluster
 
 [dse_core:vars]
@@ -22,11 +29,22 @@ spark_enabled=0
 graph_enabled=0
 auto_bootstrap=1
 
+[dse_analytics:vars]
+solr_enabled=0
+spark_enabled=1
+graph_enabled=0
+auto_bootstrap=1
 
+[dse_graph:vars]
+solr_enabled=0
+spark_enabled=0
+graph_enabled=1
+auto_bootstrap=1
 
 [opsc_dsecore]
 
 [opsc_dsecore:vars]
+ansible_python_interpreter=/usr/bin/python3
 cluster_name=OpscCluster
 solr_enabled=0
 spark_enabled=0

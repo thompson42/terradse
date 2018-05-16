@@ -1,17 +1,23 @@
 [dse:children]
 dse_core
 dse_search
+dse_analytics
+dse_graph
 
 [dse_core]
-18.220.204.36 private_ip=172.31.10.221 seed=true dc=dse_core rack=RAC1 vnode=1 initial_token=
-18.216.134.200 private_ip=172.31.14.13 seed=false dc=dse_core rack=RAC1 vnode=1 initial_token=
 
 [dse_search]
-52.14.64.102 private_ip=172.31.3.196 seed=true dc=dse_search rack=RAC1 vnode=1 initial_token=
-18.221.222.116 private_ip=172.31.2.163 seed=false dc=dse_search rack=RAC1 vnode=1 initial_token=
+
+[dse_analytics]
+
+[dse_graph]
+10.200.178.121 private_ip=10.200.178.121  private_dns=ip-10-200-178-121.datastax.lan seed=true dc=dse_graph rack=RAC1 vnode=1 initial_token=
+10.200.178.122 private_ip=10.200.178.122  private_dns=ip-10-200-178-122.datastax.lan seed=false dc=dse_graph rack=RAC1 vnode=1 initial_token=
+10.200.178.123 private_ip=10.200.178.123 private_dns=ip-10-200-178-123.datastax.lan seed=false dc=dse_graph rack=RAC1 vnode=1 initial_token=
 
 [dse:vars]
-cluster_name=MyAppCluster
+ansible_python_interpreter=/usr/bin/python3
+cluster_name=DseCluster
 
 [dse_core:vars]
 solr_enabled=0
@@ -25,13 +31,24 @@ spark_enabled=0
 graph_enabled=0
 auto_bootstrap=1
 
+[dse_analytics:vars]
+solr_enabled=0
+spark_enabled=1
+graph_enabled=0
+auto_bootstrap=1
 
+[dse_graph:vars]
+solr_enabled=0
+spark_enabled=0
+graph_enabled=1
+auto_bootstrap=1
 
 [opsc_dsecore]
-52.14.255.11 private_ip=172.31.44.111 seed=true dc=DC1 rack=RAC1 vnode=1 initial_token=
-13.59.234.186 private_ip=172.31.32.234 seed=false dc=DC1 rack=RAC1 vnode=1 initial_token=
+10.200.178.124 private_ip=10.200.178.124 private_dns=ip-10-200-178-124.datastax.lan seed=true dc=DC1 rack=RAC1 vnode=1 initial_token=
+10.200.178.125 private_ip=10.200.178.125 private_dns=ip-10-200-178-125.datastax.lan seed=false dc=DC1 rack=RAC1 vnode=1 initial_token=
 
 [opsc_dsecore:vars]
+ansible_python_interpreter=/usr/bin/python3
 cluster_name=OpscCluster
 solr_enabled=0
 spark_enabled=0
@@ -39,18 +56,14 @@ graph_enabled=0
 auto_bootstrap=1
 
 [opsc_srv]
-52.14.255.11 private_ip=172.31.44.111
+10.200.178.124 private_ip=10.200.178.124
 
 [datastax_agent]
-18.220.204.36 private_ip=172.31.10.221 opsc_srv_ip=172.31.44.111
-18.216.134.200 private_ip=172.31.14.13 opsc_srv_ip=172.31.44.111
-52.14.255.11 private_ip=172.31.44.111 opsc_srv_ip=172.31.44.111
-13.59.234.186 private_ip=172.31.32.234 opsc_srv_ip=172.31.44.111
-52.14.64.102 private_ip=172.31.3.196 opsc_srv_ip=172.31.44.111
-18.221.222.116 private_ip=172.31.2.163 opsc_srv_ip=172.31.44.111
-
-
+10.200.178.121 private_ip=10.200.178.121  opsc_srv_ip=10.200.178.124
+10.200.178.122 private_ip=10.200.178.122  opsc_srv_ip=10.200.178.124
+10.200.178.123 private_ip=10.200.178.123 opsc_srv_ip=10.200.178.124
 
 [osparmchg:children]
 dse
 opsc_dsecore
+
