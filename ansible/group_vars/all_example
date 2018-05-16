@@ -4,7 +4,7 @@
 #-------------------------------------------------------------------------------
 #   - connection type: SSH
 #   - default SSH user for ctool: automaton
-#   - defauklt user for openstack/AWS: ubuntu
+#   - default user for openstack/AWS: ubuntu
 #
 ansible_connection: ssh
 ansible_user: ubuntu                                                            #EDIT: Change from default e.g. ec2-user, ubuntu, automaton etc

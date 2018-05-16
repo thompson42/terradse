@@ -1,2 +1,3 @@
 terraform_extended/.terraform
 *.retry
+ansible/group_vars/all
