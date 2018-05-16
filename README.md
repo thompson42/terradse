@@ -7,9 +7,17 @@
 
 This project has a [TODO](TODO.md)
 
-# Quickstart steps:
+## Hard edges:
 
-##Please only use Ubuntu 16.04 LTS for now as the target operating system
+1. Please only use Ubuntu 16.04 LTS for now as the target operating system.
+2. TerraDSE currently targets DSE 5.1.x and Opscenter 6.5, only use these for now.
+3. TerraDSE needs to run in the sequence defined in runterra_extended.sh due to dependant steps, please do not edit this process.
+4. TerraDSE expects to be able to get out of your network to install software from various locations including datastax.com, Ubuntu repos, Java repos and Python repos.
+5. TerraDSE currently gives you a reasonable level of security but holes do exist, please keep up to date with where we are at with security on the [TODO](TODO.md) page.
+6. This software is not owned or endorsed by Datastax.
+7. This software is offered free of charge with no promise of functionality or fitness of purpose and no liability for damages incurred from its use.
+
+# Quickstart steps:
 
 1. Set all params and cluster topology in terraform_extended/variables.tf
 2. Set all port rules and security in terraform_extended/ec2.tf, for AMZN VPC's you will need to modify this file
