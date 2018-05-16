@@ -16,6 +16,8 @@
     cassandra_role:
       state: absent
       name: "{{default_super_user_account}}"
+      is_ssl: "{{is_cql_target_ssl}}"
+      cert_path: "{{ssl_certs_path}}/{{cql_target}}.crt_signed"
       login_hosts: "{{cql_target}}"
       login_user: "{{secure_super_user_account}}"
       login_password: "{{secure_super_user_password}}"

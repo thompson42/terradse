@@ -16,26 +16,6 @@ This project has a [TODO](TODO.md)
 5. Run /genansinv_extended.sh (it will generate the required /ansible/hosts file)
 6. Run /runansi_extended.sh (expects your key to be: ~/.ssh/id_rsa_aws)
 
-Or manually activate security as required :
-
-DSE CLUSTER SECURITY: 
-
-1. Run DSE transport encryption lock down via ansible/dse_security.yml
-2. Run DSE authentication lock down via ansible/dse_authentication.yml
-3. Run DSE authorisation lock down via ansible/dse_authorisation_roles.yml - Currently DISADLED
-
-OPSCENTER SECURITY:
-
-1. Run OPSCENTER transport encryption lock down via ansible/opsc_security.yml
-2. Run OPSCENTER authentication lock down via ansible/opsc_authentication.yml
-3. Run OPSCENTER authorisation lock down via ansible/opsc_authorisation_roles.yml - Currently DISADLED
-
-SPARK SECURITY:
-
-1. Run SPARK transport encryption lock down via ansible/spark_security.yml
-2. Run SPARK authentication lock down via ansible/spark_authentication.yml
-3. Run SPARK authorisation lock down via ansible/spark_authorisation_roles.yml - Currently DISADLED
-
 # Basic processes: 
 
 The scripts in this repository have 3 major parts:

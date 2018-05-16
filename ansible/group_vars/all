@@ -7,7 +7,7 @@
 #   - defauklt user for openstack/AWS: ubuntu
 #
 ansible_connection: ssh
-ansible_user: ubuntu
+ansible_user: ubuntu                                                            #EDIT: Change from default e.g. ec2-user, ubuntu, automaton etc
 
 # DSE Superuser account
 #-------------------------------------------------------------------------------
@@ -15,8 +15,8 @@ ansible_user: ubuntu
 default_super_user_account: cassandra
 default_super_user_password: cassandra
 
-secure_super_user_account: "{{default_super_user_account}}"                     #EDIT: Change from default (TODO: pull from ansible.vault)
-secure_super_user_password: "{{default_super_user_password}}"                   #EDIT: Change from default (TODO: pull from ansible.vault)
+secure_super_user_account: TestAdmin                                            #EDIT: Change from default (TODO: pull from ansible.vault)
+secure_super_user_password: TestAdminPassword                                   #EDIT: Change from default (TODO: pull from ansible.vault)
 
 # File permissions
 # Don't confuse cassandra OS account with cassandra internal superuser account
@@ -60,14 +60,15 @@ vnode_token_num_spark: 32
 
 # data directories - need to modify these paths to reflect the mount point of 
 # your EBS drive/s OR ephemeral stores
-data_file_directories:  /var/lib/cassandra/data
-hints_directory: /var/lib/cassandra/hints
-commitlog_directory: /var/lib/cassandra/commitlog
-saved_caches_directory: /var/lib/cassandra/saved_caches
+data_file_directories:  /var/lib/cassandra/data                                 #EDIT: Change from default
+hints_directory: /var/lib/cassandra/hints                                       #EDIT: Change from default
+commitlog_directory: /var/lib/cassandra/commitlog                               #EDIT: Change from default
+saved_caches_directory: /var/lib/cassandra/saved_caches                         #EDIT: Change from default
 
 # Block device string (xvd...) for the EBS volume attached for DSE data
 # consumed in dse_osparm_change.yml and opsc_osparm_change.yml
-ebs_devstr: xvda
+# IGNORE THIS SETTING , MAY BE RE-PURPOSED FOR DIRECTLY ATTATCHED SSDS
+ebs_devstr: xvda                                                                
 
 # Key Opscenter settings
 #-------------------------------------------------------------------------------
@@ -94,17 +95,16 @@ jaas_path: "{{dse_config_dir}}/cassandra/cassandra-jaas.config"
 #TODO: 
 #dsecore/spark/graph should be 20G
 #solr should be 32GB (on larger nodes)
-heap_xms: 4G
-heap_xmx: 4G
+heap_xms: 4G                                                                    #EDIT: Change from default
+heap_xmx: 4G                                                                    #EDIT: Change from default
 
-# Key role: security_dse_unified_authentication settings (TODO):
+# Key role: security_dse_unified_authentication (info only):
 #-------------------------------------------------------------------------------
 #DCs < 3x nodes use an RF=1
 #DCs < 9x nodes use an RF=3
 #DCs > 9x nodes use an RF=5
 # For the above RF settings see the matching ansible module:
 # library/cassandra_security_keyspaces.py
-security_table_replication_factor: 1
 
 # Encryption settings for truststores / keystores
 #-------------------------------------------------------------------------------

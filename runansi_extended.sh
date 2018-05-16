@@ -29,6 +29,24 @@ ansible-playbook -i hosts dse_security_keyspaces_configure.yml --private-key=~/.
 echo
 
 echo
+echo ">>>> Stop DSE cluster... <<<<"
+echo
+ansible-playbook -i hosts dse_cluster_stop.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
+echo
+echo ">>>> Activate DSE cluster Unified Authentication <<<<"
+echo
+ansible-playbook -i hosts dse_authentication.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
+echo
+echo ">>>> Start DSE cluster with Ubified Authentication but no Transport Security <<<<"
+echo
+ansible-playbook -i hosts dse_cluster_start.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
+echo
 echo ">>>> Configure DSE cluster Authorisation and Roles <<<<"
 echo
 ansible-playbook -i hosts dse_authorisation_roles.yml --private-key=~/.ssh/id_rsa_aws
@@ -44,12 +62,6 @@ echo
 echo ">>>> Setup DSE cluster Transport Encryption <<<<"
 echo
 ansible-playbook -i hosts dse_security.yml --private-key=~/.ssh/id_rsa_aws
-echo
-
-echo
-echo ">>>> Activate DSE cluster Unified Authentication <<<<"
-echo
-ansible-playbook -i hosts dse_authentication.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo

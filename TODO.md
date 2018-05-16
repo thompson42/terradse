@@ -11,7 +11,7 @@
 4. /genansinv_extended.sh: Test properly indicates new DC names that are now same as block e.g.: [dse_core]
 5. Client->node should now uncomment truststore correctly allowing Spark thrift server secure access.
 6. Need to test opsc_security.yml end to end (may need rolling restarts due to SSL changes?)
-7. TerraDSE EXPECTS Python3 and Ubuntu 16.04 LTS
+7. TerraDSE EXPECTS Python3, python3-pip and Ubuntu 16.04 LTS
 
 ### Ansible Vault
 

@@ -5,14 +5,14 @@
     state: present
     update_cache: yes
   with_items:
-    - "python-pip"
-    - "python-dev"
+    - "python3-pip"
+    - "python3-dev"
     - "build-essential"
     
-- name: Install pyOpenSSL via pip
-  pip:
-    name: pyOpenSSL
-    state: present
+#- name: Install pyOpenSSL via pip
+#  pip:
+#    name: pyOpenSSL
+#    state: present
 
 - name: Install ruamel.yaml via pip ( used by ansible/library/yedit)
   pip:
