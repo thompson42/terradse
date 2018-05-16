@@ -9,6 +9,8 @@ This project has a [TODO](TODO.md)
 
 # Quickstart steps:
 
+##Please only use Ubuntu 16.04 LTS for now as the target operating system
+
 1. Set all params and cluster topology in terraform_extended/variables.tf
 2. Set all port rules and security in terraform_extended/ec2.tf, for AMZN VPC's you will need to modify this file
 3. Set all paths and vars in ansible/group_vars/all mared with [EDIT] only
