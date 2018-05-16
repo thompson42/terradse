@@ -5,7 +5,7 @@ This project has a [TODO](TODO.md)
 #Requires the following python libraries on the Ansible machine
 
 1. pip install ruamel.yaml
-2. pip install cassandra-driver
+2. pip install dse-driver
 3. pip install pyopenssl
 
 ## Hard edges:

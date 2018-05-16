@@ -81,9 +81,9 @@ EXAMPLES = '''
 '''
 
 try:
-    from cassandra.cluster import Cluster
-    from cassandra.auth import PlainTextAuthProvider
-    from cassandra.query import dict_factory
+    from dse.cluster import Cluster
+    from dse.auth import PlainTextAuthProvider
+    from dse.query import dict_factory
 except ImportError:
     cassandra_dep_found = False
 else:

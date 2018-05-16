@@ -1,5 +1,6 @@
 ---
-# WARNING internode_encryption off
+# WARNING internode_encryption=all, if adding a new DC change internode_encryption=dc,
+# add the new DC, bootstrap the nodes then change back to encryption=all
 - name: Configure Node -> Node encryption in cassandra.yaml
   yedit:
     src: "{{ dse_config_dir }}/cassandra/cassandra.yaml"
