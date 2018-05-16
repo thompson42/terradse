@@ -10,7 +10,7 @@
     return_content: yes
   register: session_json
 
-- name: Change the weak default admin password via an API call top OpsCenter
+- name: Change the weak default admin password via an API call to OpsCenter
   uri:
     url: "https://{{groups['opsc_srv'][0]}}:{{opsc_web_port}}/users/admin"
     method: PUT
