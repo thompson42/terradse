@@ -119,20 +119,17 @@ role: security_opsc_configure
 
 role: security_opsc_cluster_configure
 
-#### Configure Opscenter -> Agent encryption at OPSC SERVER level - IN TESTING :?:
+#### Configure Opscenter -> Agent encryption at OPSC SERVER level - COMPLETE :heavy_check_mark:
 
 1. [OpsCenter Enabling SSL](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
-1. Need AWS environment to develop/test.
 
 role: security_opsc_configure
 
-#### Configure Opscenter -> Agent encryption at Agent level - IN TESTING :?:
-
-1. Need AWS environment to develop/test.
+#### Configure Opscenter -> Agent encryption at Agent level - COMPLETE :heavy_check_mark:
 
 role: security_opsc_agents_configure
 
-#### Configure OPSC SERVER -> DSE encryption and OPSC DSECORE -> DSE encryption - IN TESTING :?:
+#### Configure OPSC SERVER -> DSE encryption and OPSC DSECORE -> DSE encryption - ON HOLD
 
 Various roles including: 
 
@@ -225,9 +222,9 @@ or by default in /etc/dse/spark/spark-defaults.conf
 
 role: security_spark_configure
 
-#### Client -> AlwaysOnSQL port - TODO :x:
+#### Client -> AlwaysOnSQL port - ON HOLD
 
-???
+Only applicable for DSE 6.0+  - this solution only supports DSE 5.1.x at this point.
 
 # Spark Authentication 
 

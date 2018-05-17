@@ -2,17 +2,17 @@
 
 This project has a [TODO](TODO.md)
 
-#Requires the following python libraries on the Ansible machine
+#Requires the following python libraries on the Ansible host machine
 
 1. pip install ruamel.yaml
 2. pip install dse-driver
 3. pip install pyopenssl
 
-## Hard edges:
+## Sharp edges:
 
-1. Please only use Ubuntu 16.04 LTS for now as the target operating system.
+1. Please only use Ubuntu 16.04 LTS for now as the target operating system (tested on 16.04.2)
 2. TerraDSE currently targets DSE 5.1.x and Opscenter 6.5, only use these for now.
-3. TerraDSE needs to run in the sequence defined in runterra_extended.sh due to dependant steps, please do not edit this process.
+3. TerraDSE needs to run in the sequence defined in runterra_extended.sh due to dependent steps, please do not edit this process.
 4. TerraDSE expects to be able to get out of your network to install software from various locations including datastax.com, Ubuntu repos, Java repos and Python repos.
 5. TerraDSE currently gives you a reasonable level of security but holes do exist, please keep up to date with where we are at with security on the [TODO](TODO.md) page.
 6. This software is not owned or endorsed by Datastax.
