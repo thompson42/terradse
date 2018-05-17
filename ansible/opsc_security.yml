@@ -1,26 +1,5 @@
 
-# Stop opsc_srv
-- hosts: opsc_srv
-  any_errors_fatal: true
-  become: true
-  become_method: sudo
-  tasks: 
-  - name: Stop OpsCenter service
-    service:
-      name: "opscenterd"
-      state: stopped
-          
-# Stop all DSE agents
-- hosts: datastax_agent 
-  any_errors_fatal: true
-  become: true
-  become_method: sudo
-  tasks:
-  - name: Stop datastax-agent service
-    service:
-      name: "datastax-agent"
-      state: stopped
-       
+  
 # Configure OPSC SERVER [opscenterd.conf]: 
 # webserver HTTPS security, 
 # OPSC authentication activate
@@ -43,28 +22,28 @@
     - { role: security_distribute_keystores }
     
 # Fetch the pre-built (at install time) /var/lib/opscenter/ssl/agentKeyStore from the OPSC SERVER
-#- hosts: opsc_srv
-#  any_errors_fatal: true
-#  become: true
-#  become_method: sudo
-#  roles:
-#    - { role: security_opsc_agent_fetch_keystore }
+- hosts: opsc_srv
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_opsc_agent_fetch_keystore }
     
 # Distribute the pre-built (at install time) /var/lib/opscenter/ssl/agentKeyStore to DSE nodes
-#- hosts: dse
-#  any_errors_fatal: true
-#  become: true
-#  become_method: sudo
-#  roles:
-#    - { role: security_opsc_agent_distribute_keystore }
+- hosts: dse
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_opsc_agent_distribute_keystore }
 
 # Activate OPSC SERVER -> Agent SSL in Agent address.yaml
-#- hosts: dse
-#  any_errors_fatal: true
-#  become: true
-#  become_method: sudo
-#  roles:
-#    - { role: security_opsc_agents_activate_ssl }
+- hosts: dse
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_opsc_agents_activate_ssl }
 
 # Start OPSC SERVER
 - hosts: opsc_srv

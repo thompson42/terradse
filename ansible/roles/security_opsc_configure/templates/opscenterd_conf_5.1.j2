@@ -26,10 +26,10 @@ enabled = True
 # interval = 86400 # 24 hours
 
 [agents]
-#use_ssl = True
-#ssl_keyfile =  {{ opsc_ssl_dir }}/opscenter.key
-#ssl_certfile = {{ opsc_ssl_dir }}/opscenter.der
-#agent_keyfile = {{ opsc_ssl_dir }}/agentKeyStore
-#agent_keyfile_raw = {{ opsc_ssl_dir }}/agentKeyStore.key # for non-Java clients
-#agent_certfile = {{ opsc_ssl_dir }}/agentKeyStore.der
+use_ssl = True
+ssl_keyfile =  {{ opsc_ssl_dir }}/opscenter.key
+ssl_certfile = {{ opsc_ssl_dir }}/opscenter.der
+agent_keyfile = {{ opsc_ssl_dir }}/agentKeyStore
+agent_keyfile_raw = {{ opsc_ssl_dir }}/agentKeyStore.key # for non-Java clients
+agent_certfile = {{ opsc_ssl_dir }}/agentKeyStore.der
 

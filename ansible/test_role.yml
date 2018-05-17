@@ -1,9 +1,12 @@
 
 
-# Activate OPSC SERVER -> Agent SSL in Agent address.yaml
-- hosts: dse
+# Start all DSE agents
+- hosts: datastax_agent 
   any_errors_fatal: true
   become: true
   become_method: sudo
-  roles:
-    - { role: security_opsc_agents_activate_ssl }
+  tasks:
+  - name: Start datastax-agent service
+    service:
+      name: "datastax-agent"
+      state: started
