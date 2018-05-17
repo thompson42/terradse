@@ -35,6 +35,12 @@ ansible-playbook -i hosts dse_cluster_stop.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
+echo ">>>> Install DSE security dependencies <<<<"
+echo
+ansible-playbook -i hosts dse_security_install_dependencies.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
+echo
 echo ">>>> Activate DSE cluster Unified Authentication <<<<"
 echo
 ansible-playbook -i hosts dse_authentication.yml --private-key=~/.ssh/id_rsa_aws
@@ -90,6 +96,13 @@ echo
 echo ">>>> Install OpsCenter server (OPSC_SRV) and separate storage cluster (OPSC DSECore)  <<<<"
 echo
 ansible-playbook -i hosts opsc_install.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
+echo
+echo ">>>> Install OPSC security dependencies <<<<"
+echo
+ansible-playbook -i hosts opsc_security_install_dependencies.yml --private-key=~/.ssh/id_rsa_aws
+echo
 
 echo
 echo ">>>> Setup Opscenter storage cluster (OPSC DSECore) Authentication <<<<"

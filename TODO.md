@@ -1,17 +1,9 @@
 
-## Users and OS accounts:
-
-1. Audit all final file ownership on target dse nodes (ctool comparable sys.)
 
 ## Testing
 
 1. Need to check Vnode allocation on all types (core, search,analytic, graph) in a dry run.
-2. /genansinv_extended.sh: Test properly moves private_ip into public_ip if no public_ip exists
-3. /genansinv_extended.sh: Test properly exposes private_dns in hosts file sourced from terraform.tfstate for each node. (used by role: security_dse_create_keystores)
-4. /genansinv_extended.sh: Test properly indicates new DC names that are now same as block e.g.: [dse_core]
-5. Client->node should now uncomment truststore correctly allowing Spark thrift server secure access.
-6. Need to test opsc_security.yml end to end (may need rolling restarts due to SSL changes?)
-7. TerraDSE EXPECTS Python3, python3-pip and Ubuntu 16.04 LTS
+2. Audit all final file ownership on target dse nodes (ctool comparable sys.)
 
 ### Ansible Vault
 

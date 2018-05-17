@@ -1,9 +1,9 @@
 
 
-# Fetch the pre-built (at install time) agentKeyStore from the OPSC SERVER
+# Activate OPSC SERVER -> Agent SSL in Agent address.yaml
 - hosts: dse
   any_errors_fatal: true
   become: true
   become_method: sudo
   roles:
-    - { role: security_opsc_agent_distribute_keystore }
+    - { role: security_opsc_agents_activate_ssl }

@@ -45,7 +45,7 @@
         state: present
         update_cache: yes
         
-    - name: Configure stomp_address
+    - name: Configure stomp_address and place in SSL mode
       lineinfile:
         name: "/var/lib/datastax-agent/conf/address.yaml"
         regexp: "{{ item.regexp }}"

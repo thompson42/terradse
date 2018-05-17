@@ -1,11 +1,4 @@
 
-# Install DSE security software dependencies on all nodes
-- hosts: dse
-  any_errors_fatal: true
-  become: yes
-  become_method: sudo
-  roles:
-    - { role: security_install }
 
 #generate self signed certificates - OPTIONAL IF CA ROOT CERT SUPPLIED.
 - hosts: localhost

@@ -1,0 +1,9 @@
+
+
+- name: Activate OPSC SERVER -> Agent SSL in Agent address.yaml
+  lineinfile:
+    name: "/var/lib/datastax-agent/conf/address.yaml"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: '# use_ssl: 0', line: "use_ssl: 1" }
