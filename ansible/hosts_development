@@ -14,7 +14,6 @@ dse_graph
 [dse_graph]
 
 [dse:vars]
-ansible_python_interpreter=/usr/bin/python3
 cluster_name=MyAppCluster
 
 [dse_core:vars]
@@ -44,7 +43,6 @@ auto_bootstrap=1
 [opsc_dsecore]
 
 [opsc_dsecore:vars]
-ansible_python_interpreter=/usr/bin/python3
 cluster_name=OpscCluster
 solr_enabled=0
 spark_enabled=0

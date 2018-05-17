@@ -189,11 +189,9 @@ done
 pmsg "" $DSE_ANSINV_FILE
 
 pmsg "[dse:vars]" $DSE_ANSINV_FILE
-pmsg "ansible_python_interpreter=/usr/bin/python3" $DSE_ANSINV_FILE
 pmsg "cluster_name=$DSE_APPCLUSTER_NAME" $DSE_ANSINV_FILE
 pmsg "" $DSE_ANSINV_FILE
 pmsg "[dse_core:vars]" $DSE_ANSINV_FILE
-pmsg "ansible_python_interpreter=/usr/bin/python3" $DSE_ANSINV_FILE
 pmsg "solr_enabled=0" $DSE_ANSINV_FILE
 pmsg "spark_enabled=0" $DSE_ANSINV_FILE
 pmsg "graph_enabled=0" $DSE_ANSINV_FILE

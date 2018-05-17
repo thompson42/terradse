@@ -1,0 +1,15 @@
+
+# TODO: Not going to work as need access to both clusters ( DSE openstack problem)
+# Copy /var/lib/opscenter/ssl/agentKeyStore from the OpsCenter machine to /var/lib/datastax-agent/ssl/agentKeyStore on DSE cluster nodes  
+#   - name: Copy agentKeyStore from the OpsCenter machine to Agent machines
+#     synchronize: src=/var/lib/opscenter/ssl/agentKeyStore dest=/var/lib/datastax-agent/ssl/agentKeyStore
+#     delegate_to: opsc_srv
+
+# Fetch the pre-built (at install time) /var/lib/opscenter/ssl/agentKeyStore from the OPSC SERVER
+- fetch:
+    src: /var/lib/opscenter/ssl/agentKeyStore
+    dest: "{{ssl_certs_path}}/"
+    flat: yes
+
+# On each dse node configure agent:/var/lib/datastax-agent/conf/address.yaml
+#use_ssl: 0

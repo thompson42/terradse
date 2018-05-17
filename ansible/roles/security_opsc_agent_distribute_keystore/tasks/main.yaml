@@ -1,0 +1,13 @@
+
+# Create the target directory on the DSE node if it does not exist
+- name: Create the target ssl/ directory for the agentKeyStore on the DSE node if it does not exist
+  file: path=/var/lib/datastax-agent/ssl/ state=directory
+
+# Distribute the pre-built (at install time) /var/lib/opscenter/ssl/agentKeyStore to DSE nodes
+- name: Distribute the pre-built (at install time) /var/lib/opscenter/ssl/agentKeyStore to DSE nodes
+  copy:
+    src: "{{ssl_certs_path}}/agentKeyStore"
+    dest: /var/lib/datastax-agent/ssl/agentKeyStore
+    owner: "{{cassandra_owner}}"
+    group: "{{cassandra_group}}"
+    mode: 0644

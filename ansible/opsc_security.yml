@@ -50,13 +50,21 @@
     - { role: security_distribute_truststores }
     - { role: security_distribute_keystores }
     
-# TODO: Configure all DSE agents with Transport security - need AWS environment
+# Fetch the pre-built (at install time) /var/lib/opscenter/ssl/agentKeyStore from the OPSC SERVER
 #- hosts: opsc_srv
 #  any_errors_fatal: true
 #  become: true
 #  become_method: sudo
 #  roles:
-#    - { role: security_opsc_agents_configure }
+#    - { role: security_opsc_agent_fetch_keystore }
+    
+# Distribute the pre-built (at install time) /var/lib/opscenter/ssl/agentKeyStore to DSE nodes
+#- hosts: dse
+#  any_errors_fatal: true
+#  become: true
+#  become_method: sudo
+#  roles:
+#    - { role: security_opsc_agent_distribute_keystore }
 
 # Start OPSC SERVER
 - hosts: opsc_srv

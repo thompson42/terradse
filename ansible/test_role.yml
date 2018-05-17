@@ -1,16 +1,9 @@
 
 
-- hosts: localhost
+# Fetch the pre-built (at install time) agentKeyStore from the OPSC SERVER
+- hosts: dse
   any_errors_fatal: true
-  become: no
-  connection: local
-  tasks:
-    - name: DROP default insecure cassandra/cassandra superuser account
-      cassandra_role:
-        state: absent
-        name: "{{default_super_user_account}}"
-        is_ssl: false
-        cert_path: test.crt_signed"
-        login_hosts: "{{ groups['dse'][0] }}"
-        login_user: "{{secure_super_user_account}}"
-        login_password: "{{secure_super_user_password}}"
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_opsc_agent_distribute_keystore }

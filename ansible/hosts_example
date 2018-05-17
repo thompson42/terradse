@@ -16,7 +16,6 @@ dse_graph
 10.200.178.123 private_ip=10.200.178.123 private_dns=ip-10-200-178-123.datastax.lan seed=false dc=dse_graph rack=RAC1 vnode=1 initial_token=
 
 [dse:vars]
-ansible_python_interpreter=/usr/bin/python3
 cluster_name=DseCluster
 
 [dse_core:vars]
@@ -48,7 +47,6 @@ auto_bootstrap=1
 10.200.178.125 private_ip=10.200.178.125 private_dns=ip-10-200-178-125.datastax.lan seed=false dc=DC1 rack=RAC1 vnode=1 initial_token=
 
 [opsc_dsecore:vars]
-ansible_python_interpreter=/usr/bin/python3
 cluster_name=OpscCluster
 solr_enabled=0
 spark_enabled=0

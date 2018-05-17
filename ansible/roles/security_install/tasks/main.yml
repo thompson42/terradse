@@ -5,8 +5,8 @@
     state: present
     update_cache: yes
   with_items:
-    - "python3-pip"
-    - "python3-dev"
+    - "python-pip"
+    - "python-dev"
     - "build-essential"
     
 #- name: Install pyOpenSSL via pip
