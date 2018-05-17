@@ -107,7 +107,7 @@ echo
 echo
 echo ">>>> Setup Opscenter storage cluster (OPSC DSECore) Authentication <<<<"
 echo
-ansible-playbook -i hosts opsc_authentication.yml --private-key=~/.ssh/id_rsa_aws
+ansible-playbook -i hosts opsc_dsecore_authentication.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
@@ -117,9 +117,9 @@ ansible-playbook -i hosts opsc_cluster_start.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
-echo ">>>> Setup 1) Opscenter Authorisation/Roles and 2) OPSC DSECore Authorisation/Roles <<<<"
+echo ">>>> Setup OPSC DSECore cluster Authorisation/Roles <<<<"
 echo
-ansible-playbook -i hosts opsc_authorisation_roles.yml --private-key=~/.ssh/id_rsa_aws
+ansible-playbook -i hosts opsc_dsecore_authorisation_roles.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
@@ -129,18 +129,18 @@ ansible-playbook -i hosts opsc_security.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
+echo ">>>> Setup 1) Opscenter Authorisation/Roles <<<<"
+echo
+ansible-playbook -i hosts opsc_authorisation_roles.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
+echo
 echo ">>>> Inject Opscenter cluster configuration via API call -> cluster_name.conf <<<<"
 echo
 ansible-playbook -i hosts opsc_cluster_configure.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
-echo
-echo ">>>> Setup 1) Opscenter Authorisation/Roles and 2) OPSC DSECore Authorisation/Roles <<<<"
-echo
-ansible-playbook -i hosts opsc_authorisation_roles.yml --private-key=~/.ssh/id_rsa_aws
-echo
-
-echo ">>>> Configure Spark security...  <<<<"
+echo ">>>> Configure Spark security in datacenter: dse_analytics...  <<<<"
 
 echo
 echo ">>>> Stop analyics datacenter <<<<"

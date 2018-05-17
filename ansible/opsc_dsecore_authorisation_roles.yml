@@ -1,0 +1,11 @@
+
+# change the weak default cassandra user for the OPSC DSECore cluster
+- hosts: localhost
+  any_errors_fatal: true
+  become: no
+  connection: local
+  roles:
+    - { role: security_cassandra_change_superuser}
+  vars:
+    cql_target: "{{ groups['opsc_dsecore'][0] }}"
+    is_cql_target_ssl: false
