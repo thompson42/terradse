@@ -75,7 +75,7 @@ role: security_unified_auth_activate
 
 Used also by opsc_authorisation_roles.py
 
-role: /ansible/roles/security_change_superuser
+role: /ansible/roles/security_cassandra_change_superuser
 
 #### Superuser role replacement via encrypted SSL driver call - ON HOLD
 
@@ -83,16 +83,12 @@ Currently commented out, working on SSL usage of librabry/cassandra_roles.py
 
 Used by dse_authorisation_roles.yml
 
-role: /ansible/roles/security_change_superuser 
+role: /ansible/roles/security_cassandra_change_superuser 
 
 #### Security table replication - COMPLETE :heavy_check_mark:
 
-role: /ansible/roles/security_prerequisites
+role: /ansible/roles/security_keyspaces_configure
 
-1. need to read hosts file, now exposes DC same as a group, need group and count to produce replication to each DC:
-```
-ALTER KEYSPACE system_auth WITH REPLICATION = {'class' : 'NetworkTopologyStrategy', 'dc1' : 3, 'dc2' : 2};
-```
 # Opscenter Transport Encryption 
 
 -> playbook: opsc_security.yml
@@ -121,15 +117,21 @@ role: security_opsc_cluster_configure
 
 #### Configure Opscenter -> Agent encryption at OPSC SERVER level - COMPLETE :heavy_check_mark:
 
-1. [OpsCenter Enabling SSL](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscEnableSSLpkg.html)
+[Enabling SSL/TLS for OpsCenter and Agent communication - Package Installs](https://docs.datastax.com/en/opscenter/6.5/opsc/configure/opscEnableSSLpkg.html)
 
 role: security_opsc_configure
 
 #### Configure Opscenter -> Agent encryption at Agent level - COMPLETE :heavy_check_mark:
 
-role: security_opsc_agents_configure
+[Enabling SSL/TLS for OpsCenter and Agent communication - Package Installs](https://docs.datastax.com/en/opscenter/6.5/opsc/configure/opscEnableSSLpkg.html)
+
+role: security_opc_agent_fetch_keystore
+role: security_opc_agent_distribute_keystore
+role: security_opc_agent_activate_ssl
 
 #### Configure OPSC SERVER -> DSE encryption and OPSC DSECORE -> DSE encryption - ON HOLD
+
+[Connect to DSE with client-to-node encryption in OpsCenter and the DataStax Agents](https://docs.datastax.com/en/opscenter/6.5/opsc/configure/opscClientToNode.html)
 
 Various roles including: 
 
@@ -138,7 +140,6 @@ Various roles including:
 3. security_opsc_create_keystores
 4. security_opsc_create_truststores
 5. security_opsc_cluster_configure
-
 
 # Opscenter Authentication
 

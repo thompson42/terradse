@@ -275,10 +275,10 @@ ansible-playbook -i hosts spark_security.yml --private-key=~/.ssh/id_rsa_aws
 
 ### 5.4 Creation of independently runnable Security_xyz encryption roles under ansible/roles to configure:
 
-1. Client -> node encryption: security_dse_client_to_node
-2. Node -> node encryption: security_dse_node_to_node
+1. Client -> node encryption: security_client_to_node
+2. Node -> node encryption: security__node_to_node
 3. Opscenter HTTPS access: security_opsc_configure
-4. Agent -> DSE encryption: security_opsc_agents_configure
+4. Agent -> DSE encryption: security_opsc_agents_xyz
 5. OpsCenter->Agent: security_opsc_cluster_configure
 
 ### 5.5 Introduction of spark and graph DSE datacenter types 
@@ -293,7 +293,7 @@ ansible-playbook -i hosts spark_security.yml --private-key=~/.ssh/id_rsa_aws
 
 ### 5.7 DSE Unified Authentication
 
-Additional security roles: security_dse_unified_auth_config and security_prerequisites to implement the core configuration settings for DSE Unified Authentication
+Additional security roles: security_unified_auth_activate and security_install to implement the core configuration settings for DSE Unified Authentication
 
 The default SCHEME is internal please re-configure for LDAP and Kerberos SCHEMES, see the documentation here on how to do this:
 
@@ -305,13 +305,13 @@ Special note: default install cassandra superuser account:
 1. This account needs to be removed and replaced with a new superuser on all exposed installs of DSE, it is there to facilitate initial install and user/role configuration.
 2. Automation of this superuser remove/replace is not currently available in this solution, please follow the manual process here: [Replace root account](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secCreateRootAccount.html)
 3. A possible automation approach is to use this user/role library: [ansible-module-cassandra](https://github.com/Ensighten/ansible-module-cassandra)
-4. A candidate role for this process is roles:security_prerequisites
+4. A candidate role for this process is roles:security_install
 
 ### 5.7.1 Roles for DSE Unified Authentication
 
 [Creating Roles for Internal Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secRolesInternal.html)
 
-Once the security_dse_unified_auth_config role has run you should have a system that challenges user access at all levels, its now time to create your roles and open your system back up, you will need your superuser account to edit these roles. See the above link to create roles, not that you want ot use the "internal" option on that page, with the SCHEME: internal  e.g.
+Once the security_unified_auth_activate role has run you should have a system that challenges user access at all levels, its now time to create your roles and open your system back up, you will need your superuser account to edit these roles. See the above link to create roles, not that you want ot use the "internal" option on that page, with the SCHEME: internal  e.g.
 
 ```
 CREATE ROLE jane WITH LOGIN = true AND PASSWORD = 'Abc123Jane';
@@ -319,7 +319,7 @@ CREATE ROLE jane WITH LOGIN = true AND PASSWORD = 'Abc123Jane';
 
 ### 5.7.2 DSE Unified Authentication and Spark Security
 
-Addition of role: security_spark_activate
+Addition of role: security_spark_auth_activate
 
 [DSE Analytics security checklist](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secChecklists.html#ariaid-title4)
 
@@ -347,9 +347,9 @@ SSL certificates can be sourced 2 ways:
 
 ### 6.1 To generate and deploy self signed certificates to the ansible host:
 
-Note that is is NOT the distrtibution phase to target nodes, merely the creation and storage of SSL certificates on the ansible host in a known location. The distribution of SSL certs and keys out into the DSE cluster is takemn up by two additional roles: { role: security_create_keystores } and { role: security_create_truststores }
+Note that is is NOT the distribution phase to target nodes, merely the creation and storage of SSL certificates on the ansible host in a known location. The distribution of SSL certs and keys out into the DSE cluster is taken up by two additional roles: { role: security_create_keystores } and { role: security_create_truststores }
 
-1. Configure default settings for your self signed certificate in: [ansible/roles/security_create_selfsign_root_certificate/defaults/main.yml](ansible/roles/security_create_selfsign_root_certificate/defaults/main.yml)
+1. Configure default settings for your self signed certificate in: [ansible/roles/security_create_root_certificate/defaults/main.yml](ansible/roles/security_create_root_certificate/defaults/main.yml)
 
 Pay special attention to the params:
 
@@ -361,7 +361,7 @@ ssl_certs_path_group: "cassandra"
 2. In the ansible/dse_security.yml playbook add the following line in the area indicated by: EDIT LIST
 
 ```
-{ role: security_create_selfsign_root_certificate }
+{ role: security_create_root_certificate }
 ```
 
 This will create a certificate and private key in the following directories on the ansible host (NOT the target nodes):
@@ -374,6 +374,8 @@ This will create a certificate and private key in the following directories on t
 In the case of CA signed certificates you need to go thru the normal process of generating your cetificates and .csr files and uploading them to your CA provider.
 
 Once you have the resulting certificate and private key place them in the following directories on the ansible host (NOT the target nodes): 
+
+(or the location you configured in the ansible/group_vars/all)
 
 - `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.key`
 - `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.pem`
