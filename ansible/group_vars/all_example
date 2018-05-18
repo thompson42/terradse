@@ -123,7 +123,7 @@ cluster_truststore_password: "{{cluster_keystore_password}}"                    
 # Root certificate
 #-------------------------------------------------------------------------------
 # The self signed certs, .truststore and .keystores are created on the ansible 
-# controller node in the directory: /etc/ssl/<ssl_certs_common_name>
+# controller node in the directory: ssl_certs_path
 
 ssl_certs_common_name: "SelfSignRootCA" #CN                                     #EDIT: Change from default if CA certs
 ssl_cluster_name: "Test Cluster"        #OU                                     #EDIT: Change from default if CA certs

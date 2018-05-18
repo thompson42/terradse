@@ -5,4 +5,4 @@
   become: true
   become_method: sudo
   roles:
-    - { role: security_spark_auth_configure }
+    - { role: security_spark_auth_activate }

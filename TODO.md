@@ -1,11 +1,11 @@
 
 
-## Testing
+# Testing
 
 1. Need to check Vnode allocation on all types (core, search,analytic, graph) in a dry run.
 2. Audit all final file ownership on target dse nodes (ctool comparable sys.)
 
-### Ansible Vault
+# Ansible Vault
 
 #### Shift sensitive passwords to ansible vault
 
