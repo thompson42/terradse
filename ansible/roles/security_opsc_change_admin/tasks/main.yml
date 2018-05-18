@@ -1,6 +1,6 @@
 
 - name: Pausing for 60 seconds to allow the OPSC SERVER (HTTPS) endpoint at :8443 to come up
-- pause:
+  pause:
     seconds: 60
 
 - name: Start an authenticated session with OPSC via an API call

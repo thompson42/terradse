@@ -223,6 +223,12 @@ or by default in /etc/dse/spark/spark-defaults.conf
 
 role: security_spark_configure
 
+#### Spark executor -> DSE nodes - COMPLETE :heavy_check_mark:
+
+Client-to-node encryption protects data in flight for the Spark Executor to DSE database connections by establishing a secure channel between the client and the coordinator node.
+
+role: security_client_to_node
+
 #### Client -> AlwaysOnSQL port - ON HOLD
 
 Only applicable for DSE 6.0+  - this solution only supports DSE 5.1.x at this point.
@@ -237,16 +243,40 @@ role: security_spark_auth_activate
 
 # Spark Authorization and Roles 
 
--> playbook: spark_authorisation_roles.yml - TODO :x:
+-> playbook: spark_authorisation_roles.yml
 
-1. Create a Spark role and user?
-2. Limit spark jobs by user?
+NOTE: 
+1. This playbook is here as a convenience, currently empty it could be used to automate user/role creation.
+2. This role is currently commented out in the runansi_extended.sh script
 
-TODO:
+Create a Spark role and user? Limit spark jobs by user?
+
+# Graph Transport Encryption - COMPLETE :heavy_check_mark:
+
+Encrypt inflight DSE Graph data. Enable SSL client-to-node encryption on the DSE Graph node by setting the client_encryption_options.
+
+role: security_client_to_node
+
+# Graph Authentication - COMPLETE :heavy_check_mark:
+
+Allow only authenticated users to access DSE Graph data by enabling DSE Unified Authentication on the transactional database.
+
+role: security_unified_auth_activate
+
+# Graph Authorisation and Roles
+
+Limit access to graph data by defining roles for DSE Graph keyspaces and tables, see Managing access to DSE Graph keyspaces.
+Note: RBAC does not apply to cached data. Setting row-level permissions with row-level access control (RLAC) is not supported for use with DSE Search or DSE Graph.
+
+#### Configure credentials in the DSE Graph remote.yaml
+
+[Providing credentials for DSE Graph](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secDSEGraphCred.html)
+
+# TODO:
 
 playbook: solr_security.yml
 
-playbook: graph_security.yml
+
 
 ###  CQL schema managment
 
