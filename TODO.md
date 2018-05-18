@@ -307,6 +307,40 @@ role: /ansible/roles/security_jmx_auth_activate
 
 # TODO:
 
+# Bring up a new DC for this existing cluster
+
+This new DC could have various reasons for existing:
+
+1. A duplicate DC type, i.e. a second Spark DC in a cluster with an existing Spark DC (both in the same DC)
+2. A new DC type, i.e. a new Graph DC in a cluster with C* and Spark DC's only
+3. A backup DC i.e. a new Graph DC in AZ2 in a cluster with an existing Graph DC in AZ1
+
+#### Bringing up a new named DC after original creation where Node->Node encryption is active in the original DC and no outage is acceptable
+
+```
+Implementing node -> node encryption - can be done with no downtime and no cluster splitting:
+
+1. Create all certs, .truststores and .keystores and deploy them onto nodes in the old DC
+2. On all nodes in the old DC set: internode_encryption: dc
+3. Perform a rolling restart of all nodes in the old DC
+3. Prepare all the nodes on the new DC with their certs, .truststores and .keystores and set: internode_encryption: all
+4. Bring up the new DC
+
+Summary: The old DC will talk to the new DC encrypted. 
+And the new DC would talk everywhere encrypted.
+```
+1. seeds list points to one of the orig DCs
+2. cassandra.yaml: autobootstrap=false
+3. nodetool rebuild
+4. ip-address of opsc_server for new agents
+5. need to generate new keystores and truststores for ALL nodes ?
+
+# Bring up a replacement/extra node in an existing cluster DC
+
+Replace a node or add a new node to a DC.
+
+# Nice have list
+
 ###  CQL schema managment
 
 -> playbook: cql_schema_management.yml
