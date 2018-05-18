@@ -279,12 +279,6 @@ NOTE:
 1. This playbook is here as a convenience, currently empty it could be used to automate user/role creation.
 2. This role is currently commented out in the runansi_extended.sh script
 
-# nodetool, dsetool, and dse advrep Transport Encryption
-
-- TODO :x:
-
-[Setting up SSL for nodetool, dsetool, and dse advrep](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html)
-
 # JMX Transport Encryption
 
 -> playbook: jmx_security.yml - TODO :x:
