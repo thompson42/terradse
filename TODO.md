@@ -54,10 +54,7 @@ role: security_node_to_node
 
 #### CQLSH -> Node (local and remote) - COMPLETE :heavy_check_mark:
 
-FACT: ACCESS DISABLED BY DEFAULT WHEN CLIENT->NODE ENABLED
-
-1. [To Acivate](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/usingCqlshSslAndKerberos.html)
-
+role: security_client_to_node
 
 # DSE cluster Unified Authentication 
 
@@ -165,31 +162,6 @@ role: /ansible/roles/security_opsc_change_admin
 
 role: /ansible/roles/security_change_superuser
 
-# JMX Transport Encryption
-
--> playbook: jmx_security.yml - TODO :x:
-
-1. [Securing jConsole SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html)
-2. [Securing NodeTool SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html)
-
-# JMX Unified Authentication 
-
--> playbook: jmx_authentication.yml
-
-1. [Enable JMX Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html)
-2. [Support Link](https://support.datastax.com/hc/en-us/articles/204226179-Step-by-step-instructions-for-securing-JMX-authentication-for-nodetool-utility-OpsCenter-and-JConsole)
-
-#### Activate JMX Authentication - COMPLETE :heavy_check_mark:
-
-1. [Managing JMX Access Control to MBeans](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secJmxAccessControl.html)
-
-role: /ansible/roles/security_jmx_auth_activate
-
-### LDAP Authentication - TODO :x:
-
-1. Configure selected authentication scheme options: [LDAP Schemes](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secLDAPScheme.html)
-2. Adjust the credentials_validity_in_ms and credentials_update_interval_in_ms as required for your environment in the dse.yaml.
-
 # Spark Transport Encryption 
 
 -> playbook: spark_security.yml
@@ -251,13 +223,17 @@ NOTE:
 
 Create a Spark role and user? Limit spark jobs by user?
 
-# Graph Transport Encryption - COMPLETE :heavy_check_mark:
+# Graph Transport Encryption
 
-Encrypt inflight DSE Graph data. Enable SSL client-to-node encryption on the DSE Graph node by setting the client_encryption_options.
+-> - COMPLETE :heavy_check_mark:
+
+Enable SSL client-to-node encryption on the DSE Graph node by setting the client_encryption_options.
 
 role: security_client_to_node
 
-# Graph Authentication - COMPLETE :heavy_check_mark:
+# Graph Authentication
+
+-> - COMPLETE :heavy_check_mark:
 
 Allow only authenticated users to access DSE Graph data by enabling DSE Unified Authentication on the transactional database.
 
@@ -265,18 +241,77 @@ role: security_unified_auth_activate
 
 # Graph Authorisation and Roles
 
+-> playbook: graph_authorisation_roles.yml
+
 Limit access to graph data by defining roles for DSE Graph keyspaces and tables, see Managing access to DSE Graph keyspaces.
-Note: RBAC does not apply to cached data. Setting row-level permissions with row-level access control (RLAC) is not supported for use with DSE Search or DSE Graph.
+
+NOTE: 
+1. This playbook is here as a convenience, currently empty it could be used to automate user/role creation.
+2. This role is currently commented out in the runansi_extended.sh script
 
 #### Configure credentials in the DSE Graph remote.yaml
 
 [Providing credentials for DSE Graph](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secDSEGraphCred.html)
 
+# Search Transport Encryption
+
+-> - COMPLETE :heavy_check_mark:
+
+Encrypt connections using SSL between HTTP clients and CQL shell to with client-to-node encryption on the DSE Search node.
+
+role: security_client_to_node
+
+# Search Authentication
+
+-> - COMPLETE :heavy_check_mark:
+
+Perform index management tasks with the CQL shell by DSE Unified Authentication.
+
+role: security_unified_auth_activate
+
+# Search Authorisation and Roles
+
+-> playbook: search_authorisation_roles.yml
+
+Use role-based access control (RBAC) for authenticated users to provide search index related permissions.
+
+NOTE: 
+1. This playbook is here as a convenience, currently empty it could be used to automate user/role creation.
+2. This role is currently commented out in the runansi_extended.sh script
+
+# nodetool, dsetool, and dse advrep Transport Encryption
+
+- TODO :x:
+
+[Setting up SSL for nodetool, dsetool, and dse advrep](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html)
+
+# JMX Transport Encryption
+
+-> playbook: jmx_security.yml - TODO :x:
+
+1. [Securing jConsole SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html)
+2. [Securing NodeTool SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html)
+
+# JMX Unified Authentication 
+
+-> playbook: jmx_authentication.yml
+
+1. [Enable JMX Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html)
+2. [Support Link](https://support.datastax.com/hc/en-us/articles/204226179-Step-by-step-instructions-for-securing-JMX-authentication-for-nodetool-utility-OpsCenter-and-JConsole)
+
+#### Activate JMX Authentication - COMPLETE :heavy_check_mark:
+
+1. [Managing JMX Access Control to MBeans](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secJmxAccessControl.html)
+
+role: /ansible/roles/security_jmx_auth_activate
+
+### LDAP Authentication - TODO :x:
+
+1. Configure selected authentication scheme options: [LDAP Schemes](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secLDAPScheme.html)
+2. Adjust the credentials_validity_in_ms and credentials_update_interval_in_ms as required for your environment in the dse.yaml.
+
+
 # TODO:
-
-playbook: solr_security.yml
-
-
 
 ###  CQL schema managment
 

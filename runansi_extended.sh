@@ -82,8 +82,6 @@ echo
 ansible-playbook -i hosts dse_cluster_start.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
-
-
 echo "---- Setup seperate Opscenter storage cluster and Opscenter server ----"
 
 echo
@@ -167,9 +165,21 @@ ansible-playbook -i hosts spark_datacenter_start.yml --private-key=~/.ssh/id_rsa
 echo
 
 echo
+echo ">>>> Configure Search Authorisation and Roles - DISABLED <<<<"
+echo
+#ansible-playbook -i hosts search_authorisation_roles.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
+echo
 echo ">>>> Configure Spark Authorisation and Roles - DISABLED <<<<"
 echo
 #ansible-playbook -i hosts spark_authorisation_roles.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
+echo
+echo ">>>> Configure Graph Authorisation and Roles - DISABLED <<<<"
+echo
+#ansible-playbook -i hosts graph_authorisation_roles.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 cd ..
