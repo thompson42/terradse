@@ -1,12 +1,11 @@
 
 
-# Start all DSE agents
-- hosts: datastax_agent 
+- hosts: dse 
   any_errors_fatal: true
   become: true
   become_method: sudo
   tasks:
-  - name: Start datastax-agent service
-    service:
-      name: "datastax-agent"
-      state: started
+  - name: Install ruamel.yaml via pip ( used by ansible/library/yedit)
+    pip:
+     name: ruamel.yaml
+     state: present

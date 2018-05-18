@@ -1,0 +1,4 @@
+
+- file:
+    path: "{{ssl_certs_path}}"
+    state: directory

@@ -4,8 +4,8 @@
 - name: Import SSL certificate to a local truststore, create truststore if it doesn't exist
   java_cert:
     cert_alias: "{{ssl_certs_common_name}}"
-    cert_path: "/etc/ssl/{{ssl_certs_common_name}}/{{ssl_certs_common_name}}.pem"
-    keystore_path: "/etc/ssl/{{ssl_certs_common_name}}/truststore.jks"
+    cert_path: "{{ssl_certs_path}}/{{ssl_certs_common_name}}.pem"
+    keystore_path: "{{ssl_certs_path}}/truststore.jks"
     keystore_pass: "{{cluster_truststore_password}}"
     keystore_create: yes
     state: present

@@ -1,4 +1,12 @@
 
+# create certificate directory
+- hosts: localhost
+  any_errors_fatal: true
+  become: no
+  connection: local
+  roles:
+    - { role: security_create_root_certificate_directory } 
+
 
 #generate self signed certificates - OPTIONAL IF CA ROOT CERT SUPPLIED.
 - hosts: localhost
