@@ -15,12 +15,17 @@ vars: /ansible/group_vars/all - TODO :x:
 
 -> playbook: dse_security.yml
 
-FACT: For CA signed certs (Not self signed certs), change the name of the cert fields under "Root certificate" in /ansible/group_vars/all and run dse_security with security_create_root_certificate
-commented out.
+#### CA signed certificates (supplied for each node) - TODO :x:
+
+1. Comment out security_install.yml: {security_create_root_certificate}
+2. Place CA certs in {{ ssl_certs_path }}
+
+#### CA self signed WILDCARD common certificate - TODO :x:
+
 
 1. [Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
 
-#### Generate self signed certificates for DSE - COMPLETE :heavy_check_mark:
+#### Generate self signed root certificate for DSE - COMPLETE :heavy_check_mark:
 
 role: security_create_root_certificate
 
@@ -223,6 +228,12 @@ NOTE:
 
 Create a Spark role and user? Limit spark jobs by user?
 
+# Spark disk encryption of driver temp files and shuffle files on disk (only availbale DSE 6.0 onwards)
+
+(spark.io.encryption.enabled)[https://docs.datastax.com/en/dse/6.0/dse-admin/datastax_enterprise/security/encryptSparkConnections.html]
+
+role: security_spark_auth_activate/templates/spark_defaults.conf
+
 # Graph Transport Encryption
 
 -> - COMPLETE :heavy_check_mark:
@@ -304,8 +315,27 @@ role: /ansible/roles/security_jmx_auth_activate
 1. Configure selected authentication scheme options: [LDAP Schemes](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secLDAPScheme.html)
 2. Adjust the credentials_validity_in_ms and credentials_update_interval_in_ms as required for your environment in the dse.yaml.
 
+# Audit Logging 
+
+- TODO :x:
+
+(Enabling data auditing in DataStax Enterprise)[https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditEnable.html]
+
+(Configuring audit logging)[https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditConfigLog.html]
+
+(Formats of DataStax Enterprise logs)[https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditLogFormat.html]
+
+default location for audit log:   /var/log/cassandra/audit/audit.log
+default location for logback.xml: /etc/dse/cassandra/logback.xml
+
+In logback.xml we can control log rotation.
+
 
 # TODO:
+
+# Add a node to a DC within the cluster
+
+
 
 # Bring up a new DC for this existing cluster
 
@@ -333,7 +363,7 @@ And the new DC would talk everywhere encrypted.
 2. cassandra.yaml: autobootstrap=false
 3. nodetool rebuild
 4. ip-address of opsc_server for new agents
-5. need to generate new keystores and truststores for ALL nodes ?
+5. need to generate new keystores and truststores for ALL nodes that includes the new nodes ?
 
 # Bring up a replacement/extra node in an existing cluster DC
 

@@ -1,0 +1,50 @@
+{
+    "cassandra": # MONITORED CLUSTER
+    {
+      "seed_hosts": "{{groups['dse'][0]}}",
+      "username": "{{secure_super_user_account}}",
+      "password": "{{secure_super_user_password}}",
+      "cql_port": 9042,
+      
+      #MONITORED CLUSTER'S KEYSTORE/TRUSTSTORE
+      "ssl_truststore": "{{dse_config_dir}}/truststore.jks",
+      "ssl_truststore_password": "{{cluster_truststore_password}}",
+      "ssl_keystore": "{{dse_config_dir}}/keystore.jks",
+      "ssl_keystore_password": "{{cluster_keystore_password}}"
+    },
+    "jmx": {
+      "port": 7199,
+      "username": "{{secure_super_user_account}}",
+      "password": "{{secure_super_user_password}}"
+    },
+    "agents": {
+    
+      #MONITORED CLUSTER'S KEYSTORE
+      "ssl_keystore": "{{dse_config_dir}}/keystore.jks",
+      "ssl_keystore_password": "{{cluster_keystore_password}}",
+      
+      #STORAGE CLUSTER'S KEYSTORE - NOT CURRENTLY USED
+      #"storage_ssl_keystore": "{{opsc_ssl_dir}}/opscenter_keystore.jks",
+      #"storage_ssl_keystore_password": "{{cluster_keystore_password}}"
+      
+    },
+    "storage_cassandra": # STORAGE CLUSTER
+    {
+      "username": "{{secure_super_user_account}}",
+      "password": "{{secure_super_user_password}}",
+      "api_port": 9160,
+      "cql_port": 9042,
+      "seed_hosts": "{{groups['opsc_srv'][0]}}",
+      "keyspace": "OpsCenter_{{hostvars[groups['dse'][0]]['cluster_name']}}",
+      
+      #STORAGE CLUSTER'S KEYSTORE - NOT CURRENTLY USED
+      #"ssl_keystore": "{{opsc_ssl_dir}}/opscenter_keystore.jks",
+      #"ssl_keystore_password": "{{cluster_keystore_password}}",
+      
+      #STORAGE CLUSTER'S TRUSTSTORE - NOT CURRENTLY USED
+      #"ssl_truststore": "{{opsc_ssl_dir}}/opscenter_truststore.jks",
+      #"ssl_truststore_password": "{{cluster_truststore_password}}"
+    }
+}
+
+      
