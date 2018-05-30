@@ -1,13 +1,10 @@
 
 
-# Start DSE on new node 
+# Populate the seeds list
 - hosts: add_node[0]
   any_errors_fatal: true
-  name: Start DSE on new node
-  serial: 1
   become: true
   become_method: sudo
-  vars:
-    srvc_name: dse
   roles:
-    - { role: start_srvc}
+    - { role: dse_common }
+

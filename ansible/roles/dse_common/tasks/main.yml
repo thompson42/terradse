@@ -9,5 +9,5 @@
 - name: Set seeds fact
   set_fact: seeds={{ seed_list.stdout }}
 
-#- debug: var=seeds
-#- debug: msg="{{ seeds }}"
+- debug: var=seeds
+- debug: msg="{{ seeds }}"
