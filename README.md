@@ -2,7 +2,7 @@
 
 This project has a [TODO](TODO.md)
 
-#Requires the following python libraries on the Ansible host machine
+# Requires the following python libraries on the Ansible host machine
 
 1. pip install ruamel.yaml
 2. pip install dse-driver
@@ -11,14 +11,14 @@ This project has a [TODO](TODO.md)
 ## Sharp edges:
 
 1. Please only use Ubuntu 16.04 LTS for now as the target operating system (tested on 16.04.2)
-2. TerraDSE currently targets DSE 5.1.x and Opscenter 6.5, only use these for now.
-3. TerraDSE needs to run in the sequence defined in runterra_extended.sh due to dependent steps, please do not edit this process.
+2. TerraDSE currently targets Datastax Enterprise 5.1.x, 6.0.x and Opscenter 6.5, only use these for now.
+3. TerraDSE needs to run in the sequence defined in runterra_extended.sh due to dependent steps, please do not edit this process, its brittle.
 4. TerraDSE expects to be able to get out of your network to install software from various locations including datastax.com, Ubuntu repos, Java repos and Python repos.
 5. TerraDSE currently gives you a reasonable level of security but holes do exist, please keep up to date with where we are at with security on the [TODO](TODO.md) page.
-6. This software is not owned or endorsed by Datastax.
+6. This software is not owned or endorsed by Datastax Inc.
 7. This software is offered free of charge with no promise of functionality or fitness of purpose and no liability for damages incurred from its use.
 
-# Quickstart steps:
+# Quickstart steps for full cluster creation:
 
 1. Set all params and cluster topology in terraform_extended/variables.tf
 2. Set all port rules and security in terraform_extended/ec2.tf, for AMZN VPC's you will need to modify this file
@@ -26,6 +26,32 @@ This project has a [TODO](TODO.md)
 4. Run /runterra_extended.sh and check AWS instances that will be created - accept and run the plan
 5. Run /genansinv_extended.sh (it will generate the required /ansible/hosts file)
 6. Run /runansi_extended.sh (expects your key to be: ~/.ssh/id_rsa_aws)
+
+# Quickstart steps to add a node to the above cluster:
+
+Note: You will need the ansible/hosts file from the above cluster creation process to successfully add a node to this cluster due to the fact we have to regenerate keystores in some cases to add the new node's certificate. The hosts file needs to be 100% accurate, do NOT attempt to add a node into this cluster if you are not sure the hosts file is accurate.
+
+1. Set all params in terraform_add_node/variables.tf
+2. For AMZN VPC's only you will need to modify this file
+3. Make sure your ansible/hosts file is 100% correct for the target cluster
+4. Run /runterra_add_node.sh and check AWS instances that will be created - accept and run the plan
+5. Run /genansinv_add_node.sh passing in [<dc_name>] [<opsc_server_private_ip>] see example below (it will modify your ansible/hosts file)
+6. Run /runansi_add_node.sh (expects your key to be: ~/.ssh/id_rsa_aws)
+
+Example genansinv_add_node.sh call:
+
+dc_name: the name of the datacenter to which you want to add the node, can be one of:
+
+1. dse_core
+2. dse_search
+3. dse_analytics
+4. dse_graph
+
+opsc_server_private_ip: The private ip-address of the opscenter server node, can be readily found in the ansible/hosts file under the [opsc_srv] indicator.
+
+```
+>genansinv_add_node.sh [<dc_name>] [<opsc_server_private_ip>]
+```
 
 # Basic processes: 
 

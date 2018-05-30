@@ -49,15 +49,15 @@ ansible-playbook -i hosts add_node_spark_authentication.yml --private-key=~/.ssh
 echo
 
 echo
-echo ">>>> Start Agent on New Node <<<<"
-echo
-ansible-playbook -i hosts add_node_agents_start.yml --private-key=~/.ssh/id_rsa_aws
-echo
-
-echo
 echo ">>>> Start DSE Enterprise on New Node <<<<"
 echo
 ansible-playbook -i hosts add_node_dse_start.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
+echo
+echo ">>>> Start Agent on New Node <<<<"
+echo
+ansible-playbook -i hosts add_node_agents_start.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 cd ..

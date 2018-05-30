@@ -51,6 +51,7 @@ variable "final_instance_count" {
    default = "4"
 }
 
+#the amazon instance type you wish to use for this additional node
 variable "instance_type" {
    default = "t2.2xlarge"
 }
