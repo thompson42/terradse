@@ -67,6 +67,10 @@ role: security_node_to_node
 
 role: security_client_to_node
 
+# DSE Disk Encrytption (TDE)
+
+- TODO :x:
+
 # DSE cluster Unified Authentication 
 
 -> playbook: dse_authentication.yml
@@ -216,6 +220,14 @@ role: security_client_to_node
 
 Only applicable for DSE 6.0+  - this solution only supports DSE 5.1.x at this point.
 
+# Spark Disk Encrytption
+
+#### Spark disk encryption of driver temp files and shuffle files on disk (only availbale DSE 6.0 onwards) - TODO :x:
+
+(spark.io.encryption.enabled)[https://docs.datastax.com/en/dse/6.0/dse-admin/datastax_enterprise/security/encryptSparkConnections.html]
+
+role: security_spark_auth_activate/templates/spark_defaults.conf
+
 # Spark Authentication 
 
 -> playbook: spark_authentication 
@@ -236,15 +248,9 @@ Create a Spark role and user? Limit spark jobs by user?
 
 # Spark Operations
 
-#### Spark disk encryption of driver temp files and shuffle files on disk (only availbale DSE 6.0 onwards) - TODO :x:
-
-(spark.io.encryption.enabled)[https://docs.datastax.com/en/dse/6.0/dse-admin/datastax_enterprise/security/encryptSparkConnections.html]
-
-role: security_spark_auth_activate/templates/spark_defaults.conf
-
 #### Activate DSEFS on Spark nodes - TODO :x:
 
-#### Clear out Spark wroker directory regularly - TODO :x:
+#### Clear out Spark worker directory regularly - TODO :x:
 
 spark-env.sh: spark.worker.ops settings to clear out directory
 
@@ -345,16 +351,19 @@ default location for logback.xml: /etc/dse/cassandra/logback.xml
 In logback.xml we can control log rotation.
 
 
-# TODO:
+# Add a new node to a DC within the existing cluster
 
-# Add a node to a DC within the cluster
+#### Terraform provision new node via runterra_add_node.sh 
 
-Terraform provision new node via runterra_add_node.sh
-Modify hosts via >genansinv_add_node.sh -dc_name
-Run ansible via runansi_add_node.sh
+- COMPLETE :heavy_check_mark:
 
+#### Modify hosts via >genansinv_add_node.sh 
 
+- COMPLETE :heavy_check_mark:
 
+#### Run ansible via runansi_add_node.sh 
+
+- COMPLETE :heavy_check_mark:
 
 # Bring up a new DC for this existing cluster
 
