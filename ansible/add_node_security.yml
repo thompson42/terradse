@@ -1,0 +1,38 @@
+
+# Regenerate all core DSE cluster and OPSC DSECore cluster keystores (local)
+# This will include the new node
+- hosts: localhost
+  any_errors_fatal: true
+  become: no
+  connection: local
+  roles:
+    - { role: security_create_keystores }
+
+
+# Distribute combined OPSC DSECore / DSE keystores to DSE nodes 
+# - (OPSC DSECore K/T Stores deployed but not currently used)
+# These roles work in tandem with opsc_security.yml - this call only does the DSE cluster distribution
+- hosts: dse
+  any_errors_fatal: true
+  become: yes
+  become_method: sudo
+  roles:
+    - { role: security_distribute_keystores }
+
+# Distribute the already existing common truststore to the new node
+- hosts: add_node[0]
+  any_errors_fatal: true
+  become: yes
+  become_method: sudo
+  roles:
+    - { role: security_distribute_truststores }
+
+    
+# Activate DSE security features on new node
+- hosts: add_node[0]
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_node_to_node }
+    - { role: security_client_to_node }

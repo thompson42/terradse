@@ -13,6 +13,7 @@
     
 # Distribute combined OPSC DSECore / DSE truststores and keystores to OPSC nodes 
 # - (OPSC DSECore K/T Stores deployed but not currently used)
+# These roles work in tandem with dse_security.yml - this call only does the OPSC DSECore cluster distribution
 - hosts: opsc_dsecore
   any_errors_fatal: true
   become: yes

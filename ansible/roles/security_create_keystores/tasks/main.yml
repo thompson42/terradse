@@ -29,14 +29,16 @@
 - name: BYO sign each nodes certificate
   command: openssl x509 -req -CA "{{ssl_certs_path}}/{{ssl_certs_common_name}}.pem" -CAkey "{{ssl_certs_path}}/{{ssl_certs_common_name}}.key" -in "{{ssl_certs_path}}/{{item}}-signing_request.csr" -out "{{ssl_certs_path}}/{{item}}.crt_signed" -days "{{ssl_certs_days}}" -CAcreateserial -passin pass:"{{cluster_keystore_password}}"
   with_items: "{{ groups['opsc_dsecore']}}"
-  
+
+
 - name: Import the root certificate into each node's keystore
   command: keytool -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -alias "{{ssl_certs_common_name}}" -importcert -file "{{ssl_certs_path}}/{{ssl_certs_common_name}}.pem" -noprompt  -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}"
   with_items: "{{ groups['dse']}}"
 - name: Import the root certificate into each node's keystore
   command: keytool -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -alias "{{ssl_certs_common_name}}" -importcert -file "{{ssl_certs_path}}/{{ssl_certs_common_name}}.pem" -noprompt  -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}"
   with_items: "{{ groups['opsc_dsecore']}}"
-  
+
+
 - name: Import the node's signed certificate into corresponding keystore
   command: keytool -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -alias "{{item}}" -importcert -noprompt -file "{{ssl_certs_path}}/{{item}}.crt_signed" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}"
   with_items: "{{ groups['dse']}}"

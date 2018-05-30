@@ -1,6 +1,6 @@
 ---
 # Get the current timestamp and register datastax debian packages
-- hosts: dse
+- hosts: add_node[0]
   any_errors_fatal: true
   become: true
   become_method: sudo
@@ -13,7 +13,7 @@
 
 
 # Install and configure DSE
-- hosts: dse
+- hosts: add_node[0]
   any_errors_fatal: true
   become: true
   become_method: sudo

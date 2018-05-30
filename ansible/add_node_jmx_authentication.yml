@@ -1,0 +1,8 @@
+
+# Activate DSE Unified Authentication for JMX on DSE cluster -> cassandra-env.sh
+- hosts: add_node[0]
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_jmx_auth_activate }

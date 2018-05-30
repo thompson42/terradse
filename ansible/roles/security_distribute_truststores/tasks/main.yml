@@ -1,7 +1,7 @@
 ---
 #EXPECTS: [hosts: dse] or [hosts: opsc_dsecore],  [become: yes] [become_method: sudo] on playbook call
 
-- name: Copy common truststore to all [hosts dse] or [hosts opsc_dsecore] nodes
+- name: Copy common truststore to all [hosts dse] or [hosts opsc_dsecore] or [host add_node[0]] nodes
   copy:
     src: "{{ssl_certs_path}}/truststore.jks"
     dest: "{{cluster_truststore_path}}"

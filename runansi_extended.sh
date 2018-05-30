@@ -5,12 +5,6 @@ cd ansible
 echo "---- Setting up primary DSE cluster ----"
 
 echo
-echo ">>>> Configure recommended OS/Kernel parameters for DSE nodes <<<<"
-echo
-ansible-playbook -i hosts dse_osparm_change.yml --private-key=~/.ssh/id_rsa_aws
-echo
-
-echo
 echo ">>>> Install DSE cluster <<<<"
 echo
 ansible-playbook -i hosts dse_install.yml --private-key=~/.ssh/id_rsa_aws
@@ -47,7 +41,7 @@ ansible-playbook -i hosts dse_authentication.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
-echo ">>>> Start DSE cluster with Ubified Authentication but no Transport Security <<<<"
+echo ">>>> Start DSE cluster with Unified Authentication but no Transport Security <<<<"
 echo
 ansible-playbook -i hosts dse_cluster_start.yml --private-key=~/.ssh/id_rsa_aws
 echo
@@ -83,12 +77,6 @@ ansible-playbook -i hosts dse_cluster_start.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo "---- Setup seperate Opscenter storage cluster and Opscenter server ----"
-
-echo
-echo ">>>> Configure recommended OS/Kernel parameters for OPSC DSECore nodes <<<<"
-echo
-ansible-playbook -i hosts opsc_osparm_change.yml --private-key=~/.ssh/id_rsa_aws
-echo
 
 echo
 echo ">>>> Install OpsCenter server (OPSC_SRV) and separate storage cluster (OPSC DSECore)  <<<<"

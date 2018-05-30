@@ -5,6 +5,12 @@
 1. Need to check Vnode allocation on all types (core, search,analytic, graph) in a dry run.
 2. Audit all final file ownership on target dse nodes (ctool comparable sys.)
 
+# Ansible Configuration
+
+#### move id_rsa_aws to ansible.cfg
+
+And remove from runansi_extended.sh
+
 # Ansible Vault
 
 #### Shift sensitive passwords to ansible vault
@@ -228,11 +234,19 @@ NOTE:
 
 Create a Spark role and user? Limit spark jobs by user?
 
-# Spark disk encryption of driver temp files and shuffle files on disk (only availbale DSE 6.0 onwards)
+# Spark Operations
+
+#### Spark disk encryption of driver temp files and shuffle files on disk (only availbale DSE 6.0 onwards) - TODO :x:
 
 (spark.io.encryption.enabled)[https://docs.datastax.com/en/dse/6.0/dse-admin/datastax_enterprise/security/encryptSparkConnections.html]
 
 role: security_spark_auth_activate/templates/spark_defaults.conf
+
+#### Activate DSEFS on Spark nodes - TODO :x:
+
+#### Clear out Spark wroker directory regularly - TODO :x:
+
+spark-env.sh: spark.worker.ops settings to clear out directory
 
 # Graph Transport Encryption
 
@@ -334,6 +348,11 @@ In logback.xml we can control log rotation.
 # TODO:
 
 # Add a node to a DC within the cluster
+
+Terraform provision new node via runterra_add_node.sh
+Modify hosts via >genansinv_add_node.sh -dc_name
+Run ansible via runansi_add_node.sh
+
 
 
 

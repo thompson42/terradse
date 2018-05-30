@@ -29,6 +29,7 @@
 
 # Distribute combined OPSC DSECore / DSE truststores and keystores to DSE nodes 
 # - (OPSC DSECore K/T Stores deployed but not currently used)
+# These roles work in tandem with opsc_security.yml - this call only does the DSE cluster distribution
 - hosts: dse
   any_errors_fatal: true
   become: yes
@@ -38,7 +39,7 @@
     - { role: security_distribute_keystores }
 
     
-# Install DSE security features on all nodes <---- EDIT LIST
+# Install DSE security features on all nodes
 - hosts: dse
   any_errors_fatal: true
   become: true

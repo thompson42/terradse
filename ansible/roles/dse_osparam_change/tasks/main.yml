@@ -1,10 +1,5 @@
 ---
-- hosts: opsc_dsecore
-  any_errors_fatal: true
-  become: true
-  become_method: sudo
-  tasks: 
-  
+
 # TODO: Uncomment only if using directly attached SSDs:
 #  - name: Change SSD device settings 
 #    shell: echo "{{ item.value }}" > /sys/block/{{ ebs_devstr }}/queue/"{{ item.parm }}"
@@ -38,4 +33,3 @@
   handlers:
     - name: reload sysctl.conf
       command: /sbin/sysctl -p
-

@@ -288,6 +288,13 @@ pmsg "[osparmchg:children]" $DSE_ANSINV_FILE
 pmsg "dse" $DSE_ANSINV_FILE
 pmsg "opsc_dsecore" $DSE_ANSINV_FILE
 
+pmsg "" $DSE_ANSINV_FILE
+pmsg "" $DSE_ANSINV_FILE
+pmsg "" $DSE_ANSINV_FILE
+
+pmsg "[add_node]" $DSE_ANSINV_FILE
+pmsg "" $DSE_ANSINV_FILE
+pmsg "[add_node_end]" $DSE_ANSINV_FILE
 
 # Copy the generated ansible inventory file to the proper place
 cp $DSE_ANSINV_FILE ./ansible/hosts
