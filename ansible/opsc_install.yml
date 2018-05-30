@@ -47,5 +47,5 @@
         regexp: "{{ item.regexp }}"
         line: "{{ item.line }}"
       with_items:
-        - { regexp: 'stomp_interface', line: "stomp_interface: {{ groups['opsc_srv'][0] }}" }
+        - { regexp: '# stomp_interface', line: "stomp_interface: {{ groups['opsc_srv'][0] }}" }
 

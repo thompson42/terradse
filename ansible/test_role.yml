@@ -1,10 +1,4 @@
 
 
-# Populate the seeds list
-- hosts: add_node[0]
-  any_errors_fatal: true
-  become: true
-  become_method: sudo
-  roles:
-    - { role: dse_common }
+fff
 
