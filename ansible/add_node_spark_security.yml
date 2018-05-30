@@ -1,8 +1,7 @@
 
-# Activate DSE Unified Authentication
 - hosts: add_node[0]
   any_errors_fatal: true
   become: true
   become_method: sudo
   roles:
-    - { role: security_unified_auth_activate }
+    - { role: security_spark_configure }

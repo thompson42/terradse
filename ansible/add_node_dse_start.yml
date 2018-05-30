@@ -1,5 +1,4 @@
 
-
 # Start DSE on new node 
 - hosts: add_node[0]
   any_errors_fatal: true

@@ -24,3 +24,16 @@
     - { role: dse_common }
     - { role: dse_instbin }
     - { role: dse_updcfg }
+    
+# Install and configure datastax-agent
+- hosts: add_node[0]
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  tasks:
+  
+    - name: Install datastax-agent on DSE nodes
+      apt:
+        name: "datastax-agent={{opsc_ver_target}}"
+        state: present
+        update_cache: yes

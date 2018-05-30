@@ -1,0 +1,42 @@
+
+# Delete DSE keystores
+- name: Delete DSE keystores, setup for regeneration
+  file:
+    path: "{{ssl_certs_path}}/{{item}}-keystore.jks"
+    state: absent
+  with_items: "{{ groups['dse']}}"
+  
+# Delete DSE signed cert requests
+- name: Delete DSE signed cert requests, setup for regeneration
+  file:
+    path: "{{ssl_certs_path}}/{{item}}-signing_request.csr"
+    state: absent
+  with_items: "{{ groups['dse']}}"
+  
+# Delete DSE signed certs 
+- name: Delete DSE signed certs, setup for regeneration
+  file:
+    path: "{{ssl_certs_path}}/{{item}}.crt_signed"
+    state: absent
+  with_items: "{{ groups['dse']}}"
+
+# Delete OPSC DSECore keystores
+- name: Delete OPSC DSECore keystores, setup for regeneration
+  file:
+    path: "{{ssl_certs_path}}/{{item}}-keystore.jks"
+    state: absent
+  with_items: "{{ groups['opsc_dsecore']}}"
+  
+# Delete OPSC DSECore signed cert requests
+- name: Delete OPSC DSECore signed cert requests, setup for regeneration
+  file:
+    path: "{{ssl_certs_path}}/{{item}}-signing_request.csr"
+    state: absent
+  with_items: "{{ groups['opsc_dsecore']}}"
+  
+# Delete OPSC DSECore signed certs 
+- name: Delete OPSC DSECore signed certs, setup for regeneration
+  file:
+    path: "{{ssl_certs_path}}/{{item}}.crt_signed"
+    state: absent
+  with_items: "{{ groups['opsc_dsecore']}}"

@@ -14,6 +14,7 @@ dse_graph
 10.200.178.121 private_ip=10.200.178.121  private_dns=ip-10-200-178-121.datastax.lan seed=true dc=dse_graph rack=RAC1 vnode=1 initial_token=
 10.200.178.122 private_ip=10.200.178.122  private_dns=ip-10-200-178-122.datastax.lan seed=false dc=dse_graph rack=RAC1 vnode=1 initial_token=
 10.200.178.123 private_ip=10.200.178.123 private_dns=ip-10-200-178-123.datastax.lan seed=false dc=dse_graph rack=RAC1 vnode=1 initial_token=
+10.200.181.85 private_ip=10.200.181.85 private_dns=ip-10-200-181-85.datastax.lan seed=false dc=dse_graph rack=RAC1 vnode=1 initial_token=
 
 [dse:vars]
 cluster_name=DseCluster
@@ -60,11 +61,12 @@ auto_bootstrap=1
 10.200.178.121 private_ip=10.200.178.121  opsc_srv_ip=10.200.178.124
 10.200.178.122 private_ip=10.200.178.122  opsc_srv_ip=10.200.178.124
 10.200.178.123 private_ip=10.200.178.123 opsc_srv_ip=10.200.178.124
+10.200.181.85 private_ip=10.200.181.85 opsc_srv_ip=10.200.178.124
 
 [osparmchg:children]
 dse
 opsc_dsecore
 
 [add_node] 
-
+10.200.181.85
 [add_node_end]

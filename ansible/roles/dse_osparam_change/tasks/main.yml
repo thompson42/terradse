@@ -30,6 +30,6 @@
       - { regexp: '^vm.swappiness', line: 'vm.swappiness = 1' }
     notify:
       - reload sysctl.conf
-  handlers:
-    - name: reload sysctl.conf
-      command: /sbin/sysctl -p
+    handlers:
+      - name: reload sysctl.conf
+        command: /sbin/sysctl -p

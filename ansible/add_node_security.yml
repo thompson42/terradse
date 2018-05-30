@@ -1,4 +1,12 @@
 
+# Clear the existing keystores ready for regeneration
+- hosts: localhost
+  any_errors_fatal: true
+  become: no
+  connection: local
+  roles:
+    - { role: security_clear_keystores }
+
 # Regenerate all core DSE cluster and OPSC DSECore cluster keystores (local)
 # This will include the new node
 - hosts: localhost
@@ -9,10 +17,8 @@
     - { role: security_create_keystores }
 
 
-# Distribute combined OPSC DSECore / DSE keystores to DSE nodes 
-# - (OPSC DSECore K/T Stores deployed but not currently used)
-# These roles work in tandem with opsc_security.yml - this call only does the DSE cluster distribution
-- hosts: dse
+# Distribute new keystore for this node only
+- hosts: add_node[0]
   any_errors_fatal: true
   become: yes
   become_method: sudo
@@ -36,3 +42,19 @@
   roles:
     - { role: security_node_to_node }
     - { role: security_client_to_node }
+    
+# Distribute the pre-built (at install time) /var/lib/opscenter/ssl/agentKeyStore to DSE nodes
+- hosts: add_node[0]
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_opsc_agent_distribute_keystore }
+
+# Activate OPSC SERVER -> Agent SSL in Agent address.yaml
+- hosts: add_node[0]
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_opsc_agents_activate_ssl }

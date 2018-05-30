@@ -1,0 +1,11 @@
+
+# Start datastax agent on new node
+- hosts: add_node[0]
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  tasks:    
+    - name: Start datastax-agent service
+      service:
+        name: "datastax-agent"
+        state: started
