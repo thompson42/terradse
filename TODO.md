@@ -21,19 +21,18 @@ vars: /ansible/group_vars/all - TODO :x:
 
 -> playbook: dse_security.yml
 
+#### Generate self signed root certificate for DSE - COMPLETE :heavy_check_mark:
+
+role: security_create_root_certificate
+
+#### CA signed WILDCARD root certificate *.mysite.net - TODO :x:
+
+1. [Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
+
 #### CA signed certificates (supplied for each node) - TODO :x:
 
 1. Comment out security_install.yml: {security_create_root_certificate}
 2. Place CA certs in {{ ssl_certs_path }}
-
-#### CA self signed WILDCARD common certificate - TODO :x:
-
-
-1. [Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
-
-#### Generate self signed root certificate for DSE - COMPLETE :heavy_check_mark:
-
-role: security_create_root_certificate
 
 #### Create DSE truststores - COMPLETE :heavy_check_mark:
 
@@ -365,7 +364,7 @@ In logback.xml we can control log rotation.
 
 - COMPLETE :heavy_check_mark:
 
-#### Modify hosts via >genansinv_add_node.sh 
+#### Modify hosts via genansinv_add_node.sh 
 
 - COMPLETE :heavy_check_mark:
 
