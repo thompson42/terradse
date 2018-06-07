@@ -246,13 +246,21 @@ NOTE:
 
 Create a Spark role and user? Limit spark jobs by user?
 
-# Spark Operations
+# Spark DSEFS, Logging and Cleanup
 
-#### Activate DSEFS on Spark nodes - TODO :x:
+#### Configure and activate DSEFS on Spark nodes - COMPLETE :heavy_check_mark::
 
-#### Clear out Spark worker directory regularly - TODO :x:
+role: spark_dsefs_configure
+
+#### Cleanup Spark worker directory regularly - COMPLETE :heavy_check_mark::
 
 spark-env.sh: spark.worker.ops settings to clear out directory
+
+role: spark_worker_cleanup_configure
+
+#### Configure Spark worker log rolling - COMPLETE :heavy_check_mark::
+
+role: spark_worker_log_rolling_configure
 
 # Graph Transport Encryption
 

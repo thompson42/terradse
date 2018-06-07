@@ -1,0 +1,27 @@
+
+# Activate DSEFS on Spark nodes
+# 
+- hosts: dse_analytics
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: spark_dsefs_configure }
+    
+
+# Configure cleanup directory
+- hosts: dse_analytics
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: spark_worker_directory_cleanup_configure }
+
+
+# Configure log rolling   
+- hosts: dse_analytics
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: spark_worker_log_rolling_configure }

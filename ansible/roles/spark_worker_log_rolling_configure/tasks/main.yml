@@ -1,0 +1,8 @@
+
+- name: Configure Spark worker log rolling -> spark-daemon-defaults.conf
+  template:
+    src: "templates/spark_daemon_defaults_conf_{{dse_major_version}}.j2"
+    dest: /etc/dse/spark/spark-daemon-defaults.conf
+    owner: "{{cassandra_owner}}"
+    group: "{{cassandra_group}}"
+    mode: 0644

@@ -147,9 +147,9 @@ ansible-playbook -i hosts spark_authentication.yml --private-key=~/.ssh/id_rsa_a
 echo
 
 echo
-echo ">>>> Configure DSEFS in the Spark DC <<<<"
+echo ">>>> Configure DSEFS, Worker cleanup and Logging in the Spark DC <<<<"
 echo
-ansible-playbook -i hosts spark_dsefs_configure.yml --private-key=~/.ssh/id_rsa_aws
+ansible-playbook -i hosts spark_configure.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo

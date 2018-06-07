@@ -68,7 +68,22 @@ saved_caches_directory: /var/lib/cassandra/saved_caches                         
 # Block device string (xvd...) for the EBS volume attached for DSE data
 # consumed in dse_osparm_change.yml and opsc_osparm_change.yml
 # IGNORE THIS SETTING , MAY BE RE-PURPOSED FOR DIRECTLY ATTATCHED SSDS
-ebs_devstr: xvda                                                                
+ebs_devstr: xvda
+
+# Key Spark settings
+#-------------------------------------------------------------------------------
+dsefs_data_file_directory: /var/lib/dsefs/data                                  #EDIT: Change from default
+
+# Cleanup of worker app data - Currently not used in any playbook (untested)
+spark_worker_cleanup_enabled: true
+spark_worker_cleanup_interval: 1800                                             # Check every 30 minutes for worker logs to cleanup
+spark_worker_cleanup_appDataTtl: 604800                                         # Retain worker app data for x seconds (604800=7 days)
+
+# Configure rotation of Spark worker logs in spark-daemon-defaults.conf
+spark_executor_logs_rolling_maxRetainedFiles: 3
+spark_executor_logs_rolling_strategy: size
+spark_executor_logs_rolling_maxSize: 50000                                      # bytes
+
 
 # Key Opscenter settings
 #-------------------------------------------------------------------------------
@@ -134,9 +149,7 @@ ssl_certs_country: "US"                 #C                                      
 ssl_certs_path_owner: "{{localhost_owner}}"
 ssl_certs_path_group: "{{localhost_group}}"
 
-# WARNING: EDIT ONLY BELOW HERE FOR SSL CERTS IF YOU ARE WILLING TO REFACTOR VARIOUS ROLE PATHS
-
-ssl_certs_path: "/etc/ssl/{{ssl_certs_common_name}}"
+ssl_certs_path: "/etc/ssl/{{ssl_certs_common_name}}"                            #EDIT: Change to your home directory if running ansible as a non-privileged user
 ssl_certs_key_size: "2048"
 ssl_certs_days: "365"
 

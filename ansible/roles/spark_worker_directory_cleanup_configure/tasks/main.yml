@@ -1,0 +1,8 @@
+
+- name: Activate and configure Spark worker directory cleanup -> spark-env.sh
+  template:
+    src: "templates/spark_env_sh_{{dse_major_version}}.j2"
+    dest: /etc/dse/spark/spark-env.sh
+    owner: "{{cassandra_owner}}"
+    group: "{{cassandra_group}}"
+    mode: 0644

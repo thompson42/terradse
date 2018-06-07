@@ -1,0 +1,19 @@
+# Default system properties for Spark Standalone based DSE Resource Manager
+
+# For user application configuration use spark-defaults.conf
+
+# Shuffle service ports
+spark.dseShuffle.sasl.port          7447
+spark.dseShuffle.noSasl.port        7437
+
+# Enable authentication by adding com.datastax.bdp.auth.SparkUIAuthFilter filter to
+# the Spark UI. This filter will enforce basic authentication in web browser whenever
+# DSE authentication is enabled.
+# Note that DSE authenticator must support Internal or LDAP authentication scheme
+# in order to make it work.
+spark.ui.filters      com.datastax.bdp.auth.SparkUIAuthFilter
+
+# TERRADSE: Log rolling, params set from group_vars/all
+spark.executor.logs.rolling.maxRetainedFiles "{{spark_executor_logs_rolling_maxRetainedFiles}}"
+spark.executor.logs.rolling.strategy "{{spark_executor_logs_rolling_strategy}}"
+spark.executor.logs.rolling.maxSize "{{spark_executor_logs_rolling_maxSize}}"

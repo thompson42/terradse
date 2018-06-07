@@ -30,6 +30,8 @@
 
 
 # Activate DSEFS on the new node only if it is an analytic node !
+# Configure cleanup directory
+# Configure log rolling  
 # Find out if this is an analytic node
 # GRAPH_ENABLED=0
 # SOLR_ENABLED=0
@@ -43,3 +45,7 @@
     is_analytic: "{{ lookup('ini', 'SPARK_ENABLED type=properties file=/tmp/dse') }}"
   roles:
     - { role: spark_dsefs_configure, when: is_analytic == "1" }
+    - { role: spark_worker_directory_cleanup_configure, when: is_analytic == "1" }
+    - { role: spark_worker_log_rolling_configure, when: is_analytic == "1" }
+    
+
