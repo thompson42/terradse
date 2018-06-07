@@ -1,0 +1,45 @@
+
+
+# pull the /etc/default/dse file down to /tmp/dse
+- hosts: add_node[0]
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  tasks:
+    - fetch:
+        src: /etc/default/dse
+        dest: "/tmp/"
+        flat: yes
+ 
+    
+# comment out the problematic logic block (stops ensuing ini parser)
+- hosts: localhost
+  any_errors_fatal: true
+  become: no
+  connection: local
+  tasks:
+    - name: Comment out logic block in default conf file /tmp/dse
+      lineinfile:
+        name: "/tmp/dse"
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      with_items:
+        - { regexp: '^if', line: "#" }
+        - { regexp: '^    export DSE_HOME=/usr/share/dse', line: "#" }
+        - { regexp: '^fi', line: "#" }
+
+
+# Activate DSEFS on the new node only if it is an analytic node !
+# Find out if this is an analytic node
+# GRAPH_ENABLED=0
+# SOLR_ENABLED=0
+# SPARK_ENABLED=0
+# The lookup(...) occurs on localhost /tmp/dse created above NOT on the target add_node[0] node
+- hosts: add_node[0]
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  vars:
+    is_analytic: "{{ lookup('ini', 'SPARK_ENABLED type=properties file=/tmp/dse') }}"
+  roles:
+    - { role: spark_dsefs_configure, when: is_analytic == "1" }

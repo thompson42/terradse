@@ -18,7 +18,6 @@
   become: true
   become_method: sudo
   roles:
-    - { role: datastax_pkg }
     - { role: java8_inst }
     - { role: dse_osparam_change }
     - { role: dse_common }

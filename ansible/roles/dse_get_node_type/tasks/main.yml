@@ -1,0 +1,31 @@
+
+# pull the /etc/default/dse file down to /tmp/dse
+- fetch:
+    src: /etc/default/dse
+    dest: "/tmp/"
+    flat: yes
+    
+# comment out the problematic logic block
+- name: Comment out logic block in default conf file /tmp/dse
+  lineinfile:
+    name: "/tmp/dse"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: 'if [ -d /usr/share/dse ]; then', line: "#" }
+    - { regexp: '    export DSE_HOME=/usr/share/dse', line: "#" }
+    - { regexp: 'fi', line: "#" }
+
+# get node type, in  /etc/default/dse file
+
+# GRAPH_ENABLED=0
+# SOLR_ENABLED=0
+# SPARK_ENABLED=0
+
+#- debug: msg="User in integration is {{ lookup('ini', 'user section=integration file=users.ini') }}"
+
+#- debug: msg="user.name is {{ lookup('ini', 'user.name type=properties file=user.properties') }}"
+
+
+
+- debug: msg="is_spark is {{ lookup('ini', 'SPARK_ENABLED type=properties file=/tmp/dse') }}"

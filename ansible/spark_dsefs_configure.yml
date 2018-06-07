@@ -1,0 +1,9 @@
+
+# Activate DSEFS on Spark nodes
+# 
+- hosts: dse_analytics
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: spark_dsefs_configure }

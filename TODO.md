@@ -67,7 +67,7 @@ role: security_node_to_node
 
 role: security_client_to_node
 
-# DSE Disk Encrytption (TDE)
+# DSE Disk Encryption (TDE)
 
 - TODO :x:
 
