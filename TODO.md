@@ -245,7 +245,7 @@ NOTE:
 
 Create a Spark role and user? Limit spark jobs by user?
 
-# Spark DSEFS, Logging and Cleanup
+# Spark Systems Configuration
 
 #### Configure and activate DSEFS on Spark nodes - COMPLETE :heavy_check_mark::
 
@@ -260,6 +260,10 @@ role: spark_worker_cleanup_configure
 #### Configure Spark worker log rolling - COMPLETE :heavy_check_mark::
 
 role: spark_worker_log_rolling_configure
+
+#### Configure AlwaysOnSQL Worker and Executor Cores / RAM - todo :x:
+
+role: see Antony new role
 
 # Graph Transport Encryption
 
@@ -344,7 +348,7 @@ role: /ansible/roles/security_jmx_auth_activate
 
 # Audit Logging 
 
-- TODO :x:
+- COMPLETE :heavy_check_mark:
 
 (Enabling data auditing in DataStax Enterprise)[https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditEnable.html]
 
@@ -357,6 +361,7 @@ default location for logback.xml: /etc/dse/cassandra/logback.xml
 
 In logback.xml we can control log rotation.
 
+role: security_audit_logging_configure
 
 # Add a new node to a DC within the existing cluster
 

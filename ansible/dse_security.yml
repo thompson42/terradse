@@ -48,6 +48,14 @@
     - { role: security_node_to_node }
     - { role: security_client_to_node }
     
+#Activate Audit logging on the new node if required
+- hosts: dse
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_audit_logging_configure}
+    
 
 
 

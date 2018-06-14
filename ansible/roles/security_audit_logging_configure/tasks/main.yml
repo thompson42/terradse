@@ -1,0 +1,12 @@
+
+- name: Configure Audit logging in dse.yaml (/etc/dse/dse.yaml)
+  yedit:
+    src: "{{ dse_config_dir }}/dse.yaml"
+    edits:
+    - key: audit_logging_options.enabled
+      value: "{{audit_logging_options_enabled}}"
+    - key: audit_logging_options.logger
+      value: "{{audit_logging_options_logger}}"
+    - key: audit_logging_options.included_categories
+      value: "{{audit_logging_options_included_categories}}"
+

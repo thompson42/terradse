@@ -153,9 +153,21 @@ ssl_certs_path: "/etc/ssl/{{ssl_certs_common_name}}"                            
 ssl_certs_key_size: "2048"
 ssl_certs_days: "365"
 
-Other:
+#Audit logging
 #-------------------------------------------------------------------------------
+#AUTH	Logs login events.
+#DML	Logs insert, update, delete and other data manipulation language (DML) events.
+#DDL	Logs object and role create, alter, drop, and other data definition language (DDL) events.
+#DCL	Logs grant, revoke, create role, drop role, and list roles events.
+#QUERY	Logs all queries.
+#ERROR  Logs login errors.
 
+#Actual audit logs are stored in: dse_syslog_dir/audit/audit.log
+#Log Storage location is controlled by: /etc/dse/cassandra/logback.xml section: [audit log]
+
+audit_logging_options_enabled: true
+audit_logging_options_logger: SLF4JAuditWriter
+audit_logging_options_included_categories: AUTH,DML,DDL,DCL
 
 
 

@@ -58,3 +58,12 @@
   become_method: sudo
   roles:
     - { role: security_opsc_agents_activate_ssl }
+    
+#Activate Audit logging on the new node if required
+- hosts: add_node[0]
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_audit_logging_configure}
+    

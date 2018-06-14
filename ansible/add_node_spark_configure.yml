@@ -36,7 +36,7 @@
 # GRAPH_ENABLED=0
 # SOLR_ENABLED=0
 # SPARK_ENABLED=0
-# The lookup(...) occurs on localhost /tmp/dse created above NOT on the target add_node[0] node
+# The lookup(...) occurs on ansible host /tmp/dse created above NOT on the target add_node[0] node
 - hosts: add_node[0]
   any_errors_fatal: true
   become: true

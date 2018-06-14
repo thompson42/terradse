@@ -1,12 +1,10 @@
 
         
-#Activate DSEFS on the new node only if it is an analytic node !
+#Activate Audit logging on the new node if required
 - hosts: add_node[0]
   any_errors_fatal: true
   become: true
   become_method: sudo
-  vars:
-    is_spark: "{{ lookup('ini', 'SPARK_ENABLED type=properties file=/tmp/dse') }}"
   roles:
-    - { role: spark_dsefs_activate, when: is_spark == "1" }
+    - { role: security_audit_logging_configure}
 
