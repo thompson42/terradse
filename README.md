@@ -4,9 +4,15 @@ This project has a [TODO](TODO.md)
 
 # Requires the following python libraries on the Ansible host machine
 
-1. pip install ruamel.yaml
-2. pip install dse-driver
-3. pip install pyopenssl
+1. ruamel.yaml
+2. dse-driver
+3. pyopenssl
+
+They are listed in the `requirements.txt`, and could be installed via:
+
+```sh
+pip -r requirements.txt
+```
 
 ## Sharp edges:
 
