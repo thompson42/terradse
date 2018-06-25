@@ -29,7 +29,7 @@ role: security_create_root_certificate
 
 1. [Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
 
-#### CA signed certificates (supplied for each node) - TODO :x:
+#### CA signed certificates (supplied for each node) - ON HOLD
 
 1. Comment out security_install.yml: {security_create_root_certificate}
 2. Place CA certs in {{ ssl_certs_path }}
@@ -221,7 +221,7 @@ Only applicable for DSE 6.0+  - this solution only supports DSE 5.1.x at this po
 
 # Spark Disk Encrytption
 
-#### Spark disk encryption of driver temp files and shuffle files on disk (only availbale DSE 6.0 onwards) - TODO :x:
+#### Spark disk encryption of driver temp files and shuffle files on disk (only available DSE 6.0 onwards) - TODO :x:
 
 (spark.io.encryption.enabled)[https://docs.datastax.com/en/dse/6.0/dse-admin/datastax_enterprise/security/encryptSparkConnections.html]
 
@@ -348,8 +348,6 @@ role: /ansible/roles/security_jmx_auth_activate
 
 # Audit Logging 
 
-- COMPLETE :heavy_check_mark:
-
 (Enabling data auditing in DataStax Enterprise)[https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditEnable.html]
 
 (Configuring audit logging)[https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditConfigLog.html]
@@ -361,9 +359,9 @@ default location for logback.xml: /etc/dse/cassandra/logback.xml
 
 In logback.xml we can control log rotation.
 
-role: security_audit_logging_configure
+role: security_audit_logging_configure - COMPLETE :heavy_check_mark:
 
-# Add a new node to a DC within the existing cluster
+# Add a new node to an existing DC within an existing cluster
 
 #### Terraform provision new node via runterra_add_node.sh 
 
@@ -377,37 +375,22 @@ role: security_audit_logging_configure
 
 - COMPLETE :heavy_check_mark:
 
-# Bring up a new DC for this existing cluster
+# Bring up a new DC within an existing cluster
+
+- TODO :x:
 
 This new DC could have various reasons for existing:
 
 1. A duplicate DC type, i.e. a second Spark DC in a cluster with an existing Spark DC (both in the same DC)
 2. A new DC type, i.e. a new Graph DC in a cluster with C* and Spark DC's only
 3. A backup DC i.e. a new Graph DC in AZ2 in a cluster with an existing Graph DC in AZ1
+4. A geographically seperate replicated edge DC 
 
-#### Bringing up a new named DC after original creation where Node->Node encryption is active in the original DC and no outage is acceptable
+# Bring up a replacement node in an existing cluster DC
 
-```
-Implementing node -> node encryption - can be done with no downtime and no cluster splitting:
+- TODO :x:
 
-1. Create all certs, .truststores and .keystores and deploy them onto nodes in the old DC
-2. On all nodes in the old DC set: internode_encryption: dc
-3. Perform a rolling restart of all nodes in the old DC
-3. Prepare all the nodes on the new DC with their certs, .truststores and .keystores and set: internode_encryption: all
-4. Bring up the new DC
-
-Summary: The old DC will talk to the new DC encrypted. 
-And the new DC would talk everywhere encrypted.
-```
-1. seeds list points to one of the orig DCs
-2. cassandra.yaml: autobootstrap=false
-3. nodetool rebuild
-4. ip-address of opsc_server for new agents
-5. need to generate new keystores and truststores for ALL nodes that includes the new nodes ?
-
-# Bring up a replacement/extra node in an existing cluster DC
-
-Replace a node or add a new node to a DC.
+Replace a node in a DC.
 
 # Nice have list
 
@@ -448,27 +431,6 @@ Replace a node or add a new node to a DC.
 -> playbook: nodetool_access.yml
 
 #### /ansible/roles/nodetool_command
-
-# Bringing up a new named DC after original creation where Node->Node encryption is active in the original DC and no outage is acceptable
-
-```
-Implementing node -> node encryption - can be done with no downtime and no cluster splitting:
-
-1. Create all certs, .truststores and .keystores and deploy them onto nodes in the old DC
-2. On all nodes in the old DC set: internode_encryption: dc
-3. Perform a rolling restart of all nodes in the old DC
-3. Prepare all the nodes on the new DC with their certs, .truststores and .keystores and set: internode_encryption: all
-4. Bring up the new DC
-
-Summary: The old DC will talk to the new DC encrypted. 
-And the new DC would talk everywhere encrypted.
-```
-
-1. seeds list points to one of the orig DCs
-2. cassandra.yaml: autobootstrap=false
-3. nodetool rebuild
-4. ip-address of opsc_server for new agents
-5. need to generate new keystores and truststores for ALL nodes ?
 
 
 
