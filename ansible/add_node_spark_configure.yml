@@ -45,6 +45,7 @@
     is_analytic: "{{ lookup('ini', 'SPARK_ENABLED type=properties file=/tmp/dse') }}"
   roles:
     - { role: spark_dsefs_configure, when: is_analytic == "1" }
+    - { role: spark_alwaysonsql_configure, when: is_analytic == "1" and activate_alwaysonsql | bool and dse_major_version >= 6.0 }
     - { role: spark_worker_directory_cleanup_configure, when: is_analytic == "1" }
     - { role: spark_worker_log_rolling_configure, when: is_analytic == "1" }
     

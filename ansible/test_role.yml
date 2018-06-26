@@ -1,10 +1,8 @@
 
-# If 1) CA signed certs and 2) No DNS server entry for cert CN name
-# modify /etc/hosts on all nodes and push in CN name for each node (same value as signed certificate for node)
-- hosts: dse[0]
+- hosts: dse_graph
   any_errors_fatal: true
-  become: yes
+  become: true
   become_method: sudo
   roles:
-    - { role: security_etc_hosts_file_configure, when: etc_hosts_file_configure | bool }
+    - { role: dummy_role, when: activate_alwaysonsql | bool and dse_major_version >= 6.0 } 
 

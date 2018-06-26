@@ -73,6 +73,7 @@ ebs_devstr: xvda
 # Key Spark settings
 #-------------------------------------------------------------------------------
 dsefs_data_file_directory: /var/lib/dsefs/data                                  #EDIT: Change from default
+activate_alwaysonsql: false                                                     #EDIT: Requires DSE 6.0+
 
 # Cleanup of worker app data - Currently not used in any playbook (untested)
 spark_worker_cleanup_enabled: true

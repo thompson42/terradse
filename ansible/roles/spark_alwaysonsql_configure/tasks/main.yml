@@ -1,0 +1,31 @@
+
+- name: Configure sql_always on in dse.yaml (/etc/dse/dse.yaml)
+  yedit:
+    src: "{{ dse_config_dir }}/dse.yaml"
+    edits:
+    - key: alwayson_sql_options.enabled
+      value: true
+    - key: alwayson_sql_options.thrift_port
+      value: 10000
+    - key: alwayson_sql_options.web_ui_port
+      value: 9077
+    - key: alwayson_sql_options.reserve_port_wait_time_ms
+      value: 100
+    - key: alwayson_sql_options.alwayson_sql_status_check_wait_time_ms
+      value: 500
+    - key: alwayson_sql_options.log_dsefs_dir
+      value: /spark/log/alwayson_sql
+    - key: alwayson_sql_options.runner_max_errors
+      value: 10
+    - key: resource_manager_options.worker_options.workpools
+      value: [{name: alwayson_sql,cores: 0.25 , memory: 0.25}]
+
+- name: Change spark-alwayson-sql.conf file
+  lineinfile:
+    name: "{{ dse_config_dir }}/spark/spark-alwayson-sql.conf"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: '^spark.hive.server2.table.type.mapping', line: 'spark.hive.server2.table.type.mapping CLASSIC'}
+    - { regexp: '^spark.master', line: 'spark.master  dse://?workpool=alwayson_sql' }
+    - { regexp: '^spark.sql.thriftServer.incrementalCollect', line: 'spark.sql.thriftServer.incrementalCollect true'}

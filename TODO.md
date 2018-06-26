@@ -266,9 +266,9 @@ role: spark_worker_cleanup_configure
 
 role: spark_worker_log_rolling_configure
 
-#### Configure AlwaysOnSQL Worker and Executor Cores / RAM - todo :x:
+#### Configure AlwaysOnSQL Worker and Executor Cores / RAM etc - COMPLETE :heavy_check_mark::
 
-role: see Antony new role
+role: spark_alwaysonsql_configure
 
 # Graph Transport Encryption
 
