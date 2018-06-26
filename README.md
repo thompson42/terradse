@@ -4,9 +4,15 @@ This project has a [TODO](TODO.md)
 
 # Requires the following python libraries on the Ansible host machine
 
-1. pip install ruamel.yaml
-2. pip install dse-driver
-3. pip install pyopenssl
+1. ruamel.yaml
+2. dse-driver
+3. pyopenssl
+
+They are listed in the `requirements.txt`, and could be installed via:
+
+```sh
+pip -r requirements.txt
+```
 
 ## Sharp edges:
 
@@ -22,39 +28,39 @@ This project has a [TODO](TODO.md)
 
 # Quickstart steps for full cluster creation:
 
-1. Set all params and cluster topology in terraform_extended/variables.tf
-2. Set all port rules and security in terraform_extended/ec2.tf, for AMZN VPC's you will need to modify this file
-3. Copy ansible/group_vars/all_example to ansible/group_vars/all and set paths and vars marked with [EDIT] only
-4. Run /runterra_extended.sh and check AWS instances that will be created - accept and run the plan
-5. Run /genansinv_extended.sh (it will generate the required /ansible/hosts file)
-6. Run /runansi_extended.sh (expects your key to be: ~/.ssh/id_rsa_aws)
+1. Set all params and cluster topology in `terraform_extended/variables.tf`
+2. Set all port rules and security in `terraform_extended/ec2.tf`, for AMZN VPC's you will need to modify this file
+3. Copy `ansible/group_vars/all_example` to `ansible/group_vars/all` and set paths and vars marked with `[EDIT]` only
+4. Run `./runterra_extended.sh` and check AWS instances that will be created - accept and run the plan
+5. Run `./genansinv_extended.sh` (it will generate the required `/ansible/hosts` file)
+6. Run `./runansi_extended.sh` (expects your key to be: `~/.ssh/id_rsa_aws`)
 
 See below for a more full description and more detailed instructions
 
 # Quickstart steps to add a node to the above cluster:
 
-Note: You will need the ansible/hosts file from the above cluster creation process to successfully add a node to this cluster due to the fact we have to regenerate keystores in some cases to add the new node's certificate. The hosts file needs to be 100% accurate, do NOT attempt to add a node into this cluster if you are not sure the hosts file is accurate.
+Note: You will need the `ansible/hosts` file from the above cluster creation process to successfully add a node to this cluster due to the fact we have to regenerate keystores in some cases to add the new node's certificate. The hosts file needs to be 100% accurate, do NOT attempt to add a node into this cluster if you are not sure the hosts file is accurate.
 
-1. Set all params in terraform_add_node/variables.tf
+1. Set all params in `terraform_add_node/variables.tf`
 2. For AMZN VPC's only you will need to modify this file
-3. Make sure your ansible/hosts file is 100% correct for the target cluster
-4. Run /runterra_add_node.sh and check AWS instances that will be created - accept and run the plan
-5. Run /genansinv_add_node.sh passing in [<dc_name>] [<opsc_server_private_ip>] see example below (it will modify your ansible/hosts file)
-6. Run /runansi_add_node.sh (expects your key to be: ~/.ssh/id_rsa_aws)
+3. Make sure your `ansible/hosts` file is 100% correct for the target cluster
+4. Run `./runterra_add_node.sh` and check AWS instances that will be created - accept and run the plan
+5. Run `./genansinv_add_node.sh` passing in `[<dc_name>] [<opsc_server_private_ip>]` see example below (it will modify your `ansible/hosts` file)
+6. Run `./runansi_add_node.sh` (expects your key to be: `~/.ssh/id_rsa_aws`)
 
-Example genansinv_add_node.sh call:
+Example `genansinv_add_node.sh` call:
 
-dc_name: the name of the datacenter to which you want to add the node, can be one of:
+`dc_name`: the name of the datacenter to which you want to add the node, can be one of:
 
 1. dse_core
 2. dse_search
 3. dse_analytics
 4. dse_graph
 
-opsc_server_private_ip: The private ip-address of the opscenter server node, can be readily found in the ansible/hosts file under the [opsc_srv] indicator.
+`opsc_server_private_ip`: The private ip-address of the opscenter server node, can be readily found in the `ansible/hosts` file under the `[opsc_srv]` indicator.
 
-```
->genansinv_add_node.sh [<dc_name>] [<opsc_server_private_ip>]
+```sh
+genansinv_add_node.sh [<dc_name>] [<opsc_server_private_ip>]
 ```
 
 # Basic processes: 
@@ -100,6 +106,7 @@ In order to run the terraform script sucessfully, the following procedures need 
 #### 2.2.1. EC2 Count and Type
 
 The number and type of AWS EC2 instances are determined at DataCenter (DC) level through terraform variable mappings, with each DC has its own instance type and count as determined by the target DSE cluster topology. The example for the example cluster topology is as below:
+
 ```
 variable "instance_count" {
    type = "map"
@@ -126,6 +133,7 @@ variable "instance_type" {
 ```
 
 When provisioning the required AWS EC2 instances for a specific DC, the type and count is determined through a map search as in the example below:
+
 ```
 #
 # EC2 instances for DSE cluster, "DSE Search" DC
@@ -141,6 +149,7 @@ resource "aws_instance" "dse_search" {
 #### 2.2.2. AWS Key-Pair
 
 The script also creates an AWS key-pair resource that can be associated with the EC2 instances. The AWS key-pair resource is created from a locally generated SSH public key and the corresponding private key can be used to log into the EC2 instances.
+
 ```
 resource "aws_key_pair" "dse_terra_ssh" {
     key_name = "${var.keyname}"
@@ -161,12 +170,13 @@ In order for the DSE cluster and OpsCenter to work properly, certain ports on th
 * [OpsCenter ports reference](https://docs.datastax.com/en/opscenter/6.1/opsc/reference/opscLcmPorts.html)
 
 The script does so by creating the following AWS security group resources:
-1. sg_ssh: allows SSH access from public
-2. sg_opsc_web: allows web Access from public, such as for OpsCenter Web UI
-3. sg_opsc_node: allows OpsCenter related communication, such as between OpsCenter server and datastax-agent
-4. sg_dse_node: allows DSE node specific communication
+1. `sg_ssh`: allows SSH access from public
+2. `sg_opsc_web`: allows web Access from public, such as for OpsCenter Web UI
+3. `sg_opsc_node`: allows OpsCenter related communication, such as between OpsCenter server and datastax-agent
+4. `sg_dse_node`: allows DSE node specific communication
 
 The code snippet below describes how a security group resource is defined and associated with EC2 instances.
+
 ```
 resource "aws_security_group" "sg_ssh" {
    name = "sg_ssh"
@@ -198,6 +208,7 @@ resource "aws_instance" "dse_search" {
 #### 2.2.4. User Data
 
 One of the key requirements to run DSE cluster is to enable NTP service. The script achieves this through EC2 instance user data. which is provided through a terraform template file. 
+
 ```
 data "template_file" "user_data" {
    template = <<-EOF
@@ -230,9 +241,10 @@ After the infrastructure instances have been provisioned, we need to install and
 
 Now since we have provisioned the instances using terraform script, it is possible to generate the Ansible inventory file programmatically from terraform output state. Basically the idea is as below:
 1. Generate terraform output state in a text file:
-```
+
+  ```sh
   terraform show terraform_extended/terraform.tfstate > $TFSTATE_FILE
-```
+  ```
 
 2. Scan the terraform output state text file to generate a file that contains each instance's target DC tag, public IP, and private IP. An example is provided in this repository at: [dse_ec2IpList](https://github.com/thompson42/terradse/blob/master/dse_ec2IpList)
 
@@ -241,28 +253,34 @@ Now since we have provisioned the instances using terraform script, it is possib
 A linux script file, ***genansinv_extended.sh***, is providied for this purpose. The script has 3 configurable parameters via input parameters. These parameters will impact the target DSE cluster topology information (as presented in the Ansible inventory file) a bit. Please adjust accordingly for your own case.
 
 1. Script input argument: number of seed nodes per DC, default at 1
-```
-  genansinv_extended.sh [<number_of_seeds_per_dc>] [<dse_appcluster_name>] [<dse_opsccluster_name>]
-```
+
+  ```sh
+  ./genansinv_extended.sh [<number_of_seeds_per_dc>] [<dse_appcluster_name>] [<dse_opsccluster_name>]
+  ```
+  
 2. Script input argument: the name of the application DSE cluster: 
-```
+
+  ```
   "MyAppClusterName"
-```
+  ```
 3. Script input argument: the name of the OpsCenter monitoring cluster:
-```
-   "MyOpscClusterName"
-```
+
+  ```
+  "MyOpscClusterName"
+  ```
+  
 4. e.g.:
-```
-   ./genansinv_extended.sh 1 dse_appcluster_name dse_opsccluster_name
-```
+
+  ```
+  ./genansinv_extended.sh 1 dse_appcluster_name dse_opsccluster_name
+  ```
 
 
 ## 4. This base forked version features:
 
-1. *dse_install.yml*: installs and configures a multi-DC DSE cluster. This is the same functionality as the previous version.
-2. *opsc_install.yml": installs OpsCenter server, datastax-agents, and configures accordingly to allow proper communication between OpsCenter server and datastax-agents.
-3. *osparm_change.yml*: configures OS/Kernel parameters on each node where DSE is installed, as per [Recommended production settings](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/config/configRecommendedSettings.html) from DataStax documentation.
+1. `dse_install.yml`: installs and configures a multi-DC DSE cluster. This is the same functionality as the previous version.
+2. `opsc_install.yml`: installs OpsCenter server, datastax-agents, and configures accordingly to allow proper communication between OpsCenter server and datastax-agents.
+3. `osparm_change.yml`: configures OS/Kernel parameters on each node where DSE is installed, as per [Recommended production settings](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/config/configRecommendedSettings.html) from DataStax documentation.
 
 For operational simplicity, a linux script file, ***runansi_extended.sh***, is provided to execute these Ansible playbooks.
 
@@ -275,10 +293,10 @@ This playbook concerns itself with security of DSE cluster nodes including requi
 1. See the task: "Install and configure DSE node security to your requirements" indicated by: EDIT LIST and choose the security features you wish to implement, take note of certificate paths.
 
 To run:
-```
+
+```sh
 cd ansible
 ansible-playbook -i hosts dse_security.yml --private-key=~/.ssh/id_rsa_aws
-
 ```
 
 ### 5.2 Addition of a configurable OpsCenter Security (opsc_security.yml) playbook
@@ -286,10 +304,10 @@ ansible-playbook -i hosts dse_security.yml --private-key=~/.ssh/id_rsa_aws
 This playbook concerns itself with web browser -> OpsCenter server SSL/TLS HTTPS access and OpsCenter server to Agents on DSE nodes.
 
 To run:
-```
+
+```sh
 cd ansible
 ansible-playbook -i hosts opsc_security.yml --private-key=~/.ssh/id_rsa_aws
-
 ```
 
 ### 5.3 Addition of a configurable Spark Secuirty (spark_security.yml) playbook
@@ -297,35 +315,35 @@ ansible-playbook -i hosts opsc_security.yml --private-key=~/.ssh/id_rsa_aws
 This playbook concerns itself with forcing authentication at spark submit level, to block unauthorized access to the Spark service byt calling the role: security_spark_activate, see section 5.7.2 "DSE Unified Authentication and Spark" below.
 
 To run:
-```
+
+```sh
 cd ansible
 ansible-playbook -i hosts spark_security.yml --private-key=~/.ssh/id_rsa_aws
-
 ```
 
 ### 5.4 Creation of independently runnable Security_xyz encryption roles under ansible/roles to configure:
 
-1. Client -> node encryption: security_client_to_node
-2. Node -> node encryption: security__node_to_node
-3. Opscenter HTTPS access: security_opsc_configure
-4. Agent -> DSE encryption: security_opsc_agents_xyz
-5. OpsCenter->Agent: security_opsc_cluster_configure
+1. Client -> node encryption: `security_client_to_node`
+2. Node -> node encryption: `security__node_to_node`
+3. Opscenter HTTPS access: `security_opsc_configure`
+4. Agent -> DSE encryption: `security_opsc_agents_xyz`
+5. OpsCenter->Agent: `security_opsc_cluster_configure`
 
 ### 5.5 Introduction of spark and graph DSE datacenter types 
 
-1. Extended versions of terraform file, use: terraform_extended.sh
-2. Extended versions of .sh scripts to handle the new DC types
+1. Extended versions of terraform file, use: `terraform_extended.sh`
+2. Extended versions of `.sh` scripts to handle the new DC types
 
 
-### 5.6 Added dse_set_heap role to automate setting HEAP for jvm.options file
+### 5.6 Added `dse_set_heap` role to automate setting HEAP for jvm.options file
 
-1. See new params in group_vars/all: [heap_xms] and [heap_xmx] - always set them both to the same value to avoid runtime memory allocation issues.
+1. See new params in `group_vars/all`: `[heap_xms]` and `[heap_xmx]` - always set them both to the same value to avoid runtime memory allocation issues.
 
 ### 5.7 DSE Unified Authentication
 
-Additional security roles: security_unified_auth_activate and security_install to implement the core configuration settings for DSE Unified Authentication
+Additional security roles: `security_unified_auth_activate` and `security_install` to implement the core configuration settings for DSE Unified Authentication.
 
-The default SCHEME is internal please re-configure for LDAP and Kerberos SCHEMES, see the documentation here on how to do this:
+The default SCHEME is `internal`, please re-configure for LDAP and Kerberos SCHEMES, see the documentation here on how to do this:
 
 1. [DSE Unified Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuthAndRbacAbout.html)
 2. [Enabling DSE Unified Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secEnableDseAuthenticator.html)
@@ -335,13 +353,13 @@ Special note: default install cassandra superuser account:
 1. This account needs to be removed and replaced with a new superuser on all exposed installs of DSE, it is there to facilitate initial install and user/role configuration.
 2. Automation of this superuser remove/replace is not currently available in this solution, please follow the manual process here: [Replace root account](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secCreateRootAccount.html)
 3. A possible automation approach is to use this user/role library: [ansible-module-cassandra](https://github.com/Ensighten/ansible-module-cassandra)
-4. A candidate role for this process is roles:security_install
+4. A candidate role for this process is `roles:security_install`
 
 ### 5.7.1 Roles for DSE Unified Authentication
 
 [Creating Roles for Internal Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secRolesInternal.html)
 
-Once the security_unified_auth_activate role has run you should have a system that challenges user access at all levels, its now time to create your roles and open your system back up, you will need your superuser account to edit these roles. See the above link to create roles, not that you want ot use the "internal" option on that page, with the SCHEME: internal  e.g.
+Once the security_unified_auth_activate role has run you should have a system that challenges user access at all levels, its now time to create your roles and open your system back up, you will need your superuser account to edit these roles. See the above link to create roles, not that you want ot use the "internal" option on that page, with the `SCHEME: internal`  e.g.
 
 ```
 CREATE ROLE jane WITH LOGIN = true AND PASSWORD = 'Abc123Jane';
@@ -349,7 +367,7 @@ CREATE ROLE jane WITH LOGIN = true AND PASSWORD = 'Abc123Jane';
 
 ### 5.7.2 DSE Unified Authentication and Spark Security
 
-Addition of role: security_spark_auth_activate
+Addition of role: `security_spark_auth_activate`
 
 [DSE Analytics security checklist](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secChecklists.html#ariaid-title4)
 
@@ -357,7 +375,7 @@ Addition of role: security_spark_auth_activate
 
 Enabling security and authentication: 
 
-Security is enabled using the spark_security_enabled option in dse.yaml. Setting it to enabled turns on authentication between the Spark Master and Worker nodes, and allows you to enable encryption. To encrypt Spark connections for all components except the web UI, enable spark_security_encryption_enabled. The length of the shared secret used to secure Spark components is set using the spark_shared_secret_bit_length option, with a default value of 256 bits. These options are described in DSE Analytics options. For production clusters, enable these authentication and encryption. Doing so does not significantly affect performance.
+Security is enabled using the `spark_security_enabled` option in `dse.yaml`. Setting it to enabled turns on authentication between the Spark Master and Worker nodes, and allows you to enable encryption. To encrypt Spark connections for all components except the web UI, `enable spark_security_encryption_enabled`. The length of the shared secret used to secure Spark components is set using the `spark_shared_secret_bit_length` option, with a default value of 256 bits. These options are described in DSE Analytics options. For production clusters, enable these authentication and encryption. Doing so does not significantly affect performance.
 
 Authentication and Spark applications:
 
@@ -377,7 +395,7 @@ SSL certificates can be sourced 2 ways:
 
 ### 6.1 To generate and deploy self signed certificates to the ansible host:
 
-Note that is is NOT the distribution phase to target nodes, merely the creation and storage of SSL certificates on the ansible host in a known location. The distribution of SSL certs and keys out into the DSE cluster is taken up by two additional roles: { role: security_create_keystores } and { role: security_create_truststores }
+Note that is is NOT the distribution phase to target nodes, merely the creation and storage of SSL certificates on the ansible host in a known location. The distribution of SSL certs and keys out into the DSE cluster is taken up by two additional roles: `{ role: security_create_keystores }` and `{ role: security_create_truststores }`
 
 1. Configure default settings for your self signed certificate in: [ansible/roles/security_create_root_certificate/defaults/main.yml](ansible/roles/security_create_root_certificate/defaults/main.yml)
 
@@ -388,7 +406,7 @@ ssl_certs_path_owner: "cassandra"
 ssl_certs_path_group: "cassandra"
 ```
 
-2. In the ansible/dse_security.yml playbook add the following line in the area indicated by: EDIT LIST
+2. In the `ansible/dse_security.yml` playbook add the following line in the area indicated by: `EDIT LIST`
 
 ```
 { role: security_create_root_certificate }
@@ -396,21 +414,20 @@ ssl_certs_path_group: "cassandra"
 
 This will create a certificate and private key in the following directories on the ansible host (NOT the target nodes):
 
-- `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.key` -> {myserver.mydomain.com} is passed in by {{ansible_fqdn}}
+- `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.key` -> `{myserver.mydomain.com}` is passed in by `{{ansible_fqdn}}`
 - `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.pem`
 
 ### 6.2 To deploy CA signed certificates to the ansible host:
 
-In the case of CA signed certificates you need to go thru the normal process of generating your cetificates and .csr files and uploading them to your CA provider.
+In the case of CA signed certificates you need to go thru the normal process of generating your cetificates and `.csr` files and uploading them to your CA provider.
 
 Once you have the resulting certificate and private key place them in the following directories on the ansible host (NOT the target nodes): 
 
-(or the location you configured in the ansible/group_vars/all)
+(or the location you configured in the `ansible/group_vars/all`)
 
 - `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.key`
 - `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.pem`
 
-```
 
 
 
