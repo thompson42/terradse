@@ -11,12 +11,14 @@ This project has a [TODO](TODO.md)
 ## Sharp edges:
 
 1. Please only use Ubuntu 16.04 LTS for now as the target operating system (tested on 16.04.2)
-2. TerraDSE currently targets Datastax Enterprise 5.1.x, 6.0.x and Opscenter 6.5, only use these for now.
-3. TerraDSE needs to run in the sequence defined in runterra_extended.sh due to dependent steps, please do not edit this process, its brittle.
-4. TerraDSE expects to be able to get out of your network to install software from various locations including datastax.com, Ubuntu repos, Java repos and Python repos.
-5. TerraDSE currently gives you a reasonable level of security but holes do exist, please keep up to date with where we are at with security on the [TODO](TODO.md) page.
-6. This software is not owned or endorsed by Datastax Inc.
-7. This software is offered free of charge with no promise of functionality or fitness of purpose and no liability for damages incurred from its use.
+2. Please use Python 2.7.12 for the ansible host and the Python on each target node
+3. Please use Ansible 2.4.3.0 or later
+4. TerraDSE currently targets Datastax Enterprise 5.1.x, 6.0.x and Opscenter 6.5, only use these for now.
+5. TerraDSE needs to run in the sequence defined in runterra_extended.sh due to dependent steps, please do not edit this process, it's brittle.
+6. TerraDSE expects to be able to get out of your network to install software from various locations including datastax.com, Ubuntu repos, Java repos and Python repos.
+7. TerraDSE currently gives you a reasonable level of security but holes do exist, please keep up to date with where we are at with security on the [TODO](TODO.md) page.
+8. This software is not owned or endorsed by Datastax Inc.
+9. This software is offered free of charge with no promise of functionality or fitness of purpose and no liability for damages incurred from its use.
 
 # Quickstart steps for full cluster creation:
 
@@ -26,6 +28,8 @@ This project has a [TODO](TODO.md)
 4. Run /runterra_extended.sh and check AWS instances that will be created - accept and run the plan
 5. Run /genansinv_extended.sh (it will generate the required /ansible/hosts file)
 6. Run /runansi_extended.sh (expects your key to be: ~/.ssh/id_rsa_aws)
+
+See below for a more full description and more detailed instructions
 
 # Quickstart steps to add a node to the above cluster:
 
@@ -277,7 +281,7 @@ ansible-playbook -i hosts dse_security.yml --private-key=~/.ssh/id_rsa_aws
 
 ```
 
-### 5.2 Addition of a configurable OpsCenter Security (opsc_security.yml) playbook - DO NOT USE / WORK IN PROGRESS
+### 5.2 Addition of a configurable OpsCenter Security (opsc_security.yml) playbook
 
 This playbook concerns itself with web browser -> OpsCenter server SSL/TLS HTTPS access and OpsCenter server to Agents on DSE nodes.
 

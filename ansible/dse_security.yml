@@ -8,15 +8,25 @@
     - { role: security_create_root_certificate_directory } 
 
 
-#generate self signed certificates - OPTIONAL IF CA ROOT CERT SUPPLIED.
+#generate self signed certificates 
+#STEP IGNORED IF CA ROOT CERT SUPPLIED: YOU WILL NEED TO MANUALLY CREATE THE DIRECTORY ABOVE AND MANUALLY DEPLY YOUR CA CERT TO THE DIRECTORY
 - hosts: localhost
   any_errors_fatal: true
   become: no
   connection: local
   roles:
-    - { role: security_create_root_certificate } 
-
+    - { role: security_create_root_certificate, when: is_self_signed_root_cert | bool }
     
+# If 1) CA signed certs and 2) No DNS server entry for cert CN name
+# modify /etc/hosts on ALL nodes and push in CN name for each node (same value as signed certificate for node)
+- hosts: dse, opsc_core
+  any_errors_fatal: true
+  become: yes
+  become_method: sudo
+  roles:
+    - { role: security_etc_hosts_file_configure, when: etc_hosts_file_configure | bool }
+
+
 #create core DSE / OPSC storage node truststores and keystores (local)
 - hosts: localhost
   any_errors_fatal: true

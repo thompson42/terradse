@@ -1,10 +1,10 @@
 
-        
-#Activate Audit logging on the new node if required
-- hosts: add_node[0]
+# If 1) CA signed certs and 2) No DNS server entry for cert CN name
+# modify /etc/hosts on all nodes and push in CN name for each node (same value as signed certificate for node)
+- hosts: dse[0]
   any_errors_fatal: true
-  become: true
+  become: yes
   become_method: sudo
   roles:
-    - { role: security_audit_logging_configure}
+    - { role: security_etc_hosts_file_configure, when: etc_hosts_file_configure | bool }
 

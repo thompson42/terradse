@@ -1,0 +1,9 @@
+
+- name: Configure /etc/hosts
+  lineinfile:
+    name: "/etc/hosts"
+    regexp: '^127\.0\.0\.1'
+    line: "{{'127.0.0.1   localhost localhost.localdomain ip-' + private_ip.replace('.', '-') + '.' + ssl_certs_common_name }}"
+    owner: cassandra
+    group: cassandra
+    mode: 0644

@@ -137,8 +137,10 @@ cluster_truststore_password: "{{cluster_keystore_password}}"                    
  
 # Root certificate
 #-------------------------------------------------------------------------------
-# The self signed certs, .truststore and .keystores are created on the ansible 
+# The certs, .truststore and .keystores are created on the ansible 
 # controller node in the directory: ssl_certs_path
+is_self_signed_certificate: true                                                #EDIT: Change from default if CA certs
+etc_hosts_file_configure: false                                                 #EDIT: Change if CA certs AND no DNS server CN entries (CN name will be added to /etc/hosts)
 
 ssl_certs_common_name: "SelfSignRootCA" #CN                                     #EDIT: Change from default if CA certs
 ssl_cluster_name: "Test Cluster"        #OU                                     #EDIT: Change from default if CA certs
@@ -149,7 +151,8 @@ ssl_certs_country: "US"                 #C                                      
 ssl_certs_path_owner: "{{localhost_owner}}"
 ssl_certs_path_group: "{{localhost_group}}"
 
-ssl_certs_path: "/etc/ssl/{{ssl_certs_common_name}}"                            #EDIT: Change to your home directory if running ansible as a non-privileged user
+ssl_certs_path: "/etc/ssl/{{ssl_certs_common_name}}"                            #EDIT: If CA certs MUST manually create this directory on ansible host first time and deploy CA cert.
+                                                                                #ALSO: Change to your home directory if running ansible as a non-privileged user.
 ssl_certs_key_size: "2048"
 ssl_certs_days: "365"
 

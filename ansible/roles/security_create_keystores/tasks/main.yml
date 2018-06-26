@@ -1,25 +1,35 @@
 ---
 #EXPECTS: [hosts: localhost] [become: no] [connection: local] in playbook call
-#uses hostvars[item].private_dns to pull the EC2 private_dns off the hosts file and push it in as the CN on each nodes cert/keystore
 
-#- debug: msg="{{hostvars[item].private_dns}}"
+# SELF SIGNED CERTIFICATES CN: ip-10-0-0-1.ec2.internal
+# uses hostvars[item].private_dns to pull the EC2 private_dns off the hosts file and push it in as the CN on each nodes cert/keystore
+#- debug: msg="{{hostvars[item].private_dns if is_self_signed_root_cert | bool else 'ip-' + hostvars[item].private_ip.replace('.', '-') + '.' + ssl_certs_common_name }}"
+#  with_items: "{{ groups['dse'] }}"
+
+# CA SIGNED WILDCARD CERTIFICATES CN: ip-10-0-0-1.mysite.net
+# uses 'ip-' + hostvars[item].private_ip.replace('.', '-') + '.' + ssl_certs_common_name to create the DNS name (this should be either in DNS servers or hosts files.
+#- debug: msg="{{'ip-' + hostvars[item].private_ip.replace('.', '-') + '.' + ssl_certs_common_name }}"
+#  with_items: "{{ groups['dse'] }}"
+
+# COMBINED CALL:
+#- debug: msg="{{hostvars[item].private_dns if is_self_signed_root_cert | bool else 'ip-' + hostvars[item].private_ip.replace('.', '-') + '.' + ssl_certs_common_name }}"
 #  with_items: "{{ groups['dse'] }}"
 
 #Generate keystores for both [dse] and [opsc_dsecore] nodes
 
 - name: For each node, generate a keystore with key pair
-  command: keytool -genkeypair -keyalg RSA -alias "{{item}}" -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}" -validity "{{ssl_certs_days}}" -keysize "{{ssl_certs_key_size}}" -dname "CN={{hostvars[item].private_dns}}, OU={{ssl_cluster_name}}, O={{ssl_certs_organization}}, C={{ssl_certs_country}}"
+  command: keytool -genkeypair -keyalg RSA -alias "{{item}}" -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}" -validity "{{ssl_certs_days}}" -keysize "{{ssl_certs_key_size}}" -dname "CN={{hostvars[item].private_dns if is_self_signed_root_cert | bool else 'ip-' + hostvars[item].private_ip.replace('.', '-') + '.' + ssl_certs_common_name }}, OU={{ssl_cluster_name}}, O={{ssl_certs_organization}}, C={{ssl_certs_country}}"
   with_items: "{{ groups['dse']}}"
 - name: For each node, generate a keystore with key pair
-  command: keytool -genkeypair -keyalg RSA -alias "{{item}}" -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}" -validity "{{ssl_certs_days}}" -keysize "{{ssl_certs_key_size}}" -dname "CN={{hostvars[item].private_dns}}, OU={{ssl_cluster_name}}, O={{ssl_certs_organization}}, C={{ssl_certs_country}}"
+  command: keytool -genkeypair -keyalg RSA -alias "{{item}}" -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}" -validity "{{ssl_certs_days}}" -keysize "{{ssl_certs_key_size}}" -dname "CN={{hostvars[item].private_dns if is_self_signed_root_cert | bool else 'ip-' + hostvars[item].private_ip.replace('.', '-') + '.' + ssl_certs_common_name }}, OU={{ssl_cluster_name}}, O={{ssl_certs_organization}}, C={{ssl_certs_country}}"
   with_items: "{{ groups['opsc_dsecore']}}"
   
   
 - name: Generate a signing request from each keystore
-  command: keytool -alias "{{item}}" -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -certreq -file "{{ssl_certs_path}}/{{item}}-signing_request.csr" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}" -dname "CN={{hostvars[item].private_dns}}, OU={{ssl_cluster_name}}, O={{ssl_certs_organization}}, C={{ssl_certs_country}}"
+  command: keytool -alias "{{item}}" -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -certreq -file "{{ssl_certs_path}}/{{item}}-signing_request.csr" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}" -dname "CN={{hostvars[item].private_dns if is_self_signed_root_cert | bool else 'ip-' + hostvars[item].private_ip.replace('.', '-') + '.' + ssl_certs_common_name }}, OU={{ssl_cluster_name}}, O={{ssl_certs_organization}}, C={{ssl_certs_country}}"
   with_items: "{{ groups['dse']}}"
 - name: Generate a signing request from each keystore
-  command: keytool -alias "{{item}}" -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -certreq -file "{{ssl_certs_path}}/{{item}}-signing_request.csr" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}" -dname "CN={{hostvars[item].private_dns}}, OU={{ssl_cluster_name}}, O={{ssl_certs_organization}}, C={{ssl_certs_country}}"
+  command: keytool -alias "{{item}}" -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -certreq -file "{{ssl_certs_path}}/{{item}}-signing_request.csr" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}" -dname "CN={{hostvars[item].private_dns if is_self_signed_root_cert | bool else 'ip-' + hostvars[item].private_ip.replace('.', '-') + '.' + ssl_certs_common_name }}, OU={{ssl_cluster_name}}, O={{ssl_certs_organization}}, C={{ssl_certs_country}}"
   with_items: "{{ groups['opsc_dsecore']}}"
   
   
@@ -49,3 +59,4 @@
 #- name: Convert all the keystores into pkcs12 keystores
 #  command: keytool -importkeystore -srckeystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -destkeystore "{{ssl_certs_path}}/{{item}}-pkcs12-keystore.jks" -deststoretype pkcs12 -storepass "{{cluster_keystore_password}}" -deststorepass "{{cluster_keystore_password}}"
 #  with_items: "{{ groups['dse'] }}"
+

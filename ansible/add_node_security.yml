@@ -6,6 +6,15 @@
   connection: local
   roles:
     - { role: security_clear_keystores }
+    
+# If 1) CA signed certs and 2) No DNS server entry for cert CN name
+# modify /etc/hosts on new node and push in CN name (same value as signed certificate for node)
+- hosts: add_node[0]
+  any_errors_fatal: true
+  become: yes
+  become_method: sudo
+  roles:
+    - { role: security_etc_hosts_file_configure, when: etc_hosts_file_configure | bool }
 
 # Regenerate all core DSE cluster and OPSC DSECore cluster keystores (local)
 # This will include the new node
