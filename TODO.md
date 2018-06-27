@@ -25,7 +25,7 @@ vars: /ansible/group_vars/all
 
 role: security_create_root_certificate
 
-#### CA signed WILDCARD root certificate *.mysite.net - TEST :heavy_check_mark:
+#### CA signed WILDCARD root certificate *.mysite.net - TEST :x:
 
 [Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
 
@@ -366,9 +366,9 @@ role: security_audit_logging_configure - COMPLETE :heavy_check_mark:
 
 # Add a new node to an existing DC within an existing cluster
 
-#### Terraform provision new node via runterra_add_node.sh - TEST :heavy_check_mark:
+#### Terraform provision new node via runterra_add_node.sh - TEST :x:
 
-#### Modify hosts via genansinv_add_node.sh - TEST :heavy_check_mark:
+#### Modify hosts via genansinv_add_node.sh - TEST :x:
 
 #### Run ansible via runansi_add_node.sh - COMPLETE :heavy_check_mark:
 
@@ -395,11 +395,11 @@ NOTE:
 
 -> playbook: opsc_backups_configure.yml
 
-#### Inject DSE cluster backup location into OpsCenter via API call - TEST :heavy_check_mark:
+#### Inject DSE cluster backup location into OpsCenter via API call - TEST :x:
 
 role: /ansible/roles/opsc_backups_configure
 
-#### Inject DSE cluster backup schedule into OpsCenter via API call - TEST :heavy_check_mark:
+#### Inject DSE cluster backup schedule into OpsCenter via API call - TEST :x:
 
 role: /ansible/roles/opsc_backups_configure
 
