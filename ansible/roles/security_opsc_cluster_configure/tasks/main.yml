@@ -22,7 +22,7 @@
   
 - set_fact: cluster_name_json_template="cluster_name_json_{{dse_major_version}}.j2"
 
-- name: Configure the monitored and storage cluster via an API call top OpsCenter
+- name: Configure the monitored and storage cluster via an API call to OpsCenter
   uri:
     url: "https://{{groups['opsc_srv'][0]}}:{{opsc_web_port}}/cluster-configs"
     method: POST

@@ -1,0 +1,15 @@
+{
+    "first_run_date": "2018-05-03",
+    "first_run_time": "18:00:00",
+    "interval": 1,
+    "interval_unit": "days",
+    "job_params": {
+        "cleanup_age": 30,
+        "cleanup_age_unit": "days",
+        "keyspaces": ["{{backup_keyspace_list}}"],
+        "type": "backup",
+        #"pre_snapshot_script": PRE_SNAPSHOT_SCRIPT,
+        #"post_snapshot_script": POST_SNAPSHOT_SCRIPT
+    },
+    "timezone": "GMT"
+}

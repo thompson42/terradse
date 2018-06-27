@@ -1,0 +1,48 @@
+
+# Inject into Opscenter backup schedule via API calls
+# cluster_name from [hosts] inventory file: {{hostvars[groups['dse'][0]]['cluster_name']}}
+# Master API backups page for backup and restore calls: https://docs.datastax.com/en/opscenter/6.5/api/docs/backups.html
+
+# First get an API session
+- name: Start an authenticated session with OPSC via an API call
+  uri:
+    url: "https://{{groups['opsc_srv'][0]}}:{{opsc_web_port}}/login"
+    method: POST
+    body: {"username": "{{opscenter_username}}","password": "{{secure_opscenter_password}}"}
+    status_code: 200
+    body_format: json
+    validate_certs: false
+    return_content: yes
+  register: session_json
+  
+- set_fact: backup_destination_json_template="backup_destination_json_{{opsc_ver_target}}.j2"
+
+# Add a backup location
+# POST /{cluster_id}/backups/destinations
+# https://docs.datastax.com/en/opscenter/6.5/api/docs/backups.html#method-add-or-update-a-destination
+- name: Inject into Opscenter new backup destination via an API call
+  uri:
+    url: "https://{{groups['opsc_srv'][0]}}:{{opsc_web_port}}/{{hostvars[groups['dse'][0]]['cluster_name']}}/backups/destinations"
+    method: POST
+    HEADER_opscenter-session: "{{session_json.json.sessionid}}"
+    body: "{{ lookup('template', backup_destination_json_template) }}"
+    status_code: 201
+    body_format: json
+    validate_certs: false
+
+- set_fact: backup_schedule_json_template="backup_schedule_json_{{opsc_ver_target}}.j2"
+
+# Add a backup schedule
+# POST /{cluster_id}/job-schedules
+# NOTE: This call only produces a snapshot in the snapshot directory. 
+# TEST: Presume backup location above is honoured as part of process.
+- name: Inject into Opscenter backup schedule via an API call
+  uri:
+    url: "https://{{groups['opsc_srv'][0]}}:{{opsc_web_port}}/{{hostvars[groups['dse'][0]]['cluster_name']}}/job-schedules"
+    method: POST
+    HEADER_opscenter-session: "{{session_json.json.sessionid}}"
+    body: "{{ lookup('template', backup_schedule_json_template) }}"
+    status_code: 201
+    body_format: json
+    validate_certs: false
+

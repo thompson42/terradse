@@ -1,0 +1,10 @@
+
+# Inject into Opscenter backup schedule  via API calls
+# schema injection must preceed this step
+
+- hosts: opsc_srv
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: opsc_backups_configure, when: is_automated_backup | bool }

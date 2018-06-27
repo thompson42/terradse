@@ -173,6 +173,14 @@ audit_logging_options_enabled: true
 audit_logging_options_logger: SLF4JAuditWriter
 audit_logging_options_included_categories: AUTH,DML,DDL,DCL
 
+# Backups
+#-------------------------------------------------------------------------------
+# Can only run AFTER schema creation (need keyspace names for backup list)
+# For fine grain control directly edit /roles/opsc_services_configure/templates/
+is_automated_backup: false                                                      #EDIT: Change from false if backups required
+backup_path: /mnt/backups                                                       #EDIT: Should be located off node to be of any use
+backup_keyspace_list: keyspace1,keyspace2,keyspace3                             #EDIT: list keyspaces to backup, empty list means ALL keyspaces
+
 
 
 

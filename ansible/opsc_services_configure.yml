@@ -1,0 +1,11 @@
+
+#Inject into Opscenter services activation and other best practise configurations via API calls
+
+- hosts: opsc_srv
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: opsc_services_configure }
+    
+

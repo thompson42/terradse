@@ -13,9 +13,9 @@ And remove from runansi_extended.sh
 
 # Ansible Vault
 
-#### Shift sensitive passwords to ansible vault
+#### Shift sensitive passwords to ansible vault - TODO :x:
 
-vars: /ansible/group_vars/all - TODO :x:
+vars: /ansible/group_vars/all
 
 # DSE cluster Transport Encryption 
 
@@ -25,19 +25,16 @@ vars: /ansible/group_vars/all - TODO :x:
 
 role: security_create_root_certificate
 
-#### CA signed WILDCARD root certificate *.mysite.net - COMPLETE :heavy_check_mark:
+#### CA signed WILDCARD root certificate *.mysite.net - TEST :heavy_check_mark:
 
 1. [Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
-
-Set /group_vars/all:{{is_self_signed_certificate}} to false
-If no DNS resolution in cluster, set {{etc_hosts_file_configure}} to true
-Configure /group_vars/all:{{ssl_certs_common_name}} etc
-Deploy your CA signed Wildcard root certificate to directory path /group_vars/all:{{ssl_certs_path}} on the ansible host
+2. Set /group_vars/all:{{is_self_signed_certificate}} to false
+3. If no DNS resolution in cluster, set {{etc_hosts_file_configure}} to true
+4. Configure /group_vars/all:{{ssl_certs_common_name}} etc
+5. Deploy your CA signed Wildcard root certificate to directory path /group_vars/all:{{ssl_certs_path}} on the ansible host
 
 #### CA signed certificates (1x supplied for each node e.g ip-10-0-0-1.mysite.net, ip-10-0-0-2.mysite.net ) - ON HOLD
 
-1. Comment out security_install.yml: {security_create_root_certificate}
-2. Place CA certs in {{ ssl_certs_path }}
 
 #### Create DSE truststores - COMPLETE :heavy_check_mark:
 
@@ -368,17 +365,11 @@ role: security_audit_logging_configure - COMPLETE :heavy_check_mark:
 
 # Add a new node to an existing DC within an existing cluster
 
-#### Terraform provision new node via runterra_add_node.sh 
+#### Terraform provision new node via runterra_add_node.sh - TEST :heavy_check_mark:
 
-- COMPLETE :heavy_check_mark:
+#### Modify hosts via genansinv_add_node.sh - TEST :heavy_check_mark:
 
-#### Modify hosts via genansinv_add_node.sh 
-
-- COMPLETE :heavy_check_mark:
-
-#### Run ansible via runansi_add_node.sh 
-
-- COMPLETE :heavy_check_mark:
+#### Run ansible via runansi_add_node.sh - COMPLETE :heavy_check_mark:
 
 # Bring up a new DC within an existing cluster
 
@@ -393,11 +384,33 @@ This new DC could have various reasons for existing:
 
 # Bring up a replacement node in an existing cluster DC
 
-- TODO :x:
+Replace a node in a DC. - TODO :x:
 
-Replace a node in a DC.
+# OpsCenter DSE cluster backup automation
 
-# Nice have list
+NOTE: 
+
+1. Schema automation needs to run prior to backup automation.
+
+-> playbook: opsc_backups_configure.yml
+
+#### Inject DSE cluster backup location into OpsCenter via API call - TEST :heavy_check_mark:
+
+role: /ansible/roles/opsc_backups_configure
+
+#### Inject DSE cluster backup schedule into OpsCenter via API call - TEST :heavy_check_mark:
+
+role: /ansible/roles/opsc_backups_configure
+
+# OpsCenter services automation
+
+-> playbook: opsc_services_configure.yml
+
+#### Activate OpsCenter repair service - TODO :x:
+
+role: /ansible/roles/opsc_services_configure
+
+# Backlog
 
 ###  CQL schema managment
 
@@ -436,6 +449,10 @@ Replace a node in a DC.
 -> playbook: nodetool_access.yml
 
 #### /ansible/roles/nodetool_command
+
+
+
+
 
 
 
