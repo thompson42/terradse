@@ -29,7 +29,7 @@ role: security_create_root_certificate
 
 [Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
 
-1. Set /group_vars/all:{{is_self_signed_certificate}} to false
+1. Set /group_vars/all:{{is_self_signed_root_cert}} to false
 2. If no DNS resolution in cluster, set {{etc_hosts_file_configure}} to true
 3. Configure /group_vars/all:{{ssl_certs_common_name}} etc
 4. Deploy your CA signed Wildcard root certificate to directory path /group_vars/all:{{ssl_certs_path}} on the ansible host
@@ -411,6 +411,18 @@ role: /ansible/roles/opsc_backups_configure
 
 role: /ansible/roles/opsc_services_configure
 
+# DSE Best Practice configurations and DSE Operations
+
+#### Optimise Linux OS general settings for DSE - TEST :x:
+
+Recreate file based handler for reload of syscrtl
+
+role: dse_osparam_change
+
+#### Optimise Linux OS SSD settings - TEST :x:
+
+role: dse_osparam_ssd_change
+
 # Backlog
 
 ###  CQL schema managment
@@ -444,6 +456,16 @@ role: /ansible/roles/opsc_services_configure
 #### /ansible/roles/create_role
 
 #### /ansible/roles/modify_role
+
+### Nodesync management
+
+Nodesync can be acivated on a table:
+
+1. At table schema level as part of CREATE or ALTER table commands (probably best approach as behaviour is captured in versionable schema)
+2. Via [nodetool nodesync ...] calls
+3. Via Opscenter API calls
+
+-> playbook: nodesync_management.yml
 
 ### Nodetool access
 

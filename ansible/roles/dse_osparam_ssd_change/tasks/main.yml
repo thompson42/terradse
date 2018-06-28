@@ -1,0 +1,7 @@
+
+  - name: Change SSD device settings 
+    shell: echo "{{ item.value }}" > /sys/block/{{ device_string }}/queue/"{{ item.parm }}"
+    with_items:
+#    - { parm: 'scheduler', value: 'deadline' }
+    - { parm: 'rotational', value: '0' }
+    - { parm: 'read_ahead_kb', value: '8' }

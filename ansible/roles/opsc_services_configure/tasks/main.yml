@@ -1,0 +1,27 @@
+
+# First get an API session
+- name: Start an authenticated session with OPSC via an API call
+  uri:
+    url: "https://{{groups['opsc_srv'][0]}}:{{opsc_web_port}}/login"
+    method: POST
+    body: {"username": "{{opscenter_username}}","password": "{{secure_opscenter_password}}"}
+    status_code: 200
+    body_format: json
+    validate_certs: false
+    return_content: yes
+  register: session_json
+  
+- set_fact: repair_service_json_template="repair_service_json_{{opsc_ver_target}}.j2"
+
+# Turn on the cluster repair service.
+# POST /{cluster_id}/services/repair
+# https://docs.datastax.com/en/opscenter/6.5/api/docs/node_ops.html#cluster-repair-service
+- name: Inject into Opscenter repair service activation via an API call
+  uri:
+    url: "https://{{groups['opsc_srv'][0]}}:{{opsc_web_port}}/{{hostvars[groups['dse'][0]]['cluster_name']}}/services/repair"
+    method: POST
+    HEADER_opscenter-session: "{{session_json.json.sessionid}}"
+    body: "{{ lookup('template', repair_service_json_template) }}"
+    status_code: 201
+    body_format: json
+    validate_certs: false

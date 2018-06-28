@@ -65,10 +65,14 @@ hints_directory: /var/lib/cassandra/hints                                       
 commitlog_directory: /var/lib/cassandra/commitlog                               #EDIT: Change from default
 saved_caches_directory: /var/lib/cassandra/saved_caches                         #EDIT: Change from default
 
-# Block device string (xvd...) for the EBS volume attached for DSE data
-# consumed in dse_osparm_change.yml and opsc_osparm_change.yml
-# IGNORE THIS SETTING , MAY BE RE-PURPOSED FOR DIRECTLY ATTATCHED SSDS
-ebs_devstr: xvda
+# Storage settings
+#-------------------------------------------------------------------------------
+# consumed in role: dse_osparm_ssd_change
+
+is_ssd_storage: false                                                           #EDIT: Change to [true] if using ephemeral SSDs for DSE storage
+
+# Block device string for the attached EBS or ephemeral SSD volume for DSE data
+device_string: xxxx                                                             #EDIT: Change to /sys/block/<xxxx> for this SSD if using ephemeral SSDs for DSE storage 
 
 # Key Spark settings
 #-------------------------------------------------------------------------------
@@ -140,19 +144,21 @@ cluster_truststore_password: "{{cluster_keystore_password}}"                    
 #-------------------------------------------------------------------------------
 # The certs, .truststore and .keystores are created on the ansible 
 # controller node in the directory: ssl_certs_path
-is_self_signed_certificate: true                                                #EDIT: Change from default if CA certs
+is_self_signed_root_cert: true                                                  #EDIT: Change to [false] if CA certs
 etc_hosts_file_configure: false                                                 #EDIT: Change if CA certs AND no DNS server CN entries (CN name will be added to /etc/hosts)
 
-ssl_certs_common_name: "SelfSignRootCA" #CN                                     #EDIT: Change from default if CA certs
-ssl_cluster_name: "Test Cluster"        #OU                                     #EDIT: Change from default if CA certs
-ssl_certs_organization: "Datastax"      #O                                      #EDIT: Change from default if CA certs
-ssl_certs_country: "US"                 #C                                      #EDIT: Change from default if CA certs
+# Not truely the CN, CN will be dynamically generated off each node's hostname.
+ssl_certs_common_name: "SelfSignRootCA"                                         #EDIT: Change from default if WILDCARD CA certs e.g [mysite.net]
+
+ssl_cluster_name: "Test Cluster"        #OU                                     EDIT: Change from default if CA certs
+ssl_certs_organization: "Datastax"      #O                                      EDIT: Change from default if CA certs
+ssl_certs_country: "US"                 #C                                      EDIT: Change from default if CA certs
 
 # must be an account and group available on localhost
 ssl_certs_path_owner: "{{localhost_owner}}"
 ssl_certs_path_group: "{{localhost_group}}"
 
-ssl_certs_path: "/etc/ssl/{{ssl_certs_common_name}}"                            #EDIT: If CA certs MUST manually create this directory on ansible host first time and deploy CA cert.
+ssl_certs_path: "/etc/ssl/{{ssl_certs_common_name}}"                            #EDIT: If CA certs MUST manually create this directory as [mysite.net] on ansible host first time and deploy your [mysite.net.pem] and [mysite.net.key] CA cert.
                                                                                 #ALSO: Change to your home directory if running ansible as a non-privileged user.
 ssl_certs_key_size: "2048"
 ssl_certs_days: "365"
@@ -169,7 +175,7 @@ ssl_certs_days: "365"
 #Actual audit logs are stored in: dse_syslog_dir/audit/audit.log
 #Log Storage location is controlled by: /etc/dse/cassandra/logback.xml section: [audit log]
 
-audit_logging_options_enabled: true
+audit_logging_options_enabled: false                                            #EDIT: Change to [true] to activate
 audit_logging_options_logger: SLF4JAuditWriter
 audit_logging_options_included_categories: AUTH,DML,DDL,DCL
 
@@ -180,11 +186,4 @@ audit_logging_options_included_categories: AUTH,DML,DDL,DCL
 is_automated_backup: false                                                      #EDIT: Change from false if backups required
 backup_path: /mnt/backups                                                       #EDIT: Should be located off node to be of any use
 backup_keyspace_list: keyspace1,keyspace2,keyspace3                             #EDIT: list keyspaces to backup, empty list means ALL keyspaces
-
-
-
-
-
-
-
 
