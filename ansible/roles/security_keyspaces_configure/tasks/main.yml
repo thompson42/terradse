@@ -5,6 +5,10 @@
 # https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuthAndRbacAbout.html
 # https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secEnableDseAuthenticator.html
 
+  - name: Pausing for 60 seconds to allow the DSE endpoint to come up
+    pause:
+      seconds: 60
+
   - name: Create a dictionary of DC's and their node count
     set_fact:
       dc_dict_var: "{{ dc_dict_var | default({}) | combine({item.key: item.value}) }}"
