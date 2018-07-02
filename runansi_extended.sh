@@ -1,11 +1,13 @@
 #!/bin/bash
 
 # exit on any playbook exception
-set -ue
+#set -ue
 
 cd ansible
 
 echo "---- Setting up primary DSE cluster ----"
+echo ""
+echo "---- The system will exit IMMEDIATELY if DSE/Cassandra data directories already exist on the target nodes ! ----"
 
 echo
 echo ">>>> Install DSE cluster <<<<"

@@ -1,5 +1,13 @@
 ---
 
+# Exit process immediately if the Cassandra data directory exists on any node (don't want to overwrite a running system !)
+- hosts: opsc_dsecore
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+  - { role: dse_test_for_data_directory }
+
 # Install DSE Core/Cassandra on all OPSC DSECore nodes
 - hosts: opsc_dsecore
   any_errors_fatal: true

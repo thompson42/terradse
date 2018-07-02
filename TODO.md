@@ -9,13 +9,23 @@
 
 #### move id_rsa_aws to ansible.cfg
 
-And remove from runansi_extended.sh
+And remove from all bash references e.g. runansi_extended.sh, runansi_add_node.sh etc.
 
 # Ansible Vault
 
 #### Shift sensitive passwords to ansible vault - TODO :x:
 
 vars: /ansible/group_vars/all
+
+# Primary sanity check and early exit from Ansible process
+
+#### If data exists in the configured DSE data directory exit the entire process ! - TEST :question:
+
+On Ansible startup via runansi_extended.sh and runansi_add_node.sh if data exists in the configured DSE data directory the entire BASH script will exit. This will protect against overwriting an existing running cluster in the case of creating a new cluster via runansi_extended.sh and will also stop overwriting an existing running node in the case of runansi_add_node.sh
+
+Called by playbooks: dse_install.yml, add_node_install.yml and opsc_install.yml
+
+role: role: dse_test_for_data_directory
 
 # DSE cluster Transport Encryption 
 
@@ -25,7 +35,7 @@ vars: /ansible/group_vars/all
 
 role: security_create_root_certificate
 
-#### CA signed WILDCARD root certificate *.mysite.net - TEST :x:
+#### CA signed WILDCARD root certificate *.mysite.net - TEST :question:
 
 [Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
 
@@ -366,9 +376,9 @@ role: security_audit_logging_configure - COMPLETE :heavy_check_mark:
 
 # Add a new node to an existing DC within an existing cluster
 
-#### Terraform provision new node via runterra_add_node.sh - TEST :x:
+#### Terraform provision new node via runterra_add_node.sh - TEST :question:
 
-#### Modify hosts via genansinv_add_node.sh - TEST :x:
+#### Modify hosts via genansinv_add_node.sh - TEST :question:
 
 #### Run ansible via runansi_add_node.sh - COMPLETE :heavy_check_mark:
 
@@ -395,11 +405,11 @@ NOTE:
 
 -> playbook: opsc_backups_configure.yml
 
-#### Inject DSE cluster backup location into OpsCenter via API call - TEST :x:
+#### Inject DSE cluster backup location into OpsCenter via API call - TEST :question:
 
 role: /ansible/roles/opsc_backups_configure
 
-#### Inject DSE cluster backup schedule into OpsCenter via API call - TEST :x:
+#### Inject DSE cluster backup schedule into OpsCenter via API call - TEST :question:
 
 role: /ansible/roles/opsc_backups_configure
 
@@ -407,19 +417,19 @@ role: /ansible/roles/opsc_backups_configure
 
 -> playbook: opsc_services_configure.yml
 
-#### Activate OpsCenter repair service - TODO :x:
+#### Activate OpsCenter repair service - TEST :question:
 
 role: /ansible/roles/opsc_services_configure
 
 # DSE Best Practice configurations and DSE Operations
 
-#### Optimise Linux OS general settings for DSE - TEST :x:
+#### Optimise Linux OS general settings for DSE - TEST :question:
 
 Recreate file based handler for reload of syscrtl
 
 role: dse_osparam_change
 
-#### Optimise Linux OS SSD settings - TEST :x:
+#### Optimise Linux OS SSD settings - TEST :question:
 
 role: dse_osparam_ssd_change
 

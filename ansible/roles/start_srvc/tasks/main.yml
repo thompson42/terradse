@@ -1,16 +1,9 @@
 ---
-# state: restarted first of all stops and then starts DSE, it was timing out at OS level and indicating role failure at ansible level
-# we have split it into a stop and then a start ans sems to behave better
 
-- name: Start cassandra or dse service (stopped phase)
+- name: Start cassandra or dse service
   service:
     name: "{{ srvc_name }}"
-    state: stopped
-
-- name: Start cassandra or dse service (started phase)
-  service:
-    name: "{{ srvc_name }}"
-    state: started
+    state: restarted
 
 - name: Wait for Cassandra process is up and running
   wait_for:
