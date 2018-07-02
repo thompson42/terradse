@@ -4,6 +4,7 @@
   service:
     name: "{{ srvc_name }}"
     state: restarted
+  ignore_errors: true
 
 - name: Wait for Cassandra process is up and running
   wait_for:
