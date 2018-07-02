@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # exit on any playbook exception
-#set -ue
+set -ue
 
 cd ansible
 
