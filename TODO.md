@@ -232,11 +232,11 @@ role: security_client_to_node
 
 Only applicable for DSE 6.0+  - this solution only supports DSE 5.1.x at this point.
 
-# Spark Disk Encrytption
+# Spark Disk Encryption
 
 #### Spark disk encryption of driver temp files and shuffle files on disk (only available DSE 6.0 onwards) - TODO :x:
 
-(spark.io.encryption.enabled)[https://docs.datastax.com/en/dse/6.0/dse-admin/datastax_enterprise/security/encryptSparkConnections.html]
+[spark.io.encryption.enabled](https://docs.datastax.com/en/dse/6.0/dse-admin/datastax_enterprise/security/encryptSparkConnections.html)
 
 role: security_spark_auth_activate/templates/spark_defaults.conf
 
@@ -361,11 +361,11 @@ role: /ansible/roles/security_jmx_auth_activate
 
 # Audit Logging 
 
-(Enabling data auditing in DataStax Enterprise)[https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditEnable.html]
+[Enabling data auditing in DataStax Enterprise](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditEnable.html)
 
-(Configuring audit logging)[https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditConfigLog.html]
+[Configuring audit logging](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditConfigLog.html)
 
-(Formats of DataStax Enterprise logs)[https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditLogFormat.html]
+[Formats of DataStax Enterprise logs](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditLogFormat.html)
 
 default location for audit log:   /var/log/cassandra/audit/audit.log
 default location for logback.xml: /etc/dse/cassandra/logback.xml
