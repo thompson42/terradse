@@ -19,7 +19,7 @@ vars: /ansible/group_vars/all
 
 # Primary sanity check and early exit from Ansible process
 
-#### If data exists in the configured DSE data directory exit the entire process ! - TEST :question:
+#### If data exists in the configured DSE data directory exit the entire process ! - COMPLETE :heavy_check_mark:
 
 On Ansible startup via runansi_extended.sh and runansi_add_node.sh if data exists in the configured DSE data directory the entire BASH script will exit. This will protect against overwriting an existing running cluster in the case of creating a new cluster via runansi_extended.sh and will also stop overwriting an existing running node in the case of runansi_add_node.sh
 
@@ -423,7 +423,7 @@ role: /ansible/roles/opsc_services_configure
 
 # DSE Best Practice configurations and DSE Operations
 
-#### Optimise Linux OS general settings for DSE - TEST :question:
+#### Optimise Linux OS general settings for DSE - COMPLETE :heavy_check_mark:
 
 Recreate file based handler for reload of syscrtl
 

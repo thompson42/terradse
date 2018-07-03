@@ -1,8 +1,8 @@
 
-- hosts: dse_graph
+- hosts: dse, opsc_dsecore
   any_errors_fatal: true
   become: true
   become_method: sudo
   roles:
-    - { role: dummy_role, when: activate_alwaysonsql | bool and dse_major_version >= 6.0 } 
+    - { role: helper_python_install } 
 

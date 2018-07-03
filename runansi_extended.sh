@@ -133,13 +133,13 @@ echo
 
 echo
 echo ">>>> Inject into Opscenter services activation and other best practise configurations via API call <<<<"
-echo " Disabled, must run after schema creation "
+echo
 #ansible-playbook -i hosts opsc_services_configure.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
 echo ">>>> Inject into Opscenter backup schedule via API call <<<<"
-echo " Disabled, must run after schema creation "
+echo " Disabled, must run after schema creation... "
 #ansible-playbook -i hosts opsc_backups_configure.yml --private-key=~/.ssh/id_rsa_aws
 echo
 

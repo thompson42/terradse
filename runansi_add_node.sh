@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# exit on any playbook exception
+set -ue
+
 cd ansible
 
 echo "---- Setting up primary DSE cluster ----"
