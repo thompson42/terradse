@@ -35,7 +35,7 @@ role: role: dse_test_for_data_directory
 
 role: security_create_root_certificate
 
-#### CA signed WILDCARD root certificate *.mysite.net - TEST :question:
+#### CA signed WILDCARD root certificate *.mysite.net - TESTING NOW :question:
 
 [Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
 
@@ -376,9 +376,9 @@ role: security_audit_logging_configure - COMPLETE :heavy_check_mark:
 
 # Add a new node to an existing DC within an existing cluster
 
-#### Terraform provision new node via runterra_add_node.sh - TEST :question:
+#### Terraform provision new node via runterra_add_node.sh - TESTING NOW :question:
 
-#### Modify hosts via genansinv_add_node.sh - TEST :question:
+#### Modify hosts via genansinv_add_node.sh - TESTING NOW :question:
 
 #### Run ansible via runansi_add_node.sh - COMPLETE :heavy_check_mark:
 
@@ -393,7 +393,7 @@ This new DC could have various reasons for existing:
 3. A backup DC i.e. a new Graph DC in AZ2 in a cluster with an existing Graph DC in AZ1
 4. A geographically seperate replicated edge DC 
 
-# Bring up a replacement node in an existing cluster DC
+# Bring up a replacement node in a specific DC in an existing cluster
 
 Replace a node in a DC. - TODO :x:
 
@@ -405,11 +405,11 @@ NOTE:
 
 -> playbook: opsc_backups_configure.yml
 
-#### Inject DSE cluster backup location into OpsCenter via API call - TEST :question:
+#### Inject DSE cluster backup location into OpsCenter via API call - TESTING NOW :question:
 
 role: /ansible/roles/opsc_backups_configure
 
-#### Inject DSE cluster backup schedule into OpsCenter via API call - TEST :question:
+#### Inject DSE cluster backup schedule into OpsCenter via API call - TESTING NOW :question:
 
 role: /ansible/roles/opsc_backups_configure
 
@@ -417,7 +417,7 @@ role: /ansible/roles/opsc_backups_configure
 
 -> playbook: opsc_services_configure.yml
 
-#### Activate OpsCenter repair service - TEST :question:
+#### Activate OpsCenter repair service - TESTING NOW :question:
 
 role: /ansible/roles/opsc_services_configure
 
@@ -429,7 +429,7 @@ Recreate file based handler for reload of syscrtl
 
 role: dse_osparam_change
 
-#### Optimise Linux OS SSD settings - TEST :question:
+#### Optimise Linux OS SSD settings - TESTING NOW :question:
 
 role: dse_osparam_ssd_change
 
