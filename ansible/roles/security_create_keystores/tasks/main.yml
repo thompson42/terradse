@@ -17,46 +17,97 @@
 
 #Generate keystores for both [dse] and [opsc_dsecore] nodes
 
+
 - name: For each node, generate a keystore with key pair
-  command: keytool -genkeypair -keyalg RSA -alias "{{item}}" -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}" -validity "{{ssl_certs_days}}" -keysize "{{ssl_certs_key_size}}" -dname "CN={{hostvars[item].private_dns if is_self_signed_root_cert | bool else 'ip-' + hostvars[item].private_ip.replace('.', '-') + '.' + ssl_certs_common_name }}, OU={{ssl_cluster_name}}, O={{ssl_certs_organization}}, C={{ssl_certs_country}}"
-  with_items: "{{ groups['dse']}}"
-- name: For each node, generate a keystore with key pair
-  command: keytool -genkeypair -keyalg RSA -alias "{{item}}" -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}" -validity "{{ssl_certs_days}}" -keysize "{{ssl_certs_key_size}}" -dname "CN={{hostvars[item].private_dns if is_self_signed_root_cert | bool else 'ip-' + hostvars[item].private_ip.replace('.', '-') + '.' + ssl_certs_common_name }}, OU={{ssl_cluster_name}}, O={{ssl_certs_organization}}, C={{ssl_certs_country}}"
-  with_items: "{{ groups['opsc_dsecore']}}"
-  
-  
-- name: Generate a signing request from each keystore
-  command: keytool -alias "{{item}}" -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -certreq -file "{{ssl_certs_path}}/{{item}}-signing_request.csr" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}" -dname "CN={{hostvars[item].private_dns if is_self_signed_root_cert | bool else 'ip-' + hostvars[item].private_ip.replace('.', '-') + '.' + ssl_certs_common_name }}, OU={{ssl_cluster_name}}, O={{ssl_certs_organization}}, C={{ssl_certs_country}}"
-  with_items: "{{ groups['dse']}}"
-- name: Generate a signing request from each keystore
-  command: keytool -alias "{{item}}" -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -certreq -file "{{ssl_certs_path}}/{{item}}-signing_request.csr" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}" -dname "CN={{hostvars[item].private_dns if is_self_signed_root_cert | bool else 'ip-' + hostvars[item].private_ip.replace('.', '-') + '.' + ssl_certs_common_name }}, OU={{ssl_cluster_name}}, O={{ssl_certs_organization}}, C={{ssl_certs_country}}"
-  with_items: "{{ groups['opsc_dsecore']}}"
-  
-  
-- name: BYO sign each nodes certificate
-  command: openssl x509 -req -CA "{{ssl_certs_path}}/{{ssl_certs_common_name}}.pem" -CAkey "{{ssl_certs_path}}/{{ssl_certs_common_name}}.key" -in "{{ssl_certs_path}}/{{item}}-signing_request.csr" -out "{{ssl_certs_path}}/{{item}}.crt_signed" -days "{{ssl_certs_days}}" -CAcreateserial -passin pass:"{{cluster_keystore_password}}"
-  with_items: "{{ groups['dse']}}"
-- name: BYO sign each nodes certificate
-  command: openssl x509 -req -CA "{{ssl_certs_path}}/{{ssl_certs_common_name}}.pem" -CAkey "{{ssl_certs_path}}/{{ssl_certs_common_name}}.key" -in "{{ssl_certs_path}}/{{item}}-signing_request.csr" -out "{{ssl_certs_path}}/{{item}}.crt_signed" -days "{{ssl_certs_days}}" -CAcreateserial -passin pass:"{{cluster_keystore_password}}"
-  with_items: "{{ groups['opsc_dsecore']}}"
+  command: >
+    keytool -genkeypair -keyalg RSA -alias "{{item}}" -keystore "{{item}}-keystore.jks" 
+    -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}"
+    -validity "{{ssl_certs_days}}" -keysize "{{ssl_certs_key_size}}"
+    -dname "CN={{cn}}, OU={{ssl_cluster_name}}, O={{ssl_certs_organization}}, C={{ssl_certs_country}}"
+  args:
+    chdir: "{{ssl_certs_path}}"
+  vars:
+    cn: "{{hostvars[item].private_dns if is_self_signed_root_cert | bool else ansible_hostname + '.' + ssl_certs_common_name }}"
+  with_items:
+  - "{{ groups['dse']}}"
+  - "{{ groups['opsc_dsecore']}}"
+
+- block:
+  - name: Generate a signing request from each keystore
+    command: >
+      keytool -alias "{{item}}" -keystore "{{item}}-keystore.jks" -certreq -file "{{item}}-signing_request.csr" 
+      -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}"
+      -dname "CN={{cn}}, OU={{ssl_cluster_name}}, O={{ssl_certs_organization}}, C={{ssl_certs_country}}"
+    args:
+      chdir: "{{ssl_certs_path}}"
+    vars:
+      cn: "{{hostvars[item].private_dns if is_self_signed_root_cert | bool else ansible_hostname + '.' + ssl_certs_common_name }}"
+    with_items:
+    - "{{ groups['dse']}}"
+    - "{{ groups['opsc_dsecore']}}"
 
 
-- name: Import the root certificate into each node's keystore
-  command: keytool -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -alias "{{ssl_certs_common_name}}" -importcert -file "{{ssl_certs_path}}/{{ssl_certs_common_name}}.pem" -noprompt  -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}"
-  with_items: "{{ groups['dse']}}"
-- name: Import the root certificate into each node's keystore
-  command: keytool -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -alias "{{ssl_certs_common_name}}" -importcert -file "{{ssl_certs_path}}/{{ssl_certs_common_name}}.pem" -noprompt  -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}"
-  with_items: "{{ groups['opsc_dsecore']}}"
+  - name: BYO sign each nodes certificate
+    command: >
+      openssl x509 -req -CA "{{ssl_certs_common_name}}.pem" -CAkey "{{ssl_certs_common_name}}.key" 
+      -in "{{item}}-signing_request.csr" -out "{{item}}.crt_signed"
+      -days "{{ssl_certs_days}}" -CAcreateserial -passin pass:"{{cluster_keystore_password}}"
+    args:
+      chdir: "{{ssl_certs_path}}"
+    with_items:
+    - "{{ groups['dse']}}"
+    - "{{ groups['opsc_dsecore']}}"
 
+# SPLIT CA CERTIFICATE FILE
+- block:
+  - name: Split intermediates from root cert file
+    command: >
+      csplit --keep-files --elide-empty-files --prefix "{{ssl_certs_common_name}}-" 
+      "{{ssl_certs_common_name}}.pem" '/END CERTIFICATE/+1' {*}
+    args:
+      chdir: "{{ssl_certs_path}}"
 
-- name: Import the node's signed certificate into corresponding keystore
-  command: keytool -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -alias "{{item}}" -importcert -noprompt -file "{{ssl_certs_path}}/{{item}}.crt_signed" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}"
-  with_items: "{{ groups['dse']}}"
-- name: Import the node's signed certificate into corresponding keystore
-  command: keytool -keystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -alias "{{item}}" -importcert -noprompt -file "{{ssl_certs_path}}/{{item}}.crt_signed" -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}"
-  with_items: "{{ groups['opsc_dsecore']}}"
-  
+  - name: "Find any empty split empty files"
+    lineinfile:
+      path: "{{item}}"
+      line: "-----END CERTIFICATE-----"
+      state: present
+    check_mode: yes
+    register: command_results
+    with_fileglob: "{{ lookup('fileglob', ssl_certs_path + '/'+ ssl_certs_common_name +'-*') }}"
+
+  - name: Delete any empty generated files
+    file:
+      path: "{{item.item}}"
+      state: absent
+    with_items: "{{ command_results.results }}"
+    when: item.changed
+
+- block:
+  - name: Import the root certificate into each node's keystore
+    command: >
+      keytool -keystore "{{host}}-keystore.jks" -alias "{{cert}}" -importcert -file "{{cert}}" -noprompt 
+      -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}"
+    args:
+      chdir: "{{ssl_certs_path}}"
+    vars:
+      host: "{{item[0]}}"
+      cert: "{{item[1]}}"
+    with_nested:
+    - "{{ groups['dse'] + groups['opsc_dsecore'] }}"
+    - "{{lookup('fileglob', ssl_certs_path + '/'+ ssl_certs_common_name +'-*').split(',') | sort |  reverse | list }}"
+
+  - name: Import the node's signed certificate into corresponding keystore
+    command: >
+      keytool -keystore "{{item}}-keystore.jks" -alias "{{item}}" 
+      -importcert -noprompt -file "{{item}}.crt_signed" 
+      -storepass "{{cluster_keystore_password}}" -keypass "{{cluster_keystore_password}}"
+    args:
+      chdir: "{{ssl_certs_path}}"    
+    with_items:
+    - "{{ groups['dse']}}"
+    - "{{ groups['opsc_dsecore']}}"
+
 #- name: Convert all the keystores into pkcs12 keystores
 #  command: keytool -importkeystore -srckeystore "{{ssl_certs_path}}/{{item}}-keystore.jks" -destkeystore "{{ssl_certs_path}}/{{item}}-pkcs12-keystore.jks" -deststoretype pkcs12 -storepass "{{cluster_keystore_password}}" -deststorepass "{{cluster_keystore_password}}"
 #  with_items: "{{ groups['dse'] }}"
-
