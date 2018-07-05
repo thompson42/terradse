@@ -1,6 +1,13 @@
 ---
 
-# Exit process immediately if the Cassandra data directory exists on any node (don't want to overwrite a running system !)
+# Exit process immediately if the Cassandra keystores already exist on ansible host (don't want to overwrite a running system !)
+- hosts: localhost
+  any_errors_fatal: true
+  become: no
+  connection: local  
+  roles:
+  - { role: security_test_for_keystores }
+
 - hosts: dse
   any_errors_fatal: true
   become: true
