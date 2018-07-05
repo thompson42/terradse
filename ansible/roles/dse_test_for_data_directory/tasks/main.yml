@@ -1,0 +1,9 @@
+
+
+# Determine if a path exists and is a directory.  Note that we need to test
+# both that p.stat.isdir actually exists, and also that it's set to true.
+  - name: "Exit process immediately if the Cassandra data directory exists on any node (don't want to overwrite a running system !)"
+    stat:
+      path: "{{data_file_directories}}"
+    register: p
+    failed_when: p.stat.isdir is defined and p.stat.isdir

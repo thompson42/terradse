@@ -13,3 +13,11 @@
   service:
     name: "{{ srvc_name }}"
     state: stopped
+    
+- name: Wait for Cassandra process to completely stop
+  wait_for:
+    host: "{{ ansible_host }}"
+    port: 9042
+    state: drained
+    delay: 1
+    timeout: 300

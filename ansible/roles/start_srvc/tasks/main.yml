@@ -1,8 +1,11 @@
 ---
+
+# On 4x vCPU | 30.5 GB RAM service can fail to start in time, need to ignore_errors and then move to Cassandra port wait.
 - name: Start cassandra or dse service
   service:
     name: "{{ srvc_name }}"
     state: restarted
+  ignore_errors: true
 
 - name: Wait for Cassandra process is up and running
   wait_for:

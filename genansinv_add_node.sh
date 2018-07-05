@@ -4,6 +4,10 @@ TFSTATE_FILE=/tmp/tfshow_add_node.txt
 terraform show terraform_add_node/terraform.tfstate > $TFSTATE_FILE
 
 echo ">>>> Requires a CURRENT 100% ACCURATE ansible/hosts file for the cluster to correctly generate Certificates. <<<<"
+echo "---------"
+echo "Requires dc_name: the name of the DC you wish to add the node to"
+echo "Requires opsc_server_private_ip: the private ip-address of the OPSC server"
+echo "-- usage: genansinv_add_node.sh [<dc_name>] [<opsc_server_private_ip>]"
 
 if [ $# -lt 2 ]
 then

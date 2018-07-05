@@ -19,7 +19,7 @@
     
 # If 1) CA signed certs and 2) No DNS server entry for cert CN name
 # modify /etc/hosts on ALL nodes and push in CN name for each node (same value as signed certificate for node)
-- hosts: dse, opsc_core
+- hosts: dse, opsc_dsecore
   any_errors_fatal: true
   become: yes
   become_method: sudo

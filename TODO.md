@@ -9,13 +9,23 @@
 
 #### move id_rsa_aws to ansible.cfg
 
-And remove from runansi_extended.sh
+And remove from all bash references e.g. runansi_extended.sh, runansi_add_node.sh etc.
 
 # Ansible Vault
 
 #### Shift sensitive passwords to ansible vault - TODO :x:
 
 vars: /ansible/group_vars/all
+
+# Primary sanity check and early exit from Ansible process
+
+#### If data exists in the configured DSE data directory exit the entire process ! - COMPLETE :heavy_check_mark:
+
+On Ansible startup via runansi_extended.sh and runansi_add_node.sh if data exists in the configured DSE data directory the entire BASH script will exit. This will protect against overwriting an existing running cluster in the case of creating a new cluster via runansi_extended.sh and will also stop overwriting an existing running node in the case of runansi_add_node.sh
+
+Called by playbooks: dse_install.yml, add_node_install.yml and opsc_install.yml
+
+role: role: dse_test_for_data_directory
 
 # DSE cluster Transport Encryption 
 
@@ -25,7 +35,7 @@ vars: /ansible/group_vars/all
 
 role: security_create_root_certificate
 
-#### CA signed WILDCARD root certificate *.mysite.net - TEST :x:
+#### CA signed WILDCARD root certificate *.mysite.net - TESTING NOW :question:
 
 [Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
 
@@ -55,13 +65,13 @@ role: security_distribute_keystores
 
 #### Client -> Node - COMPLETE :heavy_check_mark:
 
-1. [Encrypting Client -> Node SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptClientNodeSSL.html)
+[Encrypting Client -> Node SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptClientNodeSSL.html)
 
 role: security_client_to_node
 
 #### Node -> Node - COMPLETE :heavy_check_mark:
 
-1. [Internode Ecryption](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secInternodeSsl.html)
+[Internode Ecryption](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secInternodeSsl.html)
 
 role: security_node_to_node
 
@@ -121,7 +131,7 @@ role: security_opsc_distribute_truststores
 
 #### Browser -> Opscenter web (HTTPS) - COMPLETE :heavy_check_mark:
 
-1. [Opscenter Enabling HTTPS](https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscConfiguringEnablingHttps_t.html)
+[Opscenter Enabling HTTPS](https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscConfiguringEnablingHttps_t.html)
 
 role: security_opsc_configure
 
@@ -183,7 +193,7 @@ role: /ansible/roles/security_change_superuser
 
 -> playbook: spark_security.yml
 
-1. [To Activate](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptSparkSSL.html)
+[To Activate](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/encryptSparkSSL.html)
 
 #### Browser -> Spark UI - COMPLETE :heavy_check_mark:
 
@@ -222,11 +232,11 @@ role: security_client_to_node
 
 Only applicable for DSE 6.0+  - this solution only supports DSE 5.1.x at this point.
 
-# Spark Disk Encrytption
+# Spark Disk Encryption
 
 #### Spark disk encryption of driver temp files and shuffle files on disk (only available DSE 6.0 onwards) - TODO :x:
 
-(spark.io.encryption.enabled)[https://docs.datastax.com/en/dse/6.0/dse-admin/datastax_enterprise/security/encryptSparkConnections.html]
+[spark.io.encryption.enabled](https://docs.datastax.com/en/dse/6.0/dse-admin/datastax_enterprise/security/encryptSparkConnections.html)
 
 role: security_spark_auth_activate/templates/spark_defaults.conf
 
@@ -328,19 +338,19 @@ NOTE:
 
 -> playbook: jmx_security.yml - TODO :x:
 
-1. [Securing jConsole SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html)
-2. [Securing NodeTool SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html)
+[Securing jConsole SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html)
+[Securing NodeTool SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html)
 
 # JMX Unified Authentication 
 
 -> playbook: jmx_authentication.yml
 
-1. [Enable JMX Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html)
-2. [Support Link](https://support.datastax.com/hc/en-us/articles/204226179-Step-by-step-instructions-for-securing-JMX-authentication-for-nodetool-utility-OpsCenter-and-JConsole)
+[Enable JMX Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEnableJmxAuth.html)
+[Support Link](https://support.datastax.com/hc/en-us/articles/204226179-Step-by-step-instructions-for-securing-JMX-authentication-for-nodetool-utility-OpsCenter-and-JConsole)
 
 #### Activate JMX Authentication - COMPLETE :heavy_check_mark:
 
-1. [Managing JMX Access Control to MBeans](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secJmxAccessControl.html)
+[Managing JMX Access Control to MBeans](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secJmxAccessControl.html)
 
 role: /ansible/roles/security_jmx_auth_activate
 
@@ -351,11 +361,11 @@ role: /ansible/roles/security_jmx_auth_activate
 
 # Audit Logging 
 
-(Enabling data auditing in DataStax Enterprise)[https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditEnable.html]
+[Enabling data auditing in DataStax Enterprise](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditEnable.html)
 
-(Configuring audit logging)[https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditConfigLog.html]
+[Configuring audit logging](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditConfigLog.html)
 
-(Formats of DataStax Enterprise logs)[https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditLogFormat.html]
+[Formats of DataStax Enterprise logs](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditLogFormat.html)
 
 default location for audit log:   /var/log/cassandra/audit/audit.log
 default location for logback.xml: /etc/dse/cassandra/logback.xml
@@ -366,9 +376,9 @@ role: security_audit_logging_configure - COMPLETE :heavy_check_mark:
 
 # Add a new node to an existing DC within an existing cluster
 
-#### Terraform provision new node via runterra_add_node.sh - TEST :x:
+#### Terraform provision new node via runterra_add_node.sh - TESTING NOW :question:
 
-#### Modify hosts via genansinv_add_node.sh - TEST :x:
+#### Modify hosts via genansinv_add_node.sh - TESTING NOW :question:
 
 #### Run ansible via runansi_add_node.sh - COMPLETE :heavy_check_mark:
 
@@ -383,7 +393,7 @@ This new DC could have various reasons for existing:
 3. A backup DC i.e. a new Graph DC in AZ2 in a cluster with an existing Graph DC in AZ1
 4. A geographically seperate replicated edge DC 
 
-# Bring up a replacement node in an existing cluster DC
+# Bring up a replacement node in a specific DC in an existing cluster
 
 Replace a node in a DC. - TODO :x:
 
@@ -395,11 +405,11 @@ NOTE:
 
 -> playbook: opsc_backups_configure.yml
 
-#### Inject DSE cluster backup location into OpsCenter via API call - TEST :x:
+#### Inject DSE cluster backup location into OpsCenter via API call - TESTING NOW :question:
 
 role: /ansible/roles/opsc_backups_configure
 
-#### Inject DSE cluster backup schedule into OpsCenter via API call - TEST :x:
+#### Inject DSE cluster backup schedule into OpsCenter via API call - TESTING NOW :question:
 
 role: /ansible/roles/opsc_backups_configure
 
@@ -407,19 +417,19 @@ role: /ansible/roles/opsc_backups_configure
 
 -> playbook: opsc_services_configure.yml
 
-#### Activate OpsCenter repair service - TODO :x:
+#### Activate OpsCenter repair service - TESTING NOW :question:
 
 role: /ansible/roles/opsc_services_configure
 
 # DSE Best Practice configurations and DSE Operations
 
-#### Optimise Linux OS general settings for DSE - TEST :x:
+#### Optimise Linux OS general settings for DSE - COMPLETE :heavy_check_mark:
 
 Recreate file based handler for reload of syscrtl
 
 role: dse_osparam_change
 
-#### Optimise Linux OS SSD settings - TEST :x:
+#### Optimise Linux OS SSD settings - TESTING NOW :question:
 
 role: dse_osparam_ssd_change
 

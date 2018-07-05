@@ -1,4 +1,14 @@
 ---
+
+# Exit process immediately if the Cassandra data directory exists on any node (don't want to overwrite a running system !)
+- hosts: dse
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+  - { role: dse_test_for_data_directory }
+
+  
 # Get the current timestamp and register datastax debian packages
 - hosts: dse
   any_errors_fatal: true
@@ -13,6 +23,7 @@
 
 
 # Install and configure DSE
+# Seed list is built as nodes are added (see role: dse_common)
 - hosts: dse
   any_errors_fatal: true
   become: true

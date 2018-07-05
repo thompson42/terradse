@@ -11,10 +11,9 @@ dse_graph
 [dse_analytics]
 
 [dse_graph]
-10.200.178.121 private_ip=10.200.178.121  private_dns=ip-10-200-178-121.datastax.lan seed=true dc=dse_graph rack=RAC1 vnode=1 initial_token=
-10.200.178.122 private_ip=10.200.178.122  private_dns=ip-10-200-178-122.datastax.lan seed=false dc=dse_graph rack=RAC1 vnode=1 initial_token=
-10.200.178.123 private_ip=10.200.178.123 private_dns=ip-10-200-178-123.datastax.lan seed=false dc=dse_graph rack=RAC1 vnode=1 initial_token=
-10.200.181.85 private_ip=10.200.181.85 private_dns=ip-10-200-181-85.datastax.lan seed=false dc=dse_graph rack=RAC1 vnode=1 initial_token=
+10.200.175.160 private_ip=10.200.175.160  private_dns=ip-10-200-175-160.datastax.lan seed=true dc=dse_graph rack=RAC1 vnode=1 initial_token=
+10.200.175.164 private_ip=10.200.175.164  private_dns=ip-10-200-175-164.datastax.lan seed=true dc=dse_graph rack=RAC1 vnode=1 initial_token=
+10.200.175.163 private_ip=10.200.175.163 private_dns=ip-10-200-175.163.datastax.lan seed=false dc=dse_graph rack=RAC1 vnode=1 initial_token=
 
 [dse:vars]
 cluster_name=DseCluster
@@ -44,8 +43,8 @@ graph_enabled=1
 auto_bootstrap=1
 
 [opsc_dsecore]
-10.200.178.124 private_ip=10.200.178.124 private_dns=ip-10-200-178-124.datastax.lan seed=true dc=DC1 rack=RAC1 vnode=1 initial_token=
-10.200.178.125 private_ip=10.200.178.125 private_dns=ip-10-200-178-125.datastax.lan seed=false dc=DC1 rack=RAC1 vnode=1 initial_token=
+10.200.175.165 private_ip=10.200.175.165 private_dns=ip-10-200-175-165.datastax.lan seed=true dc=DC1 rack=RAC1 vnode=1 initial_token=
+10.200.175.166 private_ip=10.200.175.166 private_dns=ip-10-200-175-166.datastax.lan seed=false dc=DC1 rack=RAC1 vnode=1 initial_token=
 
 [opsc_dsecore:vars]
 cluster_name=OpscCluster
@@ -55,18 +54,14 @@ graph_enabled=0
 auto_bootstrap=1
 
 [opsc_srv]
-10.200.178.124 private_ip=10.200.178.124
+10.200.175.165 private_ip=10.200.175.165
 
 [datastax_agent]
-10.200.178.121 private_ip=10.200.178.121  opsc_srv_ip=10.200.178.124
-10.200.178.122 private_ip=10.200.178.122  opsc_srv_ip=10.200.178.124
-10.200.178.123 private_ip=10.200.178.123 opsc_srv_ip=10.200.178.124
-10.200.181.85 private_ip=10.200.181.85 opsc_srv_ip=10.200.178.124
+10.200.175.160 private_ip=10.200.175.160  opsc_srv_ip=10.200.175.165
+10.200.175.164 private_ip=10.200.175.164  opsc_srv_ip=10.200.175.165
+10.200.175.163 private_ip=10.200.175.163 opsc_srv_ip=10.200.175.165
 
 [osparmchg:children]
 dse
 opsc_dsecore
 
-[add_node] 
-10.200.181.85
-[add_node_end]
