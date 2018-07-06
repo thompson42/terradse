@@ -49,9 +49,13 @@ role: role: dse_test_for_data_directory
 
 #### Generate self signed root certificate for DSE - COMPLETE :heavy_check_mark:
 
+This method generates a self-signed root certificate and then uese that root certificate to sign certificates for each node, each node has a CN that matches it's resolvable FQDN an example would be cert: machine1.mysite.net, machine2.mysite.net
+
 role: security_create_root_certificate
 
 #### CA signed WILDCARD root certificate *.mysite.net - COMPLETE :heavy_check_mark:
+
+This method takes a CA root certificate and then uese that root certificate to sign certificates for each node, each node has a CN that matches it's resolvable FQDN an example would be cert: machine1.mysite.net, machine2.mysite.net
 
 [Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
 
