@@ -1,6 +1,24 @@
-# Include your overrrides here
+# Include your overrrides here - some common settings indicated below
 
 # my_ansible_user: ec2-user
-# etc,etc,etc
+
+#my_ansible_user: ec2-user
+
+#my_secure_super_user_account: admin
+#my_secure_super_user_password: xxxxxxxx
+
+#my_dse_repo_email: xxxx@mysite.com
+#my_dse_repo_password: xxxxxx
+
+#my_secure_opscenter_password: xxxxxxxx
+
+#my_jmx_username: xxxxxxxx
+#my_jmx_password: xxxxxxxx
+
+#my_heap_xms: 8G
+#my_heap_xmx: 8G
+
+#my_cluster_keystore_password: xxxxxxxx
+#my_cluster_truststore_password: xxxxxxxx
 
 
