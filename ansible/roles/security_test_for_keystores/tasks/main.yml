@@ -1,0 +1,13 @@
+
+
+# Determine if keystores have been created and bailout if they have
+  - name: "Exit process immediately if keystores are already present in the ansible host (don't want to overwrite a running system !)"
+    stat:
+      path: "{{ssl_certs_path}}/{{item}}-keystore.jks"
+    register: p
+    vars:
+      cn: "{{hostvars[item].private_dns if is_self_signed_root_cert | bool else ansible_hostname + '.' + ssl_certs_common_name }}"
+    with_items:
+    - "{{ groups['dse']}}"
+    - "{{ groups['opsc_dsecore']}}"
+    failed_when: p.stat.exists

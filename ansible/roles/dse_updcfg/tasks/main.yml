@@ -16,6 +16,14 @@
 
 #- debug: msg="{{ private_ip }}, {{ dc }}, {{ rack }}, {{ vnode }}, {{ vnode_token_num }}, {{ initial_token }}, {{ solr_enabled }}, {{ spark_enabled }}, {{ graph_enabled }}, {{ auto_bootstrap }}, {{ cluster_name }}, {{ data_file_directories }}, {{ commitlog_directory }}, {{ saved_caches_directory }}, {{ seeds }}"
 
+- name: Increase time init scripts wait for cassandra process to respond to something (iterations of 5 sec each)
+  lineinfile:
+    name: "{{ dse_default_dir }}/dse"
+    regexp: '^WAIT_FOR_START='
+    line: "WAIT_FOR_START=15"
+    owner: cassandra
+    group: cassandra
+    mode: 0644
 
 - name: Configure DSE Analytics workload type
   when: spark_enabled|int == 1

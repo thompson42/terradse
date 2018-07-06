@@ -7,7 +7,7 @@
 #   - default user for openstack/AWS: ubuntu
 #
 ansible_connection: ssh
-ansible_user: ubuntu                                                            #EDIT: Change from default e.g. ec2-user, ubuntu, automaton etc
+ansible_user: "{{ my_ansible_user | default('ubuntu') }}"                                                   #EDIT: Change from default e.g. ec2-user, ubuntu, automaton etc
 
 # DSE Superuser account
 #-------------------------------------------------------------------------------
@@ -15,8 +15,8 @@ ansible_user: ubuntu                                                            
 default_super_user_account: cassandra
 default_super_user_password: cassandra
 
-secure_super_user_account: TestAdmin                                            #EDIT: Change from default (TODO: pull from ansible.vault)
-secure_super_user_password: TestAdminPassword                                   #EDIT: Change from default (TODO: pull from ansible.vault)
+secure_super_user_account: "{{ my_secure_super_user_account | default('TestAdmin') }}"                      #EDIT: Change from default (Use ansible-vault)
+secure_super_user_password: "{{ my_secure_super_user_password | default('TestAdminPassword') }}"            #EDIT: Change from default (Use ansible-vault)
 
 # File permissions
 # Don't confuse cassandra OS account with cassandra internal superuser account
@@ -35,8 +35,8 @@ opscenter_group: opscenter
 dse_repo_file: /etc/apt/sources.list.d/datastax.sources.list
 
 #User name and password to download DSE (DataStax Academy)
-dse_repo_email: xxx                                                             #EDIT: Change from default (TODO: pull from ansible.vault)
-dse_repo_password: xxx                                                          #EDIT: Change from default (TODO: pull from ansible.vault)
+dse_repo_email: "{{ my_dse_repo_email | default('xxx') }}"                                                  #EDIT: Change from default (Use ansible-vault)
+dse_repo_password: "{{ my_dse_repo_password | default('xxx') }}"                                            #EDIT: Change from default (Use ansible-vault)
 
 # Target/Current DSE verson
 dse_major_version: 5.1                                                          #used to choose the correct configuration templates
@@ -60,24 +60,24 @@ vnode_token_num_spark: 32
 
 # data directories - need to modify these paths to reflect the mount point of 
 # your EBS drive/s OR ephemeral stores
-data_file_directories:  /var/lib/cassandra/data                                 #EDIT: Change from default
-hints_directory: /var/lib/cassandra/hints                                       #EDIT: Change from default
-commitlog_directory: /var/lib/cassandra/commitlog                               #EDIT: Change from default
-saved_caches_directory: /var/lib/cassandra/saved_caches                         #EDIT: Change from default
+data_file_directories:  "{{ my_data_file_directories | default('/var/lib/cassandra/data') }}"               #EDIT: Change from default
+hints_directory: "{{ my_hints_directory | default('/var/lib/cassandra/hints') }}"                           #EDIT: Change from default
+commitlog_directory: "{{ my_commitlog_directory | default('/var/lib/cassandra/commitlog') }}"               #EDIT: Change from default
+saved_caches_directory: "{{ my_saved_caches_directory | default('/var/lib/cassandra/saved_caches') }}"      #EDIT: Change from default
 
 # Storage settings
 #-------------------------------------------------------------------------------
 # consumed in role: dse_osparm_ssd_change
 
-is_ssd_storage: false                                                           #EDIT: Change to [true] if using ephemeral SSDs for DSE storage
+is_ssd_storage: "{{ my_is_ssd_storage | default(false) }}"                                                  #EDIT: Change to [true] if using ephemeral SSDs for DSE storage
 
 # Block device string for the attached EBS or ephemeral SSD volume for DSE data
-device_string: xxxx                                                             #EDIT: Change to /sys/block/<xxxx> for this SSD if using ephemeral SSDs for DSE storage 
+device_string: "{{ my_device_string | default('xxxx') }}"                                                   #EDIT: Change to /sys/block/<xxxx> for this SSD if using ephemeral SSDs for DSE storage 
 
 # Key Spark settings
 #-------------------------------------------------------------------------------
-dsefs_data_file_directory: /var/lib/dsefs/data                                  #EDIT: Change from default
-activate_alwaysonsql: false                                                     #EDIT: Requires DSE 6.0+
+dsefs_data_file_directory: "{{ my_dsefs_data_file_directory | default('/var/lib/dsefs/data') }}"            #EDIT: Change from default
+activate_alwaysonsql: "{{ my_activate_alwaysonsql | default(false) }}"                                      #EDIT: Requires DSE 6.0+
 
 # Cleanup of worker app data - Currently not used in any playbook (untested)
 spark_worker_cleanup_enabled: true
@@ -99,12 +99,12 @@ opsc_ssl_dir: /var/lib/opscenter/ssl
 
 opscenter_username: admin
 default_opscenter_password: admin
-secure_opscenter_password: opscenter_password_here                              #EDIT: Change from default (TODO: pull from ansible.vault)
+secure_opscenter_password: "{{ my_secure_opscenter_password | default('opscenter_password_here') }}"        #EDIT: Change from default (Use ansible-vault)
 
 # Key JMX settings
 #-------------------------------------------------------------------------------
-jmx_username: jmx_username                                                      #EDIT: Change from default (TODO: pull from ansible.vault)
-jmx_password: jmx_password                                                      #EDIT: Change from default (TODO: pull from ansible.vault)
+jmx_username: "{{ my_jmx_username | default('jmx_username') }}"                                             #EDIT: Change from default (Use ansible-vault)
+jmx_password: "{{ my_jmx_password | default('jmx_password') }}"                                             #EDIT: Change from default (Use ansible-vault)
 
 # path fix for JMX/JAAS/cassandra-env.sh
 jaas_path: "{{dse_config_dir}}/cassandra/cassandra-jaas.config"
@@ -115,8 +115,8 @@ jaas_path: "{{dse_config_dir}}/cassandra/cassandra-jaas.config"
 #TODO: 
 #dsecore/spark/graph should be 20G
 #solr should be 32GB (on larger nodes)
-heap_xms: 4G                                                                    #EDIT: Change from default
-heap_xmx: 4G                                                                    #EDIT: Change from default
+heap_xms: "{{ my_heap_xms | default('4G') }}"                                                               #EDIT: Change from default
+heap_xmx: "{{ my_heap_xmx | default('4G') }}"                                                               #EDIT: Change from default
 
 # Key role: security_dse_unified_authentication (info only):
 #-------------------------------------------------------------------------------
@@ -136,30 +136,31 @@ security_group: cassandra
 # Cluster security settings set by server_encryption_options 
 # and client_encryption_options in cassandra.yaml
 cluster_keystore_path: "{{ dse_config_dir }}/keystore.jks"
-cluster_keystore_password: cluster_keystore_password_here                       #EDIT: Change from default (TODO: pull from ansible.vault)
+cluster_keystore_password: "{{ my_cluster_keystore_password | default('cluster_keystore_password') }}"                  #EDIT: Change from default (Use ansible-vault)
 cluster_truststore_path: "{{ dse_config_dir }}/truststore.jks"
-cluster_truststore_password: "{{cluster_keystore_password}}"                    #EDIT: Change from default (TODO: pull from ansible.vault)
+cluster_truststore_password: "{{ my_cluster_truststore_password | default('cluster_keystore_password') }}"              #EDIT: Change from default (Use ansible-vault)
  
 # Root certificate
 #-------------------------------------------------------------------------------
 # The certs, .truststore and .keystores are created on the ansible 
 # controller node in the directory: ssl_certs_path
-is_self_signed_root_cert: true                                                  #EDIT: Change to [false] if CA certs
-etc_hosts_file_configure: false                                                 #EDIT: Change if CA certs AND no DNS server CN entries (CN name will be added to /etc/hosts)
+is_self_signed_root_cert: "{{ my_is_self_signed_root_cert | default(true) }}"                                           #EDIT: Change to [false] if CA certs
+etc_hosts_file_configure: "{{ my_etc_hosts_file_configure | default(false) }}"                                          #EDIT: Change if CA certs AND no DNS server CN entries (CN name will be added to /etc/hosts)
 
 # Not truely the CN, CN will be dynamically generated off each node's hostname.
-ssl_certs_common_name: "SelfSignRootCA"                                         #EDIT: Change from default if WILDCARD CA certs e.g [mysite.net]
+ssl_certs_common_name: "{{ my_ssl_certs_common_name | default('SelfSignRootCA') }}"                                     #EDIT: Change from default if WILDCARD CA certs e.g [mysite.net]
 
-ssl_cluster_name: "Test Cluster"        #OU                                     EDIT: Change from default if CA certs
-ssl_certs_organization: "Datastax"      #O                                      EDIT: Change from default if CA certs
-ssl_certs_country: "US"                 #C                                      EDIT: Change from default if CA certs
+ssl_cluster_name: "{{ my_ssl_cluster_name | default('Test Cluster') }}"             #OU                                 #EDIT: Change from default if CA certs
+ssl_certs_organization: "{{ my_ssl_certs_organization | default('Datastax') }}"     #O                                  #EDIT: Change from default if CA certs
+ssl_certs_country: "{{ my_ssl_certs_country | default('US') }}"                     #C                                  #EDIT: Change from default if CA certs
 
 # must be an account and group available on localhost
 ssl_certs_path_owner: "{{localhost_owner}}"
 ssl_certs_path_group: "{{localhost_group}}"
 
-ssl_certs_path: "/etc/ssl/{{ssl_certs_common_name}}"                            #EDIT: If CA certs MUST manually create this directory as [mysite.net] on ansible host first time and deploy your [mysite.net.pem] and [mysite.net.key] CA cert.
+ssl_certs_path: "/etc/ssl/{{ssl_certs_common_name}}"                            #NOTE: If CA certs MUST manually create this directory as [mysite.net] on ansible host first time and deploy your [mysite.net.pem] and [mysite.net.key] CA cert.
                                                                                 #ALSO: Change to your home directory if running ansible as a non-privileged user.
+                                                                                #ALSO: The CA file MUST contain all its chain in strinct reverse order: Signing Intermediate CA first and Root CA last.
 ssl_certs_key_size: "2048"
 ssl_certs_days: "365"
 
@@ -175,7 +176,7 @@ ssl_certs_days: "365"
 #Actual audit logs are stored in: dse_syslog_dir/audit/audit.log
 #Log Storage location is controlled by: /etc/dse/cassandra/logback.xml section: [audit log]
 
-audit_logging_options_enabled: false                                            #EDIT: Change to [true] to activate
+audit_logging_options_enabled: "{{ my_audit_logging_options_enabled | default(false) }}"                                #EDIT: Change to [true] to activate
 audit_logging_options_logger: SLF4JAuditWriter
 audit_logging_options_included_categories: AUTH,DML,DDL,DCL
 
@@ -183,7 +184,7 @@ audit_logging_options_included_categories: AUTH,DML,DDL,DCL
 #-------------------------------------------------------------------------------
 # Can only run AFTER schema creation (need keyspace names for backup list)
 # For fine grain control directly edit /roles/opsc_services_configure/templates/
-is_automated_backup: false                                                      #EDIT: Change from false if backups required
-backup_path: /mnt/backups                                                       #EDIT: Should be located off node to be of any use
-backup_keyspace_list: keyspace1,keyspace2,keyspace3                             #EDIT: list keyspaces to backup, empty list means ALL keyspaces
+is_automated_backup: "{{ my_is_automated_backup | default(false) }}"                                                    #EDIT: Change from false if backups required
+backup_path: "{{ my_backup_path | default('/mnt/backups') }}"                                                           #EDIT: Should be located off node to be of any use
+backup_keyspace_list: "{{ my_backup_keyspace_list | default('keyspace1,keyspace2,keyspace3') }}"                        #EDIT: list keyspaces to backup, empty list means ALL keyspaces
 
