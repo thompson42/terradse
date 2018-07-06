@@ -2,7 +2,9 @@
 
 The aim of this project is to develop a complete end to end Terraform + Ansible DSE automation system which invokes ALL security capabilities of the DSE platform and ALL best practices of the DSE platform.
 
-This project has a progress document down to ansible role level, please refer to this document to keep up to date on where the system is at: [TODO](TODO.md) 
+This project has a progress document down to ansible role level, please refer to this document to keep up to date on where the system is at: [TODO](TODO.md)
+
+This projhect also has a [NOTES](NOTES.md) page for processes and troubleshooting info.
 
 # Requires the following python libraries on the Ansible host machine
 

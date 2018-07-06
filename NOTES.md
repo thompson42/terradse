@@ -1,4 +1,5 @@
-#### Bringing up a new named DC after original creation where both Node->Node encryption and SSL-Client-Auth are active in the original DC and no outage is acceptable
+
+# Bringing up a new named DC after original creation where both Node->Node encryption and SSL-Client-Auth are active in the original DC and no outage is acceptable
 
 ```
 Implementing node -> node encryption - can be done with no downtime and no cluster splitting:
@@ -18,3 +19,11 @@ And the new DC would talk everywhere encrypted.
 3. nodetool rebuild
 4. ip-address of opsc_server for new agents
 5. need to generate new keystores and truststores for ALL nodes ?
+
+# Troubleshooting
+
+#### DSE service does not start up in time. get an OS LSB service exception:
+
+[WAIT_FOR_START](https://docs.datastax.com/en/dse-trblshoot/doc/troubleshooting/dseTimesOut.html)
+
+

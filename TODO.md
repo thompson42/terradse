@@ -5,6 +5,22 @@
 1. Need to check Vnode allocation on all types (core, search,analytic, graph) in a dry run.
 2. Audit all final file ownership on target dse nodes (ctool comparable sys.)
 
+# Terraform
+
+#### Ports - TODO :x:
+
+AWS Datastax internal security group: need to allow all nodes to communicate on all ports due to AlwaysOnSQL using random ports to connect to other analytic nodes. 
+Not allowing this means AlwaysOnSQL srvcie only starts up on the local node.
+
+```
+ ingress {
+    from_port = 0
+    protocol = "-1"
+    to_port = 0
+    security_groups = ["${aws_security_group.sg_internal_only.id}"]
+  }
+```
+
 # Ansible Configuration
 
 #### move id_rsa_aws to ansible.cfg
@@ -228,9 +244,9 @@ Client-to-node encryption protects data in flight for the Spark Executor to DSE 
 
 role: security_client_to_node
 
-#### Client -> AlwaysOnSQL port - ON HOLD
+#### Client -> AlwaysOnSQL port - TODO :x:
 
-Only applicable for DSE 6.0+  - this solution only supports DSE 5.1.x at this point.
+Only applicable for DSE 6.0+
 
 # Spark Disk Encryption
 
