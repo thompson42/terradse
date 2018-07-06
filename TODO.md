@@ -259,9 +259,11 @@ Client-to-node encryption protects data in flight for the Spark Executor to DSE 
 
 role: security_client_to_node
 
-#### Client -> AlwaysOnSQL port - TODO :x:
+#### Client -> AlwaysOnSQL port (DSE 6.0+ only) - TODO :x:
 
-Only applicable for DSE 6.0+
+[Enabling SSL for AlwaysOn SQL](https://docs.datastax.com/en/dse/6.0/dse-dev/datastax_enterprise/spark/sslAlwaysOnSql.html)
+
+Uses the same keystore and trustore as client->node and node->node encryption.
 
 # Spark Authentication 
 
@@ -270,6 +272,10 @@ Only applicable for DSE 6.0+
 #### Activate Spark Authentication - COMPLETE :heavy_check_mark:
 
 role: security_spark_auth_activate
+
+#### Activate AlwaysOnSQL Authentication - TODO :x:
+
+[Using authentication with AlwaysOn SQL](https://docs.datastax.com/en/dse/6.0/dse-dev/datastax_enterprise/spark/authAlwaysOnSql.html)
 
 # Spark Authorization and Roles 
 
