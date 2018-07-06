@@ -7,3 +7,11 @@
   become_method: sudo
   roles:
     - { role: security_spark_configure }
+  
+
+- hosts: dse_analytics
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_spark_alwaysonsql_configure, when: activate_alwaysonsql | bool and activate_alwaysonsql_ssl | bool  and dse_major_version >= 6.0}

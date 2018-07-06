@@ -1,0 +1,9 @@
+
+
+- name: Activate SSL Transport encryption for AlwaysOnSQL service -> hive-site.xml
+  template:
+    src: "templates/hive_site_xml_{{dse_major_version}}.j2"
+    dest: "{{ dse_config_dir }}/spark/hive-site.xml"
+    owner: "{{cassandra_owner}}"
+    group: "{{cassandra_group}}"
+    mode: 0644
