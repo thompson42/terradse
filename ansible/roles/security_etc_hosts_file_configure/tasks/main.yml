@@ -3,7 +3,7 @@
   lineinfile:
     name: "/etc/hosts"
     regexp: '^127\.0\.0\.1'
-    line: "{{'127.0.0.1   localhost localhost.localdomain ip-' + hostname }}"
+    line: "{{'127.0.0.1   localhost localhost.localdomain + hostname }}"
   vars:
     hostname: "{{hostvars[item].private_dns if is_self_signed_root_cert | bool else ansible_hostname + '.' + ssl_certs_common_name}}"
 #    owner: cassandra
