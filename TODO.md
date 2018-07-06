@@ -49,13 +49,13 @@ role: role: dse_test_for_data_directory
 
 #### Generate self signed root certificate for DSE - COMPLETE :heavy_check_mark:
 
-This method generates a self-signed root certificate and then uese that root certificate to sign certificates for each node, each node has a CN that matches it's resolvable FQDN an example would be cert: machine1.mysite.net, machine2.mysite.net
+This method generates a self-signed root certificate and then uese that root certificate to sign certificates for each node, each node has a CN that matches it's resolvable FQDN e.g. machine1.mysite.net, machine2.mysite.net
 
 role: security_create_root_certificate
 
-#### CA signed WILDCARD root certificate *.mysite.net - COMPLETE :heavy_check_mark:
+#### CA signed WILDCARD certificate as root certificate *.mysite.net - COMPLETE :heavy_check_mark:
 
-This method takes a CA root certificate and then uese that root certificate to sign certificates for each node, each node has a CN that matches it's resolvable FQDN an example would be cert: machine1.mysite.net, machine2.mysite.net
+This method takes a CA signed WILDCARD certificate and treats it as a root certificate,  using it to sign individual certificates for each node, each node has a CN that matches it's resolvable FQDN e.g. machine1.mysite.net, machine2.mysite.net
 
 [Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
 
@@ -73,6 +73,8 @@ See /group_vars/all_example/vars.yml for details on these parameters:
 #### CA signed certificates (1x supplied for each node e.g ip-10-0-0-1.mysite.net, ip-10-0-0-2.mysite.net ) - ON HOLD
 
 No requirement as yet for this feature.
+
+This method takes a pre-ordered CA supplied certificate for each node.
 
 #### Create DSE truststores - COMPLETE :heavy_check_mark:
 
