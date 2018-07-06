@@ -108,10 +108,6 @@ role: security_node_to_node
 
 role: security_client_to_node
 
-# DSE Disk Encryption (TDE)
-
-- TODO :x:
-
 # DSE cluster Unified Authentication 
 
 -> playbook: dse_authentication.yml
@@ -141,6 +137,12 @@ role: /ansible/roles/security_cassandra_change_superuser
 #### Security table replication - COMPLETE :heavy_check_mark:
 
 role: /ansible/roles/security_keyspaces_configure
+
+# DSE Disk Encryption (TDE)
+
+[Transparent data encryption](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEncryptEnable.html)
+
+- TODO :x:
 
 # Opscenter Transport Encryption 
 
@@ -261,14 +263,6 @@ role: security_client_to_node
 
 Only applicable for DSE 6.0+
 
-# Spark Disk Encryption
-
-#### Spark disk encryption of driver temp files and shuffle files on disk (only available DSE 6.0 onwards) - TODO :x:
-
-[spark.io.encryption.enabled](https://docs.datastax.com/en/dse/6.0/dse-admin/datastax_enterprise/security/encryptSparkConnections.html)
-
-role: security_spark_auth_activate/templates/spark_defaults.conf
-
 # Spark Authentication 
 
 -> playbook: spark_authentication 
@@ -306,6 +300,14 @@ role: spark_worker_log_rolling_configure
 #### Configure AlwaysOnSQL Worker and Executor Cores / RAM etc - COMPLETE :heavy_check_mark::
 
 role: spark_alwaysonsql_configure
+
+# Spark Disk Encryption
+
+#### Spark disk encryption of driver temp files and shuffle files on disk (only available DSE 6.0 onwards) - TODO :x:
+
+[spark.io.encryption.enabled](https://docs.datastax.com/en/dse/6.0/dse-admin/datastax_enterprise/security/encryptSparkConnections.html)
+
+role: security_spark_auth_activate/templates/spark_defaults.conf
 
 # Graph Transport Encryption
 
