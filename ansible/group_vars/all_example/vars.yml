@@ -158,9 +158,9 @@ ssl_certs_country: "{{ my_ssl_certs_country | default('US') }}"                 
 ssl_certs_path_owner: "{{localhost_owner}}"
 ssl_certs_path_group: "{{localhost_group}}"
 
-ssl_certs_path: "/etc/ssl/{{ssl_certs_common_name}}"                            #NOTE: If CA certs MUST manually create this directory as [mysite.net] on ansible host first time and deploy your [mysite.net.pem] and [mysite.net.key] CA cert.
-                                                                                #ALSO: Change to your home directory if running ansible as a non-privileged user.
-                                                                                #ALSO: The CA file MUST contain all its chain in strinct reverse order: Signing Intermediate CA first and Root CA last.
+ssl_certs_root_directory: "{{ my_ssl_certs_root_directory | default('/etc/ssl') }}"                                     #NOTE: Change to your home directory if running ansible as a non-privileged user.
+ssl_certs_path: "{{ssl_certs_root_directory}}/{{ssl_certs_common_name}}"                                                #NOTE: If CA certs MUST manually create this directory as [mysite.net] on ansible host first time and deploy your [mysite.net.pem] and [mysite.net.key] CA cert.
+                                                                                                                        #ALSO: The CA file MUST contain all its chain in strict reverse order: Signing Intermediate CA first and Root CA last.
 ssl_certs_key_size: "2048"
 ssl_certs_days: "365"
 

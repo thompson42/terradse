@@ -55,13 +55,16 @@ role: security_create_root_certificate
 
 [Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
 
+See /group_vars/all_example/vars.yml for details on these parameters:
+
 1. Set /group_vars/all/my.yml:{{my_is_self_signed_root_cert}} to false
 2. If no DNS resolution in cluster, set /group_vars/all/my.yml:{{my_etc_hosts_file_configure}} to true
 3. Configure /group_vars/all/my.yml:{{my_ssl_certs_common_name}}
 4. Configure /group_vars/all/my.yml:{{my_ssl_cluster_name}}
 5. Configure /group_vars/all/my.yml:{{my_ssl_certs_organization}}
 6. Configure /group_vars/all/my.yml:{{my_ssl_certs_country}}
-7. Deploy your CA signed Wildcard root certificate to directory path /group_vars/all/vars.yml:{{ssl_certs_path}} on the ansible host
+7. Configure /group_vars/all/my.yml:{{my_ssl_certs_root_directory}}
+8. Deploy your CA signed Wildcard root certificate to directory path {{my_ssl_certs_root_directory}}/{{my_ssl_certs_common_name}} on the ansible host
 
 #### CA signed certificates (1x supplied for each node e.g ip-10-0-0-1.mysite.net, ip-10-0-0-2.mysite.net ) - ON HOLD
 
