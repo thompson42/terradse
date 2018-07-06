@@ -34,12 +34,18 @@ pip -r requirements.txt
 
 1. Set all params and cluster topology in `terraform_extended/variables.tf`
 2. Set all port rules and security in `terraform_extended/ec2.tf`, for AMZN VPC's you will need to modify this file
-3. Copy `ansible/group_vars/all_example` to `ansible/group_vars/all` and set paths and vars marked with `[EDIT]` only
-4. Run `./runterra_extended.sh` and check AWS instances that will be created - accept and run the plan
-5. Run `./genansinv_extended.sh` (it will generate the required `/ansible/hosts` file)
-6. Run `./runansi_extended.sh` (expects your key to be: `~/.ssh/id_rsa_aws`)
+3. Copy the directory `ansible/group_vars/all_example` to `ansible/group_vars/all` and set paths and vars marked with `[EDIT]` only
+4. Change `ansible/group_vars/all/vars.yml` to a symbolic link pointing at `ansible/group_vars/all_example/vars.yml`, you now have default settings for all paramters.
+5. Override any default settings in `ansible/group_vars/all_example/vars.yml` by placing the parameter in the `ansible/group_vars/all/my.yml` file with  [my_] in front it.
 
-See below for a more full description and more detailed instructions
+e.g. if a setting is [dse_repo_email] in `ansible/group_vars/all_example/vars.yml` override it with [my_dse_repo_email] in `ansible/group_vars/all/my.yml`
+
+
+6. Run `./runterra_extended.sh` and check AWS instances that will be created - accept and run the plan
+7. Run `./genansinv_extended.sh` (it will generate the required `/ansible/hosts` file)
+8. Run `./runansi_extended.sh` (expects your key to be: `~/.ssh/id_rsa_aws`)
+
+MUST SEE BELOW for a more full description and more detailed instructions - you will need to set command line arguements to each of the scripts in 6) 7) and 8)
 
 # Quickstart steps to add a node to the above cluster:
 

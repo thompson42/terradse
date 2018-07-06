@@ -6,13 +6,18 @@
 #- debug: msg="{{hostvars[item].private_dns if is_self_signed_root_cert | bool else 'ip-' + hostvars[item].private_ip.replace('.', '-') + '.' + ssl_certs_common_name }}"
 #  with_items: "{{ groups['dse'] }}"
 
-# CA SIGNED WILDCARD CERTIFICATES CN: ip-10-0-0-1.mysite.net
+# CA SIGNED WILDCARD CERTIFICATES CN: [ansible_hostname].mysite.net
+# uses [ansible_hostname + '.' + ssl_certs_common_name] to create the DNS name (this is the hostname that ansible returns for the node)
+#- debug: msg="{{ansible_hostname + '.' + ssl_certs_common_name }}"
+#  with_items: "{{ groups['dse'] }}"
+
+# NO LONGER USED: CA SIGNED WILDCARD CERTIFICATES CN: ip-10-0-0-1.mysite.net
 # uses 'ip-' + hostvars[item].private_ip.replace('.', '-') + '.' + ssl_certs_common_name to create the DNS name (this should be either in DNS servers or hosts files.
 #- debug: msg="{{'ip-' + hostvars[item].private_ip.replace('.', '-') + '.' + ssl_certs_common_name }}"
 #  with_items: "{{ groups['dse'] }}"
 
 # COMBINED CALL:
-#- debug: msg="{{hostvars[item].private_dns if is_self_signed_root_cert | bool else 'ip-' + hostvars[item].private_ip.replace('.', '-') + '.' + ssl_certs_common_name }}"
+#- debug: msg="{{hostvars[item].private_dns if is_self_signed_root_cert | bool else ansible_hostname + '.' + ssl_certs_common_name  }}"
 #  with_items: "{{ groups['dse'] }}"
 
 #Generate keystores for both [dse] and [opsc_dsecore] nodes
