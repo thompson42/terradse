@@ -79,7 +79,7 @@
       state: present
     check_mode: yes
     register: command_results
-    with_fileglob: "{{ lookup('fileglob', ssl_certs_path + '/'+ ssl_certs_common_name +'-*') }}"
+    with_fileglob: "{{  ssl_certs_path + '/' + ssl_certs_common_name + '-*' }}"
 
   - name: Delete any empty generated files
     file:

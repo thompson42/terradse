@@ -1,10 +1,10 @@
 ---
 
 
-- name: Do non wildcard certs
+- name: INCLUDE > Do non wildcard certs
   include: tasks/non_wildcard_certs.yml
   when: not is_wildcard_cert | bool
 
-- name: Do wildcard certs
+- name: INCLUDE > Do wildcard certs
   include: tasks/wildcard_certs.yml
   when: is_wildcard_cert | bool
