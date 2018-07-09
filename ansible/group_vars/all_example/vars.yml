@@ -151,6 +151,8 @@ is_wildcard_cert: "{{ my_is_wildcard_cert | default(false) }}"
 etc_hosts_file_configure: "{{ my_etc_hosts_file_configure | default(false) }}"                                          #EDIT: Change if CA certs AND no DNS server CN entries (CN name will be added to /etc/hosts)
 
 # Not truely the CN, CN will be dynamically generated off each node's hostname.
+# NOTE: Use base domain without the * for wildcard certs (is_wildcard_cert), in the case
+# of is_self_signed_root_cert, a '*.' will be prepended to the common name
 ssl_certs_common_name: "{{ my_ssl_certs_common_name | default('SelfSignRootCA') }}"                                     #EDIT: Change from default if WILDCARD CA certs e.g [mysite.net]
 
 ssl_cluster_name: "{{ my_ssl_cluster_name | default('Test Cluster') }}"             #OU                                 #EDIT: Change from default if CA certs
