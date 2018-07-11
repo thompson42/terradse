@@ -137,9 +137,9 @@ security_group: cassandra
 
 # Cluster security settings set by server_encryption_options 
 # and client_encryption_options in cassandra.yaml
-cluster_keystore_path: "{{ dse_config_dir }}/keystore.jks"
+cluster_keystore_path: "{{ my_cluster_keystore_path | default( dse_config_dir + '/keystore.jks') }}"
 cluster_keystore_password: "{{ my_cluster_keystore_password | default('cluster_keystore_password') }}"                  #EDIT: Change from default (Use ansible-vault)
-cluster_truststore_path: "{{ dse_config_dir }}/truststore.jks"
+cluster_truststore_path: "{{ my_cluster_truststore_path | default(dse_config_dir + '/truststore.jks') }}"
 cluster_truststore_password: "{{ my_cluster_truststore_password | default('cluster_keystore_password') }}"              #EDIT: Change from default (Use ansible-vault)
  
 # Root certificate
@@ -147,9 +147,12 @@ cluster_truststore_password: "{{ my_cluster_truststore_password | default('clust
 # The certs, .truststore and .keystores are created on the ansible 
 # controller node in the directory: ssl_certs_path
 is_self_signed_root_cert: "{{ my_is_self_signed_root_cert | default(true) }}"                                           #EDIT: Change to [false] if CA certs
+is_wildcard_cert: "{{ my_is_wildcard_cert | default(false) }}"
 etc_hosts_file_configure: "{{ my_etc_hosts_file_configure | default(false) }}"                                          #EDIT: Change if CA certs AND no DNS server CN entries (CN name will be added to /etc/hosts)
 
 # Not truely the CN, CN will be dynamically generated off each node's hostname.
+# NOTE: Use base domain without the * for wildcard certs (is_wildcard_cert), in the case
+# of is_self_signed_root_cert, a '*.' will be prepended to the common name
 ssl_certs_common_name: "{{ my_ssl_certs_common_name | default('SelfSignRootCA') }}"                                     #EDIT: Change from default if WILDCARD CA certs e.g [mysite.net]
 
 ssl_cluster_name: "{{ my_ssl_cluster_name | default('Test Cluster') }}"             #OU                                 #EDIT: Change from default if CA certs

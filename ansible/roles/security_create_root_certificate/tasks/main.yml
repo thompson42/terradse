@@ -9,6 +9,11 @@
 #>cd /etc/ssl/SelfSignRootCA
 #>openssl req -new -x509 -nodes -subj /CN=SelfSignRootCA/OU=cluster_name/O=DataStax/C=US/ -keyout SelfSignRootCA.key -out SelfSignRootCA.pem -days 365
 - name: Generate self-signed SSL certificate
-  command: openssl req -new -x509 -nodes -subj "/CN={{ssl_certs_common_name}}/OU={{ssl_cluster_name}}/O={{ssl_certs_organization}}/C={{ssl_certs_country}}" -keyout "{{ssl_certs_path}}/{{ssl_certs_common_name}}".key -out "{{ssl_certs_path}}/{{ssl_certs_common_name}}".pem -days "{{ssl_certs_days}}"
-
+  command: >
+    openssl req -new -x509 -nodes 
+    -subj "/CN={{ '*.' if is_wildcard_cert | bool else '' }}{{ssl_certs_common_name}}/OU={{ssl_cluster_name}}/O={{ssl_certs_organization}}/C={{ssl_certs_country}}" 
+    -keyout "{{ssl_certs_common_name}}".key -out "{{ssl_certs_common_name}}".pem 
+    -days "{{ssl_certs_days}}"
+  args:
+    chdir: "{{ssl_certs_path}}"
 
