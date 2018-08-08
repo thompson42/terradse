@@ -5,68 +5,68 @@ set -ue
 
 cd ansible
 
-echo "---- Setting up primary DSE cluster ----"
+echo "---- Adding a new Node to an existing DSE cluster ----"
 echo ""
 echo "---- The system will exit IMMEDIATELY if DSE/Cassandra data directories already exist on the target node ! ----"
 
 echo
-echo ">>>> Install New Node <<<<"
+echo ">>>> Install DSE on new Node <<<<"
 echo
 ansible-playbook -i hosts add_node_install.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
-echo ">>>> Install New Node security dependencies <<<<"
+echo ">>>> Install DSE security dependencies on new Node <<<<"
 echo
 ansible-playbook -i hosts add_node_security_install_dependencies.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
-echo ">>>> Activate New Node Unified Authentication <<<<"
+echo ">>>> Activate DSE cluster Unified Authentication on new Node <<<<"
 echo
 ansible-playbook -i hosts add_node_authentication.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
-echo ">>>> Setup New Node Transport Encryption <<<<"
+echo ">>>> Setup DSE cluster Transport Encryption on new Node <<<<"
 echo
 ansible-playbook -i hosts add_node_security.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
-echo ">>>> Activate New Node JMX Unified Authentication <<<<"
+echo ">>>> Activate JMX Unified Authentication on new Node <<<<"
 echo
 ansible-playbook -i hosts add_node_jmx_authentication.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
-echo ">>>> Configure Spark security for New Node <<<<"
+echo ">>>> Configure Spark security for new Node (if required) <<<<"
 
 echo
-echo ">>>> Setup New Node Spark Transport Encryption <<<<"
+echo ">>>> Setup Spark Transport Encryption on new node <<<<"
 echo
 ansible-playbook -i hosts add_node_spark_security.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
-echo ">>>> Activate New Node Spark Authentication <<<<"
+echo ">>>> Activate Spark Authentication on new Node <<<<"
 echo
 ansible-playbook -i hosts add_node_spark_authentication.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
-echo ">>>> Configure New Node DSEFS, Worker cleanup and Logging in the Spark DC <<<<"
+echo ">>>> Configure DSEFS, AlwaysOnSQL, Spark Worker cleanup and Logging on new Node <<<<"
 echo
 ansible-playbook -i hosts add_node_spark_configure.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
-echo ">>>> Start DSE Enterprise on New Node <<<<"
+echo ">>>> Start DSE on new Node <<<<"
 echo
 ansible-playbook -i hosts add_node_dse_start.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
-echo ">>>> Start Agent on New Node <<<<"
+echo ">>>> Start Agent on new Node <<<<"
 echo
 ansible-playbook -i hosts add_node_agents_start.yml --private-key=~/.ssh/id_rsa_aws
 echo

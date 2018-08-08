@@ -51,9 +51,3 @@ auto_bootstrap=1
 
 [opsc_srv]
 192.168.1.7
-
-[datastax_agent]
-
-[osparmchg:children]
-dse
-opsc_dsecore

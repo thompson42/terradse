@@ -21,6 +21,8 @@
     - { role: dse_common }
     - { role: dse_instbin }
     - { role: dse_updcfg }
+  vars:
+    add_datacenter: false
     
 
 # Install OpsCenter server (Presumes all OPSC DSECore servers are down)
@@ -38,7 +40,7 @@
 
 
 # Install and configure datastax-agent on DSE cluster nodes
-- hosts: datastax_agent 
+- hosts: dse
   any_errors_fatal: true
   become: true
   become_method: sudo

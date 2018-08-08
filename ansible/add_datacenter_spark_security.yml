@@ -1,0 +1,17 @@
+
+# Activate spark encryption
+# 
+- hosts: add_datacenter
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_spark_configure }
+  
+
+- hosts: add_datacenter
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_spark_alwaysonsql_configure, when: activate_alwaysonsql | bool and activate_alwaysonsql_ssl | bool  and dse_major_version >= 6.0}

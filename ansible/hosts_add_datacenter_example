@@ -1,0 +1,71 @@
+[dse:children]
+dse_core
+dse_search
+dse_analytics
+dse_graph
+
+[dse_core]
+
+[dse_search]
+
+[dse_analytics]
+
+[dse_graph]
+10.200.175.160 private_ip=10.200.175.160  private_dns=ip-10-200-175-160.datastax.lan seed=true dc=dse_graph rack=RAC1 vnode=1 initial_token=
+10.200.175.164 private_ip=10.200.175.164  private_dns=ip-10-200-175-164.datastax.lan seed=true dc=dse_graph rack=RAC1 vnode=1 initial_token=
+10.200.175.163 private_ip=10.200.175.163 private_dns=ip-10-200-175.163.datastax.lan seed=false dc=dse_graph rack=RAC1 vnode=1 initial_token=
+
+[dse:vars]
+cluster_name=DseCluster
+
+[dse_core:vars]
+solr_enabled=0
+spark_enabled=0
+graph_enabled=0
+auto_bootstrap=1
+
+[dse_search:vars]
+solr_enabled=1
+spark_enabled=0
+graph_enabled=0
+auto_bootstrap=1
+
+[dse_analytics:vars]
+solr_enabled=0
+spark_enabled=1
+graph_enabled=0
+auto_bootstrap=1
+
+[dse_graph:vars]
+solr_enabled=0
+spark_enabled=0
+graph_enabled=1
+auto_bootstrap=1
+
+[opsc_dsecore]
+10.200.175.165 private_ip=10.200.175.165 private_dns=ip-10-200-175-165.datastax.lan seed=true dc=DC1 rack=RAC1 vnode=1 initial_token=
+10.200.175.166 private_ip=10.200.175.166 private_dns=ip-10-200-175-166.datastax.lan seed=false dc=DC1 rack=RAC1 vnode=1 initial_token=
+
+[opsc_dsecore:vars]
+cluster_name=OpscCluster
+solr_enabled=0
+spark_enabled=0
+graph_enabled=0
+auto_bootstrap=1
+
+[opsc_srv]
+10.200.175.165 private_ip=10.200.175.165
+
+[add_datacenter]
+10.200.182.195 private_ip=10.200.182.195 private_dns=ip-10-200-182-195.datastax.lan seed=true dc=dse_graph_2 rack=RAC1 vnode=1 initial_token=
+10.200.182.197 private_ip=10.200.182.197 private_dns=ip-10-200-182-197.datastax.lan seed=true dc=dse_graph_2 rack=RAC1 vnode=1 initial_token=
+10.200.182.196 private_ip=10.200.182.196 private_dns=ip-10-200-182-196.datastax.lan seed=false dc=dse_graph_2 rack=RAC1 vnode=1 initial_token=
+
+[add_datacenter:vars]
+solr_enabled=0
+spark_enabled=0
+graph_enabled=1
+auto_bootstrap=0
+
+[add_datacenter_end]
+

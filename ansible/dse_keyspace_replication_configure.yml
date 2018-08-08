@@ -1,0 +1,73 @@
+
+# Change the topology strategy and replication for core DSE keyspaces
+# NOTE: Core DSE keyspaces are replicated to all DCs in the cluster
+- hosts: localhost
+  any_errors_fatal: true
+  become: no
+  connection: local
+  tasks:
+    - name: Create a dictionary of DC's and their node count
+      set_fact:
+        dc_dict: "{{ dc_dict | default({}) | combine({item.key: item.value}) }}"
+      with_items:
+        - { key: 'dse_core',      value: "{{groups['dse_core']|length}}" }
+        - { key: 'dse_search',    value: "{{groups['dse_search']|length}}" }
+        - { key: 'dse_analytics', value: "{{groups['dse_analytics']|length}}" }
+        - { key: 'dse_graph',     value: "{{groups['dse_graph']|length}}" }
+
+- hosts: localhost
+  any_errors_fatal: true
+  become: no
+  connection: local
+  roles:
+    - { role: keyspace_replication_core_configure}
+  vars:
+    cql_target: "{{ groups['dse'][0] }}"
+    is_cql_target_ssl: false
+    is_login_required: false
+    login_u: "{{default_super_user_account}}"
+    login_p: "{{default_super_user_password}}"
+    dc_dict_var: "{{dc_dict}}"
+
+# If there is a Spark DC in the new cluster, change the Spark keyspace's topology strategy and replication
+# NOTE: Spark specific keyspaces are only replicated to Spark DCs in the cluster
+- hosts: localhost
+  any_errors_fatal: true
+  become: no
+  connection: local
+  tasks:
+    - name: Get a count of spark DCs nodes
+      set_fact:
+        spark_dc_count: "{{groups['dse_analytics']|length}}"
+        
+    - debug: 
+        msg: "{{ spark_dc_count }}"
+        
+    - name: Check if the cluster has a spark DC
+      set_fact:
+        is_spark_dc: "{% if spark_dc_count == '0' %}false{% else %}true{% endif %}"
+
+    - debug: 
+        msg: "{{ is_spark_dc }}"
+      
+    - name: Create a dictionary of Spark DC's and their node count
+      set_fact:
+        spark_dc_dict: "{{ spark_dc_dict | default({}) | combine({item.key: item.value}) }}"
+      with_items:
+        - { key: 'dse_analytics', value: "{{groups['dse_analytics']|length}}" }
+      
+- hosts: localhost
+  any_errors_fatal: true
+  become: no
+  connection: local
+  roles:
+    - { role: keyspace_replication_spark_configure, when: is_spark_dc | bool}
+  vars:
+    cql_target: "{{ groups['dse'][0] }}"
+    is_cql_target_ssl: false
+    is_login_required: false
+    login_u: "{{default_super_user_account}}"
+    login_p: "{{default_super_user_password}}"
+    dc_dict_var: "{{spark_dc_dict}}"
+
+     

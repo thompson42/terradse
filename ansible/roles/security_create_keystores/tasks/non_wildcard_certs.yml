@@ -36,6 +36,8 @@
   with_items:
   - "{{ groups['dse']}}"
   - "{{ groups['opsc_dsecore']}}"
+  - "{{ groups['add_node'] | default([]) }}"
+  - "{{ groups['add_datacenter'] | default([]) }}"
 
 - block:
   - name: Generate a signing request from each keystore
@@ -50,6 +52,8 @@
     with_items:
     - "{{ groups['dse']}}"
     - "{{ groups['opsc_dsecore']}}"
+    - "{{ groups['add_node'] | default([]) }}"
+    - "{{ groups['add_datacenter'] | default([]) }}"
 
 
   - name: BYO sign each nodes certificate
@@ -62,6 +66,8 @@
     with_items:
     - "{{ groups['dse']}}"
     - "{{ groups['opsc_dsecore']}}"
+    - "{{ groups['add_node'] | default([]) }}"
+    - "{{ groups['add_datacenter'] | default([]) }}"
 
 # SPLIT CA CERTIFICATE FILE
 - block:
@@ -100,7 +106,7 @@
       host: "{{item[0]}}"
       cert: "{{item[1]}}"
     with_nested:
-    - "{{ groups['dse'] + groups['opsc_dsecore'] }}"
+    - "{{ groups['dse'] + groups['opsc_dsecore'] + groups['add_node'] | default([]) + groups['add_datacenter'] | default([]) }}"
     - "{{lookup('fileglob', ssl_certs_path + '/'+ ssl_certs_common_name +'-*').split(',') | sort |  reverse | list }}"
 
   - name: Import the node's signed certificate into corresponding keystore
@@ -113,4 +119,6 @@
     with_items:
     - "{{ groups['dse']}}"
     - "{{ groups['opsc_dsecore']}}"
+    - "{{ groups['add_node'] | default([]) }}"
+    - "{{ groups['add_datacenter'] | default([]) }}"
 

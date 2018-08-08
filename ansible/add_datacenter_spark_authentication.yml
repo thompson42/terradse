@@ -1,0 +1,9 @@
+
+# Activate spark authentication
+# 
+- hosts: add_datacenter
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_spark_auth_activate }

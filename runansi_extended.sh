@@ -24,7 +24,7 @@ echo
 echo
 echo ">>>> Configure DSE Security Keyspaces - Strategy and Replication <<<<"
 echo
-ansible-playbook -i hosts dse_security_keyspaces_configure.yml --private-key=~/.ssh/id_rsa_aws
+ansible-playbook -i hosts dse_keyspace_replication_configure.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo

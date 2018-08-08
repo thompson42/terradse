@@ -1,0 +1,10 @@
+
+
+# nodetool rebuild -- {{ target_rebuild_datacenter }}
+- name: Run NodeTool Rebuild command
+  command: nodetool rebuild -- "{{ target_rebuild_datacenter }}"
+  register: rebuild_state
+  
+- debug:
+    msg: rebuild_state; "{{ rebuild_state.stdout }}"
+    

@@ -3,7 +3,7 @@
 #update:
 # file: /etc/default/dse
 # file: cassandra.yaml
-# file: cassandra-rackdc.properties
+# file: cassandra-rackdc.properties -> configures GossipingPropertyFileSnitch
 
 - name: Determine the right VNode num_token value SOLR
   when: solr_enabled|int == 1
@@ -105,8 +105,9 @@
   with_items:
     - "{{ hints_directory }}"
 
-
-- name: Configure DSE cluster name, seeds list, endpoint_snitch, listen_address, rpc_address, broadcast_rpc_address, commitlog_directory, and saved_caches_directory (cassandra.yaml)
+# Initial install, Add a node:
+# Get the cluster_name directly
+- name: Configure DSE cluster name for [initial install] and [add node] (cassandra.yaml)
   lineinfile:
     name: "{{ dse_config_dir }}/cassandra/cassandra.yaml"
     regexp: "{{ item.regexp }}"
@@ -115,15 +116,41 @@
     group: cassandra
     mode: 0644
   with_items:
-    - { regexp: 'cluster_name\:', line: "cluster_name: '{{ cluster_name }}'" }
-    - { regexp: '- seeds\:', line: '          - seeds: "{{ seeds }}"' }
+    - { regexp: 'cluster_name\:',    line: "cluster_name: {{ cluster_name }}" }
+  when: not add_datacenter
+
+# Add a datacenter:
+# Get the cluster_name from the [dse] group
+- name: Configure DSE cluster name for [add datacenter] only (cassandra.yaml)
+  lineinfile:
+    name: "{{ dse_config_dir }}/cassandra/cassandra.yaml"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    owner: cassandra
+    group: cassandra
+    mode: 0644
+  with_items:
+    - { regexp: 'cluster_name\:',    line: "cluster_name: {{ hostvars[groups['dse'][0]]['cluster_name'] }}" }
+  when: add_datacenter
+
+    
+- name: Configure seeds, endpoint_snitch, listen_address, rpc_address, broadcast_rpc_address, commitlog_directory and saved_caches_directory (cassandra.yaml)
+  lineinfile:
+    name: "{{ dse_config_dir }}/cassandra/cassandra.yaml"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    owner: cassandra
+    group: cassandra
+    mode: 0644
+  with_items:
+    - { regexp: '- seeds\:',         line: "          - seeds: {{ seeds }}" }
     - { regexp: 'endpoint_snitch\:', line: "endpoint_snitch: GossipingPropertyFileSnitch" }
     - { regexp: '^listen_address\:', line: "listen_address: {{ ansible_default_ipv4.address }}" }
-    - { regexp: '^rpc_address\:', line: "rpc_address: {{ ansible_default_ipv4.address }}" }
+    - { regexp: '^rpc_address\:',    line: "rpc_address: {{ ansible_default_ipv4.address }}" }
 #    - { regexp: '^rpc_address\:', line: "rpc_address: 0.0.0.0" }
 #    - { regexp: '#*\s*broadcast_rpc_address\:', line: "broadcast_rpc_address: {{ ansible_default_ipv4.address }}" }
-    - { regexp: '^commitlog_directory\:', line: 'commitlog_directory: {{ commitlog_directory }}' }
-    - { regexp: '^saved_caches_directory\:', line: 'saved_caches_directory: {{ saved_caches_directory }}' }
+    - { regexp: '^commitlog_directory\:',    line: "commitlog_directory: {{ commitlog_directory }}" }
+    - { regexp: '^saved_caches_directory\:', line: "saved_caches_directory: {{ saved_caches_directory }}" }
 
 
 - name: Configure DSE hints_directory (cassandra.yaml), DSE 5.0+ only

@@ -1,0 +1,8 @@
+
+# Install and configure DSE
+- hosts: add_datacenter
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: dse_disable_auto_bootstrap }

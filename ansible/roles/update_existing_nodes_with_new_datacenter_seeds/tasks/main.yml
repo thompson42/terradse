@@ -1,5 +1,5 @@
 
-- name: Configure seeds (cassandra.yaml)
+- name: Configure seeds in exiting nodes to include new datacenter seeds  (cassandra.yaml)
   lineinfile:
     name: "{{ dse_config_dir }}/cassandra/cassandra.yaml"
     regexp: "{{ item.regexp }}"
@@ -9,4 +9,3 @@
     mode: 0644
   with_items:
     - { regexp: '- seeds\:',         line: "          - seeds: {{ seeds }}" }
-

@@ -1,0 +1,25 @@
+
+#Stop all nodes in seed order
+# Stop DSE seed nodes 
+- hosts: add_datacenter
+  any_errors_fatal: true
+  name: Stop seed nodes
+  serial: 1
+  become: true
+  become_method: sudo
+  vars:
+    srvc_name: dse
+  roles:
+    - { role: stop_srvc, when: seed == 'true' } 
+
+# Stop DSE non-seed nodes 
+- hosts: add_datacenter
+  any_errors_fatal: true
+  name: Stop non-seed node one by one
+  serial: 1
+  become: true
+  become_method: sudo
+  vars:
+    srvc_name: dse
+  roles:
+    - { role: stop_srvc, when: seed == 'false' }

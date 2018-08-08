@@ -270,28 +270,6 @@ pmsg "[opsc_srv]" $DSE_ANSINV_FILE
 pmsg "$opscSrvNodeStr" $DSE_ANSINV_FILE
 pmsg "" $DSE_ANSINV_FILE
 
-# Generate Ansible inventory file for OpsCenter DSE cluster
-pmsg "[datastax_agent]" $DSE_ANSINV_FILE
-for ((i=0; i<${#dse_nodetype[*]}; i++));
-do
-   if [ "${#public_ip[@]}" -eq 0 ]; then
-      pmsg "${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} opsc_srv_ip=$opscSrvPrivateIp" $DSE_ANSINV_FILE
-   else
-      pmsg "${public_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} opsc_srv_ip=$opscSrvPrivateIp" $DSE_ANSINV_FILE
-   fi
-done
-pmsg "" $DSE_ANSINV_FILE
-pmsg "" $DSE_ANSINV_FILE
-pmsg "" $DSE_ANSINV_FILE
-
-pmsg "[osparmchg:children]" $DSE_ANSINV_FILE
-pmsg "dse" $DSE_ANSINV_FILE
-pmsg "opsc_dsecore" $DSE_ANSINV_FILE
-
-pmsg "" $DSE_ANSINV_FILE
-pmsg "" $DSE_ANSINV_FILE
-pmsg "" $DSE_ANSINV_FILE
-
 pmsg "[add_node]" $DSE_ANSINV_FILE
 pmsg "" $DSE_ANSINV_FILE
 pmsg "[add_node_end]" $DSE_ANSINV_FILE

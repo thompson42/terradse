@@ -1,0 +1,14 @@
+#!wing
+#!version=5.0
+##################################################################
+# Wing IDE project file                                          #
+##################################################################
+[project attributes]
+proj.file-list = [loc('cassandra_grant.py'),
+                  loc('cassandra_role.py'),
+                  loc('cassandra_table_replication.py'),
+                  loc('cassandra_topology_replication.py'),
+                  loc('test.py'),
+                  loc('test_ssl_client.py'),
+                  loc('yedit.py')]
+proj.file-type = 'shared'

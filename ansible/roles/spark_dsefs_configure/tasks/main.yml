@@ -1,4 +1,11 @@
-# Activate DSEFS
+# Activate DSEFS - TODO formatting bug with dsefs_options.data_directories.dir
+# Should look like:
+#data_directories:
+#    - dir: /var/lib/dsefs/data
+#
+# below produces:
+#data_directories:
+#  dir: /var/lib/dsefs/data
 - name: Activate and configure DSEFS on node
   yedit:
     src: "{{ dse_config_dir }}/dse.yaml"

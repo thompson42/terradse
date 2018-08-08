@@ -1,5 +1,6 @@
-# Start all datastax agents
-- hosts: dse 
+
+# Start datastax agent on new datacenter nodes
+- hosts: add_datacenter
   any_errors_fatal: true
   become: true
   become_method: sudo

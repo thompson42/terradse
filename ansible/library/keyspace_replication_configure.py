@@ -4,11 +4,11 @@
 
 DOCUMENTATION = '''
 ---
-module: cassandra_security_replication
+module: keyspace_replication_configure
 
-short_description: Manage Cassandra Security Keyspace Replication
+short_description: Manage Cassandra Keyspace Replication and Topology Strategies
 description:
-    - Security Keysapce Replication
+    - Manage Cassandra Keyspace Replication and Topology Strategies
     - requires `pip install cassandra-driver`
     - Related Docs: https://datastax.github.io/python-driver/api/cassandra/query.html
     - Related Docs: https://docs.datastax.com/en/cql/3.3/cql/cql_reference/create_role.html
@@ -16,11 +16,11 @@ author: "Alex Thompson"
 options:
   keyspace_name:
     description:
-      - name of the keyspace to ALTER, either DSE_SECURITY or SYSTEM_AUTH
+      - name of the keyspace to ALTER, e.g. DSE_SECURITY or SYSTEM_AUTH
     required: true
-  replication_class:
+  topology_strategy:
     description:
-      - replication_class; usually NetworkTopologyStrategy
+      - topology_strategy; usually NetworkTopologyStrategy
     required: true
   replication_dc:
     description:
@@ -30,10 +30,18 @@ options:
     description:
       - Whether SSL encryption is required for connections
     required: true
-  cert_path:
+  cert_file:
     description:
-      - Path to the SSL cert for the python driver
+      - Path to the public SSL certificate for the python driver
     required: false
+  key_file:
+    description:
+      - Path to the private SSL key for the python driver
+    required: false
+  login_required:
+    description:
+      - Boolean whether login is required
+    required: true
   login_hosts:
     description:
       - List of hosts to login to Cassandra with
@@ -58,7 +66,7 @@ notes:
 
 EXAMPLES = '''
 # Create Role
-- cassandra_security_replication: keyspace_name='SYSTEM_AUTH' replication_class='NetworkTopologyStrategy' replication_dc={'dse_core': 3, 'dse_search': 3}
+- cassandra_table_replication: keyspace_name='SYSTEM_AUTH' topology_strategy='NetworkTopologyStrategy' replication_dc={'dse_core': 3, 'dse_search': 3}
 '''
 
 import ssl
@@ -72,7 +80,7 @@ except ImportError:
 else:
     cassandra_dep_found = True
 
-def calculate_keyspace_replication(replication_dc):
+def calculate_keyspace_replication(replication_dc, keyspace_name):
     
     replication_dc_str = ''
     for dc_name, node_count in replication_dc.items():
@@ -81,12 +89,15 @@ def calculate_keyspace_replication(replication_dc):
             #DCs < 3x nodes use an RF=1
             if int(node_count) < 3:
                 replication_dc_str = replication_dc_str + ", \'" + dc_name + "\': 1"
-            #DCs < 9x nodes use an RF=3
-            elif int(node_count) > 3 and int(node_count) < 9:
+            #DCs >= 3x nodes use an RF=3
+            elif int(node_count) >= 3:
                 replication_dc_str = replication_dc_str + ", \'" + dc_name + "\': 3"
             #DCs > 9x nodes use an RF=5
             elif int(node_count) > 9:
-                replication_dc_str = replication_dc_str + ", \'" + dc_name + "\': 5"
+                if keyspace_name.lower() == 'system_auth' or keyspace_name.lower() == 'dse_security':
+                    replication_dc_str = replication_dc_str + ", \'" + dc_name + "\': 5"
+                else:
+                    replication_dc_str = replication_dc_str + ", \'" + dc_name + "\': 3"
                 
     return replication_dc_str
 
@@ -97,7 +108,7 @@ def main():
                 'required': True,
                 'type': 'str'
             },
-            'replication_class': {
+            'topology_strategy': {
                 'required': True,
                 'type': 'str'
             },
@@ -109,10 +120,18 @@ def main():
                 'required': True,
                 'type': 'bool'
             },
-            'cert_path': {
+            'cert_file': {
                 'required': False,
                 'type': 'str'
             },
+            'key_file': {
+                'required': False,
+                'type': 'str'
+            }, 
+            'login_required': {
+                'required': True,
+                'type': 'bool'
+            },            
             'login_user': {
                 'required': True,
                 'type': 'str'
@@ -134,25 +153,29 @@ def main():
         supports_check_mode=True
     )
     
-    keyspace_name = module.params["keyspace_name"]
-    replication_class = module.params["replication_class"]
-    replication_dc = module.params["replication_dc"]
-    is_ssl = module.params["is_ssl"]
-    cert_path = module.params["cert_path"]
-    login_user = module.params["login_user"]
-    login_password = module.params["login_password"]
-    login_hosts = module.params["login_hosts"]
-    login_port = module.params["login_port"]
+    keyspace_name     = module.params["keyspace_name"]
+    topology_strategy = module.params["topology_strategy"]
+    replication_dc    = module.params["replication_dc"]
+    is_ssl            = module.params["is_ssl"]
+    cert_file         = module.params["cert_file"]
+    key_file          = module.params["key_file"]
+    login_required    = module.params["login_required"]
+    login_user        = module.params["login_user"]
+    login_password    = module.params["login_password"]
+    login_hosts       = module.params["login_hosts"]
+    login_port        = module.params["login_port"]
 
+    #exit if no cassandra driver found
     if not cassandra_dep_found:
         module.fail_json(msg="the python cassandra-driver module is required")
 
     session = None
     changed = True
-    ssl_options=dict(certfile=cert_path, ssl_version=ssl.PROTOCOL_TLSv1)
-                                   
+    ssl_options=dict(certfile=cert_file, keyfile=key_file, ssl_version=ssl.PROTOCOL_TLSv1)
+    
+    #connect to the cluster                               
     try:
-        if not login_user:
+        if not login_required:
             cluster = Cluster(login_hosts, port=login_port)
 
         else:
@@ -163,16 +186,21 @@ def main():
             else:
                 cluster = Cluster(login_hosts, auth_provider=auth_provider, protocol_version=3.3, port=login_port)
             
-            session = cluster.connect()
-            session.row_factory = dict_factory
+        session = cluster.connect()
+        
     except Exception, e:
         module.fail_json(
             msg="unable to connect to cassandra, check login_user and login_password are correct. Exception message: %s" % e)
-            
+    
+    #issue the query        
     try:
-        replication_dc_str = calculate_keyspace_replication(replication_dc)
-        query_str = "ALTER KEYSPACE " + keyspace_name + " WITH REPLICATION = {\'class\': \'" + replication_class + "\'" + replication_dc_str + "};"
+        #build the replication string
+        replication_dc_str = calculate_keyspace_replication(replication_dc, keyspace_name)
+        
+        #build the final query and execute
+        query_str = "ALTER KEYSPACE " + keyspace_name + " WITH REPLICATION = {\'class\': \'" + topology_strategy + "\'" + replication_dc_str + "};"
         #session.execute(query_str)
+        
     except Exception, e:
         module.fail_json(msg=str(e))
     

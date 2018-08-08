@@ -1,7 +1,6 @@
----
 
 # Exit process immediately if the Cassandra data directory exists on new node (don't want to overwrite a running system !)
-- hosts: add_node[0]
+- hosts: add_datacenter
   any_errors_fatal: true
   become: true
   become_method: sudo
@@ -10,7 +9,7 @@
   
   
 # Get the current timestamp and register datastax debian packages
-- hosts: add_node[0]
+- hosts: add_datacenter
   any_errors_fatal: true
   become: true
   become_method: sudo
@@ -21,8 +20,8 @@
   roles:
   - { role: datastax_pkg }
 
-# Populate the seeds list by iterating over >>>ALL<<<< exiting DSE nodes in the hosts file
-- hosts: dse
+# Populate the seeds list by iterating over all exiting DSE nodes AND all [add_datacenter] nodes
+- hosts: dse, add_datacenter
   any_errors_fatal: true
   become: true
   become_method: sudo
@@ -30,7 +29,7 @@
     - { role: dse_common }
 
 # Install and configure DSE
-- hosts: add_node[0]
+- hosts: add_datacenter
   any_errors_fatal: true
   become: true
   become_method: sudo
@@ -41,10 +40,18 @@
     - { role: dse_instbin }
     - { role: dse_updcfg }
   vars:
-    add_datacenter: false
+    add_datacenter: true
+
+# Update the seeds list on DSE nodes to include seeds in the new Datacenter    
+- hosts: dse
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: update_existing_nodes_with_new_datacenter_seeds }
     
 # Install and configure datastax-agent
-- hosts: add_node[0]
+- hosts: add_datacenter
   any_errors_fatal: true
   become: true
   become_method: sudo

@@ -8,6 +8,7 @@
   roles:
   - { role: security_test_for_keystores }
 
+# Exit process immediately if the Cassandra data directory exists on new node (don't want to overwrite a running system !)
 - hosts: dse
   any_errors_fatal: true
   become: true
@@ -42,3 +43,5 @@
     - { role: dse_common }
     - { role: dse_instbin }
     - { role: dse_updcfg }
+  vars:
+    add_datacenter: false

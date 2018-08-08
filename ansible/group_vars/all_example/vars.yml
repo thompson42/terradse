@@ -76,6 +76,7 @@ device_string: "{{ my_device_string | default('xxxx') }}"                       
 
 # Key Spark settings
 #-------------------------------------------------------------------------------
+activate_dsefs: "{{ my_activate_dsefs | default(false) }}"                                                  #EDIT: Change from default
 dsefs_data_file_directory: "{{ my_dsefs_data_file_directory | default('/var/lib/dsefs/data') }}"            #EDIT: Change from default
 activate_alwaysonsql: "{{ my_activate_alwaysonsql | default(false) }}"                                      #EDIT: Requires DSE 6.0+
 activate_alwaysonsql_ssl: "{{ my_activate_alwaysonsql_ssl | default(false) }}"                              #EDIT: Requires DSE 6.0+

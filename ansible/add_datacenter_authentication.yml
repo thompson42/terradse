@@ -1,0 +1,8 @@
+
+# Activate DSE Unified Authentication
+- hosts: add_datacenter
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_unified_auth_activate }

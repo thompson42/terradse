@@ -55,13 +55,3 @@ auto_bootstrap=1
 
 [opsc_srv]
 10.200.178.124 private_ip=10.200.178.124
-
-[datastax_agent]
-10.200.178.121 private_ip=10.200.178.121  opsc_srv_ip=10.200.178.124
-10.200.178.122 private_ip=10.200.178.122  opsc_srv_ip=10.200.178.124
-10.200.178.123 private_ip=10.200.178.123 opsc_srv_ip=10.200.178.124
-
-[osparmchg:children]
-dse
-opsc_dsecore
-

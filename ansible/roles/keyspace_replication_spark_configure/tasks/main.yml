@@ -1,0 +1,31 @@
+---
+# WARNING: This role should only be run once per cluster on a single DSE node
+
+# Change system_auth and dse_security RF to 3-5 for each DC and change to NetworkToplogyStrategy from SimpleStrategy.
+# https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuthAndRbacAbout.html
+# https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secEnableDseAuthenticator.html
+
+#  - name: Pausing for 60 seconds to allow the DSE endpoint to come up
+#    pause:
+#      seconds: 60
+
+  - name: ALTER the replication_factor and replication class for DSE KEYSPACES
+    keyspace_replication_configure:
+      keyspace_name: "{{ item }}"
+      topology_strategy: org.apache.cassandra.locator.NetworkTopologyStrategy
+      replication_dc: "{{dc_dict_var}}"
+      is_ssl: "{{is_cql_target_ssl}}"
+      cert_file: "{{ssl_certs_path}}/{{ssl_certs_common_name}}.pem"
+      key_file: "{{ssl_certs_path}}/{{ssl_certs_common_name}}.key"
+      login_required: "{{is_login_required}}"
+      login_hosts: "{{cql_target}}"
+      login_user: "{{login_u}}"
+      login_password: "{{login_p}}"
+    with_items:
+      - cfs
+      - cfs_archive
+      - dsefs
+      - "HiveMetaStore"
+      - spark_system
+    
+    
