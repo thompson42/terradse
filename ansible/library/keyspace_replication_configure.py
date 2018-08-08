@@ -171,7 +171,7 @@ def main():
 
     session = None
     changed = True
-    ssl_options=dict(certfile=cert_file, keyfile=key_file, ssl_version=ssl.PROTOCOL_TLSv1)
+    ssl_options = dict(certfile=cert_file, keyfile=key_file, ssl_version=ssl.PROTOCOL_TLSv1)
     
     #connect to the cluster                               
     try:
@@ -197,9 +197,14 @@ def main():
         #build the replication string
         replication_dc_str = calculate_keyspace_replication(replication_dc, keyspace_name)
         
-        #build the final query and execute
-        query_str = "ALTER KEYSPACE " + keyspace_name + " WITH REPLICATION = {\'class\': \'" + topology_strategy + "\'" + replication_dc_str + "};"
-        #session.execute(query_str)
+        #build the final query
+        if keyspace_name == "HiveMetaStore":
+            query_str = "ALTER KEYSPACE \"" + keyspace_name + "\" WITH REPLICATION = {\'class\': \'" + topology_strategy + "\'" + replication_dc_str + "};"
+        else:
+            query_str = "ALTER KEYSPACE " + keyspace_name + " WITH REPLICATION = {\'class\': \'" + topology_strategy + "\'" + replication_dc_str + "};"
+        
+        #execute the CQL command
+        session.execute(query_str)
         
     except Exception, e:
         module.fail_json(msg=str(e))

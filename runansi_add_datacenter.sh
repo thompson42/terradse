@@ -60,16 +60,18 @@ ansible-playbook -i hosts add_datacenter_agents_start.yml --private-key=~/.ssh/i
 echo
 
 echo
+echo ">>>> Re-Configure DSE and SPARK Keyspaces - Strategy and Replication <<<<"
+echo
+ansible-playbook -i hosts add_datacenter_keyspace_replication_configure.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
+echo
 echo ">>>> Run [nodetool rebuild] on each node in the new Datacenter <<<< TODO: DEBUGGING NOW"
 echo
 ansible-playbook -i hosts add_datacenter_rebuild.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
-echo
-echo ">>>> Re-Configure DSE Security Keyspaces - Replication <<<<"
-echo
-#ansible-playbook -i hosts dse_security_keyspaces_configure.yml --private-key=~/.ssh/id_rsa_aws
-echo
+
 
 echo
 echo ">>>> Run [nodetool repair -pr <security_keyspaces>] on each node in new Datacenter <<<<"

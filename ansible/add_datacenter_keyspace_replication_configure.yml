@@ -42,6 +42,7 @@
     - debug: 
         msg: "{{ core_dc_dict }}"
 
+# Modify the keyspaces via a CQL call to a node in one of the existing datacenters - here defaults to node: groups['dse'][0]
 - hosts: localhost
   any_errors_fatal: true
   become: no
@@ -60,26 +61,65 @@
 # NOTE: Spark specific keyspaces are only replicated to Spark DC/s in the cluster
 
 # Loop over the list of datacenters, if the datacenter is a Spark datacenter add it to a new list
+#set_fact:
+#  my_strings: "{{ my_list }} + [ '{{ my_name }}' ]"
+
 - hosts: localhost
   any_errors_fatal: true
   become: no
   connection: local
   tasks:
-    - name: Build a list of existing DSE datacenter names + the new datacenter name
-      set_fact: 
-        final_datacenters: "{{ datacenters + hostvars[groups['add_datacenter'][0]]['dc']) }}"
 
-    - debug: 
-        msg: "{{ final_datacenters }}"
-        
-    - name: Create a dictionary of Spark DC's and their node count from the datacenters collection
+    - name: Create an empty existing spark DC dictionary
       set_fact:
-        spark_dc_dict: "{{ spark_dc_dict | default({}) | combine({ item:groups[item]|length }) }}"
+        existing_spark_dc_dict: "{{ existing_spark_dc_dict | default({}) }}"
+    
+    - name: Populate the existing Spark DC's and their node count from the existing datacenters collection
+      set_fact:
+        existing_spark_dc_dict: "{{ existing_spark_dc_dict | combine({ item:groups[item]|length }) }}"
       with_items:
-        - "{{ final_datacenters }}"
-      when: hostvars[groups[item][0]]['spark_enabled'] == '1'
+        - "{{ datacenters }}"
+      when: hostvars[groups[item][0]]['spark_enabled']|int >= 1
       
+    - debug: 
+        msg: "{{ existing_spark_dc_dict }}"
+        
+    - name: Create an empty new spark DC dictionary
+      set_fact:
+        new_spark_dc_dict: "{{ new_spark_dc_dict | default({}) }}"
+    
+    - name: Populate the new datacenter to its own dictionary only if it is a Spark DC
+      set_fact:
+        new_spark_dc_dict: "{{ new_spark_dc_dict | combine({ item:groups['add_datacenter']|length }) }}"
+      with_items:
+        - ["{{ hostvars[groups['add_datacenter'][0]]['dc'] }}"]
+      when: hostvars[groups['add_datacenter'][0]]['spark_enabled']|int >= 1
+      
+    - debug: 
+        msg: "{{ hostvars[groups['add_datacenter'][0]]['spark_enabled'] }}"
+      
+    - debug: 
+        msg: "{{ new_spark_dc_dict }}"
+      
+    - name: Combine the dictionaries
+      set_fact:
+        spark_dc_dict: "{{ existing_spark_dc_dict | combine(new_spark_dc_dict) }}"
+
     - debug: 
         msg: "{{ spark_dc_dict }}"
 
-# 
+# Modify the keyspaces via a CQL call to a node in one of the existing datacenters - here defaults to node: groups['dse'][0]
+- hosts: localhost
+  any_errors_fatal: true
+  become: no
+  connection: local
+  roles:
+    - { role: keyspace_replication_spark_configure}
+  vars:
+    cql_target: "{{ groups['dse'][0] }}"
+    is_cql_target_ssl: true
+    is_login_required: true
+    login_u: "{{secure_super_user_account}}"
+    login_p: "{{secure_super_user_password}}"
+    dc_dict_var: "{{spark_dc_dict}}"
+    

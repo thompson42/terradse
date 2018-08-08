@@ -9,7 +9,7 @@
 #    pause:
 #      seconds: 60
 
-  - name: ALTER the replication_factor and replication class for DSE KEYSPACES
+  - name: ALTER the replication_factor and replication class for SPARK KEYSPACES in SPARK DCs only
     keyspace_replication_configure:
       keyspace_name: "{{ item }}"
       topology_strategy: org.apache.cassandra.locator.NetworkTopologyStrategy
@@ -24,8 +24,23 @@
     with_items:
       - cfs
       - cfs_archive
-      - dsefs
-      - "HiveMetaStore"
+      - HiveMetaStore
       - spark_system
+      
+  - name: ALTER the replication_factor and replication class for SPARK DSEFS KEYSPACES in SPARK DCs only
+    keyspace_replication_configure:
+      keyspace_name: "{{ item }}"
+      topology_strategy: org.apache.cassandra.locator.NetworkTopologyStrategy
+      replication_dc: "{{dc_dict_var}}"
+      is_ssl: "{{is_cql_target_ssl}}"
+      cert_file: "{{ssl_certs_path}}/{{ssl_certs_common_name}}.pem"
+      key_file: "{{ssl_certs_path}}/{{ssl_certs_common_name}}.key"
+      login_required: "{{is_login_required}}"
+      login_hosts: "{{cql_target}}"
+      login_user: "{{login_u}}"
+      login_password: "{{login_p}}"
+    with_items:
+      - dsefs
+    when: activate_dsefs | bool
     
     
