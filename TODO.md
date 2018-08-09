@@ -427,7 +427,7 @@ role: security_audit_logging_configure - COMPLETE :heavy_check_mark:
 
 # Bring up a new DC within an existing cluster
 
-- IN PROGRESS :?:
+- TESTING NOW :?:
 
 This new DC could have various reasons for existing:
 
@@ -436,21 +436,7 @@ This new DC could have various reasons for existing:
 3. A backup DC i.e. a new Graph DC in AZ2 in a cluster with an existing Graph DC in AZ1
 4. A geographically seperate replicated edge DC 
 
-TODO:
-
-1. auto_bootstrap=0 - need to test
-2. genansi_add_datacenter needs to take arg <dc_name> e.g. dse_graph_2 and inject into "dc=..."
-3. genansi_add_datacenter needs to correctly inject:
-
 ```
-[dse:children]
-my_dc_name
-
-[my_dc_name]
-xxx private_ip=xxx private_dns=ip-10-200-175-160.datastax.lan seed=true dc=dse_graph_2 rack=RAC1 vnode=1 initial_token=
-xxx private_ip=xxx private_dns=ip-10-200-175-164.datastax.lan seed=true dc=dse_graph_2 rack=RAC1 vnode=1 initial_token=
-xxx private_ip=xxx private_dns=ip-10-200-175.163.datastax.lan seed=false dc=dse_graph_2 rack=RAC1 vnode=1 initial_token=
-
 [add_datacenter]
 xxx private_ip=xxx private_dns=ip-10-200-175-160.datastax.lan seed=true dc=dse_graph_2 dc_type=dse_graph rack=RAC1 vnode=1 initial_token=
 xxx private_ip=xxx private_dns=ip-10-200-175-164.datastax.lan seed=true dc=dse_graph_2 dc_type=dse_graph rack=RAC1 vnode=1 initial_token=
@@ -464,10 +450,11 @@ auto_bootstrap=0
 
 ```
 
-
 # Bring up a replacement node in a specific DC in an existing cluster
 
 Replace a node in a DC. - TODO :x:
+
+
 
 # OpsCenter DSE cluster backup automation
 
