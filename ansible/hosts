@@ -3,23 +3,15 @@ dse_core
 dse_search
 dse_analytics
 dse_graph
-dse_graph_2
 
 [dse_core]
+10.200.177.201
 
 [dse_search]
 
 [dse_analytics]
 
 [dse_graph]
-10.200.178.60 private_ip=10.200.178.60 private_dns=ip-10-200-178-60.datastax.lan seed=true dc=dse_graph rack=RAC1 vnode=1 initial_token=
-10.200.178.61 private_ip=10.200.178.61 private_dns=ip-10-200-178-61.datastax.lan seed=true dc=dse_graph rack=RAC1 vnode=1 initial_token=
-10.200.178.65 private_ip=10.200.178.65 private_dns=ip-10-200-178-65.datastax.lan seed=false dc=dse_graph rack=RAC1 vnode=1 initial_token=
-
-[dse_graph_2]
-10.200.176.109 private_ip=10.200.176.109 private_dns=ip-10-200-176-109.datastax.lan seed=true dc=dse_graph_2 rack=RAC1 vnode=1 initial_token=
-10.200.176.11 private_ip=10.200.176.11 private_dns=ip-10-200-176-11.datastax.lan seed=true dc=dse_graph_2 rack=RAC1 vnode=1 initial_token=
-10.200.176.116 private_ip=10.200.176.116 private_dns=ip-10-200-176-116.datastax.lan seed=false dc=dse_graph_2 rack=RAC1 vnode=1 initial_token=
 
 [dse:vars]
 cluster_name=DseCluster
@@ -48,15 +40,8 @@ spark_enabled=0
 graph_enabled=1
 auto_bootstrap=1
 
-[dse_graph_2:vars]
-solr_enabled=0
-spark_enabled=1
-graph_enabled=0
-auto_bootstrap=0
-
 [opsc_dsecore]
-10.200.178.62 private_ip=10.200.178.62 private_dns=ip-10-200-178-62.datastax.lan seed=true dc=DC1 rack=RAC1 vnode=1 initial_token=
-10.200.178.63 private_ip=10.200.178.63 private_dns=ip-10-200-178-63.datastax.lan seed=false dc=DC1 rack=RAC1 vnode=1 initial_token=
+
 
 [opsc_dsecore:vars]
 cluster_name=OpscCluster
@@ -66,17 +51,6 @@ graph_enabled=0
 auto_bootstrap=1
 
 [opsc_srv]
-10.200.178.62 private_ip=10.200.178.62
 
-[add_datacenter]
-10.200.180.129 private_ip=10.200.180.129 private_dns=ip-10-200-180-129.datastax.lan seed=true dc=dse_analytics_3 rack=RAC1 vnode=1 initial_token=
-10.200.180.128 private_ip=10.200.180.128 private_dns=ip-10-200-180-128.datastax.lan seed=true dc=dse_analytics_3 rack=RAC1 vnode=1 initial_token=
-10.200.180.130 private_ip=10.200.180.130 private_dns=ip-10-200-180-130.datastax.lan seed=false dc=dse_analytics_3 rack=RAC1 vnode=1 initial_token=
-
-[add_datacenter:vars]
-solr_enabled=0
-spark_enabled=1
-graph_enabled=0
-auto_bootstrap=0
 
 

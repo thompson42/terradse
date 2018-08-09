@@ -1,10 +1,8 @@
-# Repair SPARK keyspaces on new nodes   
-- hosts: add_datacenter
+
+
+- hosts: dse[0]
   any_errors_fatal: true
-  become: no
-  connection: local
+  become: true
+  become_method: sudo
   roles:
-    - { role: nodetool_repair_spark_keyspaces}
-  vars:
-    login_u: "{{default_super_user_account}}"
-    login_p: "{{default_super_user_password}}"
+    - { role: spark_dsefs_configure}

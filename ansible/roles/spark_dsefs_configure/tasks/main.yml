@@ -12,7 +12,7 @@
     edits:
     - key: dsefs_options.enabled
       value: true
-    - key: dsefs_options.data_directories.dir
-      value: "{{dsefs_data_file_directory}}"
-      update: true
+    - key: dsefs_options.data_directories
+      value: "- dir: {{dsefs_data_file_directory}}"
+
       

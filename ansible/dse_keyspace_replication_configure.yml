@@ -75,8 +75,8 @@
 # Repair ALL keyspaces on all nodes
 - hosts: dse
   any_errors_fatal: true
-  become: no
-  connection: local
+  become: true
+  become_method: sudo
   roles:
     - { role: nodetool_repair_full}
   vars:
