@@ -15,6 +15,7 @@
         - { key: 'dse_analytics', value: "{{groups['dse_analytics']|length}}" }
         - { key: 'dse_graph',     value: "{{groups['dse_graph']|length}}" }
 
+# ALTER the keyspaces
 - hosts: localhost
   any_errors_fatal: true
   become: no
@@ -28,6 +29,7 @@
     login_u: "{{default_super_user_account}}"
     login_p: "{{default_super_user_password}}"
     dc_dict_var: "{{dc_dict}}"
+    
 
 # If there is a Spark DC in the new cluster, change the Spark keyspace's topology strategy and replication
 # NOTE: Spark specific keyspaces are only replicated to Spark DCs in the cluster
@@ -69,5 +71,16 @@
     login_u: "{{default_super_user_account}}"
     login_p: "{{default_super_user_password}}"
     dc_dict_var: "{{spark_dc_dict}}"
+    
+# Repair ALL keyspaces on all nodes
+- hosts: dse
+  any_errors_fatal: true
+  become: no
+  connection: local
+  roles:
+    - { role: nodetool_repair_full}
+  vars:
+    login_u: "{{default_super_user_account}}"
+    login_p: "{{default_super_user_password}}"
 
      

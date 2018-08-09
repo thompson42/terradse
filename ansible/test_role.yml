@@ -1,1 +1,10 @@
-activate_dsefs
+# Repair SPARK keyspaces on new nodes   
+- hosts: add_datacenter
+  any_errors_fatal: true
+  become: no
+  connection: local
+  roles:
+    - { role: nodetool_repair_spark_keyspaces}
+  vars:
+    login_u: "{{default_super_user_account}}"
+    login_p: "{{default_super_user_password}}"

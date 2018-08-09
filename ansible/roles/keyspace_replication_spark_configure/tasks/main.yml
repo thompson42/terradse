@@ -26,6 +26,7 @@
       - cfs_archive
       - HiveMetaStore
       - spark_system
+    when: dc_dict_var|length|int >= 1
       
   - name: ALTER the replication_factor and replication class for SPARK DSEFS KEYSPACES in SPARK DCs only
     keyspace_replication_configure:
@@ -41,6 +42,6 @@
       login_password: "{{login_p}}"
     with_items:
       - dsefs
-    when: activate_dsefs | bool
+    when: dc_dict_var|length|int >= 1 and activate_dsefs|bool
     
     

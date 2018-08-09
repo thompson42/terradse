@@ -1,0 +1,8 @@
+
+- name: Run NodeTool Repair command
+  command: "nodetool  -u {{login_u}} -pw {{login_p}} repair -full"
+  register: repair_state
+  
+- debug:
+    msg: repair_state; "{{ repair_state.stdout }}"
+

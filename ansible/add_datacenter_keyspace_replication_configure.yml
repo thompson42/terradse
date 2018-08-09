@@ -59,11 +59,6 @@
     
 # If there is Spark DC/s in the existing cluster, change the Spark keyspace's topology strategy and replication
 # NOTE: Spark specific keyspaces are only replicated to Spark DC/s in the cluster
-
-# Loop over the list of datacenters, if the datacenter is a Spark datacenter add it to a new list
-#set_fact:
-#  my_strings: "{{ my_list }} + [ '{{ my_name }}' ]"
-
 - hosts: localhost
   any_errors_fatal: true
   become: no
@@ -122,4 +117,16 @@
     login_u: "{{secure_super_user_account}}"
     login_p: "{{secure_super_user_password}}"
     dc_dict_var: "{{spark_dc_dict}}"
+  
+# Repair new nodes   
+- hosts: add_datacenter
+  any_errors_fatal: true
+  become: no
+  connection: local
+  roles:
+    - { role: nodetool_repair_full}
+  vars:
+    login_u: "{{default_super_user_account}}"
+    login_p: "{{default_super_user_password}}"
+    
     

@@ -22,7 +22,7 @@ ansible-playbook -i hosts dse_cluster_start.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
 echo
-echo ">>>> Configure DSE and SPARK Keyspaces - Strategy and Replication <<<<"
+echo ">>>> Configure DSE and SPARK Keyspaces - Strategy / Replication / Repair <<<<"
 echo
 ansible-playbook -i hosts dse_keyspace_replication_configure.yml --private-key=~/.ssh/id_rsa_aws
 echo

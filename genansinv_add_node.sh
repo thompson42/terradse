@@ -41,15 +41,15 @@ else
    ADD_NODE_IP_ADDRESS="${public_ip[i]}"
 fi
 
-# replace a section at the end of the hosts file:
+# insert a section at the end of the hosts file:
 #
 # [add_node] 
 # x.x.x.x ....
-# [add_node_end]
-#
+
 # and call via: - hosts: add_node[0]
 #
-sed -i "s/\(\[add_node\]\).*\(\[add_node_end\]\)/\1 $DSE_LINE_TO_INSERT \2/g" $FILE
+sed -e "\$a[add_node_end]"
+sed -e "\$a$DSE_LINE_TO_INSERT" .ansible/hosts
 
 
 

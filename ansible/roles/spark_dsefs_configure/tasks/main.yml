@@ -14,3 +14,5 @@
       value: true
     - key: dsefs_options.data_directories.dir
       value: "{{dsefs_data_file_directory}}"
+      update: true
+      

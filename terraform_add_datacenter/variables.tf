@@ -41,14 +41,14 @@ variable "env" {
    default = "automation_test"
 }
 
-#list the dc name you wish to add the node to
+#list the dc name you wish to add to the cluster
 variable "dc_name" {
-   default = "my_dc_name"
+   default = "new_dc_name"
 }
 
 #list the node's count after adding the new node to the dc
 variable "final_instance_count" {
-   default = "4"
+   default = "3"
 }
 
 #the amazon instance type you wish to use for this additional node
