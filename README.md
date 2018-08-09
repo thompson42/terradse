@@ -23,8 +23,8 @@ pip -r requirements.txt
 1. Please only use Ubuntu 16.04 LTS for now as the target operating system (tested on 16.04.2)
 2. Please use Python 2.7.12 for the ansible host and the Python on each target node
 3. Please use Ansible 2.4.3.0 or later
-4. TerraDSE currently targets Datastax Enterprise 5.1.x, 6.0.x and Opscenter 6.5, only use these for now.
-5. TerraDSE needs to run in the sequence defined in runterra_extended.sh due to dependent steps, please do not edit this process, it's brittle.
+4. TerraDSE currently targets Datastax Enterprise 5.1.x, 6.0.x and Opscenter 6.5.x, only use these for now.
+5. TerraDSE needs to run in the sequence defined in runterra_<action>.sh due to dependent steps, please do not edit this process, it's brittle.
 6. TerraDSE expects to be able to get out of your network to install software from various locations including datastax.com, Ubuntu repos, Java repos and Python repos.
 7. TerraDSE currently gives you a reasonable level of security but holes do exist, please keep up to date with where we are at with security on the [TODO](TODO.md) page.
 8. This software is not owned or endorsed by Datastax Inc.
@@ -47,7 +47,7 @@ e.g. if a setting is [dse_repo_email] in `ansible/group_vars/all_example/vars.ym
 
 MUST SEE BELOW for a more full description and more detailed instructions - you will need to set command line arguements to each of the scripts in 6) 7) and 8)
 
-# Quickstart steps to add a node to the above cluster:
+# Quickstart steps to add a node to the above cluster (TESTING):
 
 Note: You will need the `ansible/hosts` file from the above cluster creation process to successfully add a node to this cluster due to the fact we have to regenerate keystores in some cases to add the new node's certificate. The hosts file needs to be 100% accurate, do NOT attempt to add a node into this cluster if you are not sure the hosts file is accurate.
 
@@ -72,6 +72,20 @@ Example `genansinv_add_node.sh` call:
 ```sh
 genansinv_add_node.sh [<dc_name>] [<opsc_server_private_ip>]
 ```
+
+# Quickstart steps to add a full datacenter to the above cluster (TESTING):
+
+NOTE: Only the ansible functionality works, the Terraform functionality is under a full re-write
+
+1. Make sure you have a hosts file that reflects your target cluster
+2. Create your new nodes
+3. Manually insert the node details into your hosts file, use the hosts_add_datacenter_example file as a guide
+4. In the hosts file create the [add_datacenter] section and list the nodes below it
+5. Form the nodes listed under [add_datacenter] in the dc= field put the name of your new DC
+6. In the hosts file create the [add_datacenter:vars] section with the same contents as in the hosts_add_datacenter_example file
+7. In the [add_datacenter:vars] section configure your new DCs type, spark, solr etc
+8. Override default settings in group_vars/all/vars.yml with a my_ prefix in the group_vars/all/my.yml see group_vars/all_example for examples of how to do this.
+9. cd to the terraDSE directory and run ./runterra_add_datacenter.sh and monitor Opscenter as the new DC comes up.
 
 # Basic processes: 
 

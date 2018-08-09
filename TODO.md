@@ -462,7 +462,6 @@ spark_enabled=0
 graph_enabled=1
 auto_bootstrap=0
 
-[add_datacenter_end]
 ```
 
 
