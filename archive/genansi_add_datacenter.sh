@@ -45,6 +45,20 @@ do
    fi
 done < $TFSTATE_FILE
 
+# default number of seeds per DC is 1
+# this can be changed from the only input parameter of this command
+SEED_PER_DC=1
+
+if [[ "$1" != "" ]]; then
+   res=`isnum "$1"`
+   if [[ "$res" != "1" ]] ; then
+      usage
+      exit 
+   fi
+
+   SEED_PER_DC="$1"
+fi
+
 # construct the new nodes string
 if [ "${#public_ip[@]}" -eq 0 ]; then
    DSE_LINE_TO_INSERT="${private_ip[i]} private_ip=${private_ip[i]} private_dns=${private_dns[i]} seed=false dc=${DC_NAME} rack=RAC1 vnode=1 initial_token="

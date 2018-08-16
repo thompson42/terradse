@@ -58,3 +58,9 @@ auto_bootstrap=1
 
 [add_node]
 10.200.178.126 private_ip=10.200.178.126 private_dns=ip-10-200-178-126.datastax.lan seed=false dc=dse_graph rack=RAC1 vnode=1 initial_token=
+
+[add_node:vars]
+solr_enabled=0
+spark_enabled=0
+graph_enabled=1
+auto_bootstrap=0

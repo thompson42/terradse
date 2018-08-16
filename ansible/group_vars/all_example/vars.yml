@@ -40,7 +40,7 @@ dse_repo_password: "{{ my_dse_repo_password | default('xxx') }}"                
 
 # Target/Current DSE verson
 dse_major_version: 5.1                                                          #used to choose the correct configuration templates
-dse_ver_target:  5.1.7-1                                                        #requires the [-1] on the end of the version
+dse_ver_target:  5.1.10-1                                                       #requires the [-1] on the end of the version
 opsc_ver_target: 6.5.0                                                          #opsc 6.5 is compatible with DSE 5.0,5.1,6.0
 
 # DSE directory locations 
@@ -68,7 +68,6 @@ saved_caches_directory: "{{ my_saved_caches_directory | default('/var/lib/cassan
 # Storage settings
 #-------------------------------------------------------------------------------
 # consumed in role: dse_osparm_ssd_change
-
 is_ssd_storage: "{{ my_is_ssd_storage | default(false) }}"                                                  #EDIT: Change to [true] if using ephemeral SSDs for DSE storage
 
 # Block device string for the attached EBS or ephemeral SSD volume for DSE data

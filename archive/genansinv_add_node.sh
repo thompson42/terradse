@@ -47,7 +47,7 @@ fi
 # x.x.x.x ....
 
 # and call via: - hosts: add_node[0]
-#
+# sed -i "s/\(\[add_node\]\).*\(\[add_node_end\]\)/\1 $DSE_LINE_TO_INSERT \2/g" .ansible/hosts
 sed -e "\$a[add_node_end]"
 sed -e "\$a$DSE_LINE_TO_INSERT" .ansible/hosts
 

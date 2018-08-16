@@ -10,7 +10,7 @@
 #### Ports - TODO :x:
 
 AWS Datastax internal security group: need to allow all nodes to communicate on all ports due to AlwaysOnSQL using random ports to connect to other analytic nodes. 
-Not allowing this means AlwaysOnSQL srvcie only starts up on the local node.
+Not allowing this means AlwaysOnSQL service only starts up on the local node.
 
 ```
  ingress {
@@ -25,7 +25,7 @@ Not allowing this means AlwaysOnSQL srvcie only starts up on the local node.
 
 #### move id_rsa_aws to ansible.cfg
 
-And remove from all bash references e.g. runansi_extended.sh, runansi_add_node.sh etc.
+And remove from all bash references e.g. runansi_extended.sh etc.
 
 # Ansible Vault
 
@@ -423,11 +423,22 @@ role: security_audit_logging_configure - COMPLETE :heavy_check_mark:
 
 #### Modify hosts via genansinv_add_node.sh - TESTING NOW :question:
 
-#### Run ansible via runansi_add_node.sh - COMPLETE :heavy_check_mark:
+#### Run ansible via runansi_add_node.sh - TODO :x:
+
+Works for initial creation of datacenters, probably doesn't work for adding a noew node to a datacenter that has been added later, has no concept of node tupe for dse_name_2 datacenter name, needs flowing block:
+
+```
+solr_enabled=0
+spark_enabled=0
+graph_enabled=1
+auto_bootstrap=0
+```
+
+
 
 # Bring up a new DC within an existing cluster
 
-- TESTING NOW :?:
+- TESTING NOW :question:
 
 This new DC could have various reasons for existing:
 
@@ -452,9 +463,7 @@ auto_bootstrap=0
 
 # Bring up a replacement node in a specific DC in an existing cluster
 
-Replace a node in a DC. - TODO :x:
-
-
+Replace a node in a DC. - ON HOLD
 
 # OpsCenter DSE cluster backup automation
 
@@ -491,64 +500,4 @@ role: dse_osparam_change
 #### Optimise Linux OS SSD settings - COMPLETE :heavy_check_mark:
 
 role: dse_osparam_ssd_change
-
-# Backlog
-
-###  CQL schema managment
-
--> playbook: cql_schema_management.yml
-
-#### /ansible/roles/create_cql_schema
-
-#### /ansible/roles/modify_cql_schema
-
-### SOLR schema management
-
--> playbook: solr_schema_management.yml
-
-#### /ansible/roles/create_solr_schema
-
-#### /ansible/roles/modify_solr_schema
-
-### Graph schema management
-
--> playbook: graph_schema_management.yml
-
-#### /ansible/roles/create_graph_schema
-
-#### /ansible/roles/modify_graph_schema
-
-### Role management
-
--> playbook: role_management.yml
-
-#### /ansible/roles/create_role
-
-#### /ansible/roles/modify_role
-
-### Nodesync management
-
-Nodesync can be acivated on a table:
-
-1. At table schema level as part of CREATE or ALTER table commands (probably best approach as behaviour is captured in versionable schema)
-2. Via [nodetool nodesync ...] calls
-3. Via Opscenter API calls
-
--> playbook: nodesync_management.yml
-
-### Nodetool access
-
--> playbook: nodetool_access.yml
-
-#### /ansible/roles/nodetool_command
-
-
-
-
-
-
-
-
-
-
 

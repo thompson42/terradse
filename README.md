@@ -1,4 +1,4 @@
-# Automate the Launch of AWS Instances for a multi-DC DSE cluster with OpsCenter
+# Automate the Launch of AWS Instances for a Secure multi-DC DSE cluster with OpsCenter
 
 The aim of this project is to develop a complete end to end Terraform + Ansible DSE automation system which invokes ALL security capabilities of the DSE platform and ALL best practices of the DSE platform.
 
@@ -6,13 +6,13 @@ This project has a progress document down to ansible role level, please refer to
 
 This projhect also has a [NOTES](NOTES.md) page for processes and troubleshooting info.
 
-# Requires the following python libraries on the Ansible host machine
+# Requires the following python libraries on the Ansible host machine:
 
 1. ruamel.yaml
 2. dse-driver
 3. pyopenssl
 
-They are listed in the `requirements.txt`, and could be installed via:
+They are listed in the `requirements.txt`, and can be installed via:
 
 ```sh
 pip -r requirements.txt
@@ -47,45 +47,41 @@ e.g. if a setting is [dse_repo_email] in `ansible/group_vars/all_example/vars.ym
 
 MUST SEE BELOW for a more full description and more detailed instructions - you will need to set command line arguements to each of the scripts in 6) 7) and 8)
 
-# Quickstart steps to add a node to the above cluster (TESTING):
+# Quickstart steps to add a node to the above cluster (TERRAFORM PART IN DEVELOPMENT, ANSIBLE PART IN TESTING):
 
 Note: You will need the `ansible/hosts` file from the above cluster creation process to successfully add a node to this cluster due to the fact we have to regenerate keystores in some cases to add the new node's certificate. The hosts file needs to be 100% accurate, do NOT attempt to add a node into this cluster if you are not sure the hosts file is accurate.
 
-1. Set all params in `terraform_add_node/variables.tf`
-2. For AMZN VPC's only you will need to modify this file
-3. Make sure your `ansible/hosts` file is 100% correct for the target cluster
-4. Run `./runterra_add_node.sh` and check AWS instances that will be created - accept and run the plan
-5. Run `./genansinv_add_node.sh` passing in `[<dc_name>] [<opsc_server_private_ip>]` see example below (it will modify your `ansible/hosts` file)
-6. Run `./runansi_add_node.sh` (expects your key to be: `~/.ssh/id_rsa_aws`)
+1. Make sure you have a hosts file that reflects your target cluster AND a group_vars/all/my.vars that matches the existing nodes in the DC
+2. Create your new node
+3. Manually insert the node details into your hosts file, use the hosts_add_node_example file as a guide
+4. In the hosts file create the [add_node] section and list the node below it
+5. For the node listed under [add_node] in the dc= field put the name of the DC you are adding the node to
+6. In the hosts file create the [add_node:vars] section with the same contents as in the hosts_add_node_example file
+7. In the [add_node:vars] section configure your new node's type; spark, solr etc
+8. Override default settings in group_vars/all/vars.yml with a my_ prefix in the group_vars/all/my.yml see group_vars/all_example for examples of how to do this.
+9. cd to the terraDSE directory and run ./runterra_add_node.sh and monitor Opscenter as the new node comes up.
 
-Example `genansinv_add_node.sh` call:
-
-`dc_name`: the name of the datacenter to which you want to add the node, can be one of:
-
-1. dse_core
-2. dse_search
-3. dse_analytics
-4. dse_graph
-
-`opsc_server_private_ip`: The private ip-address of the opscenter server node, can be readily found in the `ansible/hosts` file under the `[opsc_srv]` indicator.
-
-```sh
-genansinv_add_node.sh [<dc_name>] [<opsc_server_private_ip>]
+```
+NOTE: A NEW DYNAMIC INVENTORY PROCESS IS CURRENTLY IN DEVELOPMENT, THIS WILL ALLOW YOU TO CONFIGURE EC2 TAGS AND AUTO GENERATE THE ANSIBLE HOSTS FILE OFF THE TERRAFORM .TFSTATE FILE.
 ```
 
-# Quickstart steps to add a full datacenter to the above cluster (TESTING):
+# Quickstart steps to add a full datacenter to the above cluster (TERRAFORM PART IN DEVELOPMENT, ANSIBLE PART COMPLETE)):
 
 NOTE: Only the ansible functionality works, the Terraform functionality is under a full re-write
 
-1. Make sure you have a hosts file that reflects your target cluster
+1. Make sure you have a hosts file that reflects your target cluster AND a group_vars/all/my.vars that matches the existing nodes in the cluster
 2. Create your new nodes
 3. Manually insert the node details into your hosts file, use the hosts_add_datacenter_example file as a guide
 4. In the hosts file create the [add_datacenter] section and list the nodes below it
-5. Form the nodes listed under [add_datacenter] in the dc= field put the name of your new DC
+5. For the nodes listed under [add_datacenter] in the dc= field put the name of your new DC
 6. In the hosts file create the [add_datacenter:vars] section with the same contents as in the hosts_add_datacenter_example file
-7. In the [add_datacenter:vars] section configure your new DCs type, spark, solr etc
+7. In the [add_datacenter:vars] section configure your new DCs type,\; spark, solr etc
 8. Override default settings in group_vars/all/vars.yml with a my_ prefix in the group_vars/all/my.yml see group_vars/all_example for examples of how to do this.
 9. cd to the terraDSE directory and run ./runterra_add_datacenter.sh and monitor Opscenter as the new DC comes up.
+
+```
+NOTE: A NEW DYNAMIC INVENTORY PROCESS IS CURRENTLY IN DEVELOPMENT, THIS WILL ALLOW YOU TO CONFIGURE EC2 TAGS AND AUTO GENERATE THE ANSIBLE HOSTS FILE OFF THE TERRAFORM .TFSTATE FILE.
+```
 
 # Basic processes: 
 
