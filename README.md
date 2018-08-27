@@ -43,7 +43,7 @@ e.g. if a setting is [dse_repo_email] in `ansible/group_vars/all_example/vars.ym
 
 6. Run `./runterra_extended.sh` and check AWS instances that will be created - accept and run the plan
 7. Run `./genansinv_extended.sh` (it will generate the required `/ansible/hosts` file)
-8. Run `./runansi_extended.sh` (expects your key to be: `~/.ssh/id_rsa_aws`)
+8. Run `./runansi_extended.sh` (expects your key to be: `~/.ssh/id_rsa_aws`, edit if necessary)
 
 MUST SEE BELOW for a more full description and more detailed instructions - you will need to set command line arguements to each of the scripts in 6) 7) and 8)
 
@@ -59,7 +59,8 @@ Note: You will need the `ansible/hosts` file from the above cluster creation pro
 6. In the hosts file create the [add_node:vars] section with the same contents as in the hosts_add_node_example file
 7. In the [add_node:vars] section configure your new node's type; spark, solr etc
 8. Override default settings in group_vars/all/vars.yml with a my_ prefix in the group_vars/all/my.yml see group_vars/all_example for examples of how to do this.
-9. cd to the terraDSE directory and run ./runterra_add_node.sh and monitor Opscenter as the new node comes up.
+9. Make sure all settings in group_vars/all/my.yml are the same as when the cluster was generated.
+10. cd to the terraDSE directory and run ./runterra_add_node.sh and monitor Opscenter as the new node comes up.
 
 ```
 NOTE: A NEW DYNAMIC INVENTORY PROCESS IS CURRENTLY IN DEVELOPMENT, THIS WILL ALLOW YOU TO CONFIGURE EC2 TAGS AND AUTO GENERATE THE ANSIBLE HOSTS FILE OFF THE TERRAFORM .TFSTATE FILE.
@@ -77,7 +78,8 @@ NOTE: Only the ansible functionality works, the Terraform functionality is under
 6. In the hosts file create the [add_datacenter:vars] section with the same contents as in the hosts_add_datacenter_example file
 7. In the [add_datacenter:vars] section configure your new DCs type,\; spark, solr etc
 8. Override default settings in group_vars/all/vars.yml with a my_ prefix in the group_vars/all/my.yml see group_vars/all_example for examples of how to do this.
-9. cd to the terraDSE directory and run ./runterra_add_datacenter.sh and monitor Opscenter as the new DC comes up.
+9. Make sure all settings in group_vars/all/my.yml are the same as when the cluster was generated.
+10. cd to the terraDSE directory and run ./runterra_add_datacenter.sh and monitor Opscenter as the new DC comes up.
 
 ```
 NOTE: A NEW DYNAMIC INVENTORY PROCESS IS CURRENTLY IN DEVELOPMENT, THIS WILL ALLOW YOU TO CONFIGURE EC2 TAGS AND AUTO GENERATE THE ANSIBLE HOSTS FILE OFF THE TERRAFORM .TFSTATE FILE.
