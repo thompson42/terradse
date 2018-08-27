@@ -4,7 +4,7 @@ The aim of this project is to develop a complete end to end Terraform + Ansible 
 
 This project has a progress document down to ansible role level, please refer to this document to keep up to date on where the system is at: [TODO](TODO.md)
 
-This projhect also has a [NOTES](NOTES.md) page for processes and troubleshooting info.
+This project also has a [NOTES](NOTES.md) page for processes and troubleshooting info.
 
 # Requires the following python libraries on the Ansible host machine:
 
