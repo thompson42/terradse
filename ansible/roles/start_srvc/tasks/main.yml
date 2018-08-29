@@ -7,6 +7,7 @@
     state: restarted
   ignore_errors: true
 
+# If this fails with "skipped" probably means the ansible machine cannot see port 9042 on the target node due to a security or firewall configuration.
 - name: Wait for Cassandra process is up and running
   wait_for:
     host: "{{ ansible_host }}"
