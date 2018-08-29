@@ -18,7 +18,7 @@ They are listed in the `requirements.txt`, and can be installed via:
 pip -r requirements.txt
 ```
 
-## Sharp edges:
+# Sharp edges:
 
 1. Please only use Ubuntu 16.04 LTS for now as the target operating system (tested on 16.04.2)
 2. Please use Python 2.7.12 for the ansible host and the Python on each target node

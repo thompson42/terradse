@@ -20,7 +20,7 @@
   lineinfile:
     name: "{{ dse_default_dir }}/dse"
     regexp: '^WAIT_FOR_START='
-    line: "WAIT_FOR_START=15"
+    line: "WAIT_FOR_START=60"
     owner: cassandra
     group: cassandra
     mode: 0644
