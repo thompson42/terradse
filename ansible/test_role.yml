@@ -1,9 +1,9 @@
 
 
 # Activate DSE Unified Authentication on DSE nodes
-- hosts: dse
+- hosts: localhost
   any_errors_fatal: true
-  become: true
-  become_method: sudo
+  become: no
+  connection: local
   roles:
     - { role: dummy_role }

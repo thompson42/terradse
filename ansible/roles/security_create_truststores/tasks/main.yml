@@ -1,6 +1,9 @@
 ---
 #EXPECTS: [hosts: localhost] [become: no] [connection: local] in playbook call
 
+- debug: 
+    msg: "{{ssl_certs_path}}/{{ssl_certs_common_name}}.pem"
+
 - name: Import SSL certificate to a local truststore, create truststore if it doesn't exist
   java_cert:
     cert_alias: "{{ssl_certs_common_name}}"
