@@ -14,9 +14,10 @@
 #    name: pyOpenSSL
 #    state: present
 
-- name: Install ruamel.yaml via pip ( used by ansible/library/yedit)
+ REMOVED ruamel.yaml, NO LONGER USED, DEFAULTS NOW TO PYYAML DUE TO RH ISSUE
+- name: Install pyyaml via pip ( used by ansible/library/yedit)
   pip:
-    name: ruamel.yaml
+    name: pyyaml
     state: present
 
 #Install the crypto extensions
