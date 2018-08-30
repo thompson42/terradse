@@ -1,8 +1,9 @@
 
 
-- hosts: dse[0]
+# Activate DSE Unified Authentication on DSE nodes
+- hosts: dse
   any_errors_fatal: true
   become: true
   become_method: sudo
   roles:
-    - { role: spark_dsefs_configure}
+    - { role: dummy_role }

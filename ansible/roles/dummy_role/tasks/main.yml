@@ -1,12 +1,10 @@
 
-- name: Configure seeds (cassandra.yaml)
-  lineinfile:
-    name: "{{ dse_config_dir }}/cassandra/cassandra.yaml"
-    regexp: "{{ item.regexp }}"
-    line: "{{ item.line }}"
-    owner: cassandra
-    group: cassandra
-    mode: 0644
-  with_items:
-    - { regexp: '- seeds\:',         line: "          - seeds: {{ seeds }}" }
+# Disable auto_bootstrap if this is a new Datacenter node
+- name: Disable auto_bootstrap for new Datacenter if required
+  yedit:
+    src: "{{ dse_config_dir }}/cassandra/cassandra.yaml"
+    edits:
+    - key: auto_bootstrap
+      value: false
+      state: present
 

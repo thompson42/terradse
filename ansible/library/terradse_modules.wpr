@@ -9,5 +9,6 @@ proj.file-list = [loc('cassandra_grant.py'),
                   loc('keyspace_replication_configure.py'),
                   loc('test.py'),
                   loc('test_ssl_client.py'),
-                  loc('yedit.py')]
+                  loc('yedit.py'),
+                  loc('yedit_debug.py')]
 proj.file-type = 'shared'

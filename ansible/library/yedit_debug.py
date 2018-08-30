@@ -37,10 +37,12 @@ import re  # noqa: F401
 import shutil  # noqa: F401
 import tempfile  # noqa: F401
 import time  # noqa: F401
-import yaml
 
-#removed ruamel.yaml due to breaking recently, changed to plain pyyaml
-#see redhat issue: https://bugzilla.redhat.com/show_bug.cgi?id=1621476
+try:
+    import ruamel.yaml as yaml  # noqa: F401
+except ImportError:
+    import yaml  # noqa: F401
+
 from ansible.module_utils.basic import AnsibleModule
 
 # -*- -*- -*- End included fragment: lib/import.py -*- -*- -*-
@@ -877,8 +879,7 @@ class Yedit(object):
 def main():
     ''' ansible oc module for secrets '''
 
-    module = AnsibleModule(
-        argument_spec=dict(
+    params =dict(
             state=dict(default='present', type='str',
                        choices=['present', 'absent', 'list']),
             debug=dict(default=False, type='bool'),
@@ -898,25 +899,28 @@ def main():
             backup=dict(default=True, type='bool'),
             separator=dict(default='.', type='str'),
             edits=dict(default=None, type='list'),
-        ),
-        mutually_exclusive=[["curr_value", "index"], ['update', "append"]],
-        required_one_of=[["content", "src"]],
+            mutually_exclusive=[["curr_value", "index"], ['update', "append"]],
+            required_one_of=[["content", "src"]]
     )
+    
+    params['src']   = '/home/alext/Playground/tar-balls/dse-5.1.1/resources/cassandra/conf/cassandra.yaml'
+    params['edits'] = [{'authenticator':'xyz'}]
+    params['state'] =  'present'
 
     # Verify we recieved either a valid key or edits with valid keys when receiving a src file.
     # A valid key being not None or not ''.
-    if module.params['src'] is not None:
+    if params['src'] is not None:
         key_error = False
         edit_error = False
 
-        if module.params['key'] in [None, '']:
+        if params['key'] in [None, '']:
             key_error = True
 
-        if module.params['edits'] in [None, []]:
+        if params['edits'] in [None, []]:
             edit_error = True
 
         else:
-            for edit in module.params['edits']:
+            for edit in params['edits']:
                 if edit.get('key') in [None, '']:
                     edit_error = True
                     break
@@ -924,7 +928,7 @@ def main():
         if key_error and edit_error:
             module.fail_json(failed=True, msg='Empty value for parameter key not allowed.')
 
-    rval = Yedit.run_ansible(module.params)
+    rval = Yedit.run_ansible(params)
     if 'failed' in rval and rval['failed']:
         module.fail_json(**rval)
 

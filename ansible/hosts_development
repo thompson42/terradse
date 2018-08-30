@@ -5,7 +5,7 @@ dse_analytics
 dse_graph
 
 [dse_core]
-192.168.1.9 private_ip=192.168.1.9  private_dns=ip-192-168-1-9.ec2.internal seed=true dc=dse_core rack=RAC1 vnode=1 initial_token=
+10.200.177.193 private_ip=10.200.177.193  private_dns=ip-10--200-177-193.ec2.internal seed=true dc=dse_core rack=RAC1 vnode=1 initial_token=
 
 [dse_search]
 
@@ -50,4 +50,3 @@ graph_enabled=0
 auto_bootstrap=1
 
 [opsc_srv]
-192.168.1.7
