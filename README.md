@@ -33,7 +33,9 @@ pip -r requirements.txt
 8. This software is not owned or endorsed by Datastax Inc.
 9. This software is offered free of charge with no promise of functionality or fitness of purpose and no liability for damages incurred from its use.
 
-# Quickstart steps for full cluster creation:
+# Quickstart steps for initial cluster creation:
+
+This process creates your initial DSE cluster AND a seperate OpsCenter cluster for metrics.
 
 1. Set all params and cluster topology in `terraform_extended/variables.tf`
 2. Set all port rules and security in `terraform_extended/ec2.tf`, for AMZN VPC's you will need to modify this file
@@ -50,7 +52,9 @@ e.g. if a setting is [dse_repo_email] in `ansible/group_vars/all_example/vars.ym
 
 MUST SEE BELOW for a more full description and more detailed instructions - you will need to set command line arguements to each of the scripts in 6) 7) and 8)
 
-# Quickstart steps to add a node to the above cluster (TERRAFORM PART IN DEVELOPMENT, ANSIBLE PART IN TESTING):
+# Quickstart steps to add a node to the above cluster
+
+(TERRAFORM PART IN DEVELOPMENT, ANSIBLE PART IN TESTING)
 
 Note: You will need the `ansible/hosts` file from the above cluster creation process to successfully add a node to this cluster due to the fact we have to regenerate keystores in some cases to add the new node's certificate. The hosts file needs to be 100% accurate, do NOT attempt to add a node into this cluster if you are not sure the hosts file is accurate.
 
@@ -69,9 +73,9 @@ Note: You will need the `ansible/hosts` file from the above cluster creation pro
 NOTE: A NEW DYNAMIC INVENTORY PROCESS IS CURRENTLY IN DEVELOPMENT, THIS WILL ALLOW YOU TO CONFIGURE EC2 TAGS AND AUTO GENERATE THE ANSIBLE HOSTS FILE OFF THE TERRAFORM .TFSTATE FILE.
 ```
 
-# Quickstart steps to add a full datacenter to the above cluster (TERRAFORM PART IN DEVELOPMENT, ANSIBLE PART COMPLETE)):
+# Quickstart steps to add a full datacenter to the above cluster
 
-NOTE: Only the ansible functionality works, the Terraform functionality is under a full re-write
+(TERRAFORM PART IN DEVELOPMENT, ANSIBLE PART WORKING)
 
 1. Make sure you have a hosts file that reflects your target cluster AND a group_vars/all/my.vars that matches the existing nodes in the cluster
 2. Create your new nodes
