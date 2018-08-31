@@ -49,6 +49,8 @@ role: role: dse_test_for_data_directory
 
 #### Generate self signed root certificate for DSE - COMPLETE :heavy_check_mark:
 
+This is the default certificate generation process.
+
 This method generates a self-signed root certificate and then uese that root certificate to sign certificates for each node, each node has a CN that matches it's resolvable FQDN e.g. machine1.mysite.net, machine2.mysite.net
 
 role: security_create_root_certificate
@@ -58,22 +60,6 @@ role: security_create_root_certificate
 This method takes a CA signed WILDCARD certificate and treats it as a root certificate,  using it to sign individual certificates for each node, each node has a CN that matches it's resolvable FQDN e.g. machine1.mysite.net, machine2.mysite.net
 
 [Setting up SSL certificates](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secSetUpSSLCert.html)
-
-See /group_vars/all_example/vars.yml for details on these parameters:
-
-1. Set /group_vars/all/my.yml:{{my_is_self_signed_root_cert}} to false
-2. If no DNS resolution in cluster, set /group_vars/all/my.yml:{{my_etc_hosts_file_configure}} to true
-3. Configure /group_vars/all/my.yml:{{my_ssl_certs_common_name}}
-4. Configure /group_vars/all/my.yml:{{my_ssl_cluster_name}}
-5. Configure /group_vars/all/my.yml:{{my_ssl_certs_organization}}
-6. Configure /group_vars/all/my.yml:{{my_ssl_certs_country}}
-7. Configure /group_vars/all/my.yml:{{my_ssl_certs_root_directory}}
-8. Manually make the directory {{my_ssl_certs_root_directory}}/{{my_ssl_certs_common_name}}
-8. You need two and only two files: e.g star.mysite.net.pem and star.mysite.net.key
-9. The setting {{my_ssl_certs_common_name}} must match star.mysite.net
-10. IMPORTANT: Your public certificate star.mysite.net.pem must contain your wildcard certificate then any intermediary certificates in the correct order then your root certificate at the bottom, simply supplying the top level wildcard cetificate to the process will fail.
-11. Deploy your CA signed .pem and .key to directory path {{my_ssl_certs_root_directory}}/{{my_ssl_certs_common_name}} on the ansible host
-
 
 #### CA signed certificates (1x supplied for each node e.g ip-10-0-0-1.mysite.net, ip-10-0-0-2.mysite.net ) - ON HOLD
 

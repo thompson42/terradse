@@ -442,21 +442,24 @@ This will create a certificate and private key in the following directories on t
 - `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.key` -> `{myserver.mydomain.com}` is passed in by `{{ansible_fqdn}}`
 - `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.pem`
 
-### 6.2 To deploy CA signed certificates to the ansible host:
+### 6.2 To use CA signed WILDCARD certificates:
 
-In the case of CA signed certificates you need to go thru the normal process of generating your cetificates and `.csr` files and uploading them to your CA provider.
+This method takes a CA signed WILDCARD certificate (e.g. *.prod.mysite.net) and treats it as a root certificate,  using it to sign individual certificates for each node, each node.
 
-Once you have the resulting certificate and private key place them in the following directories on the ansible host (NOT the target nodes): 
+See /group_vars/all_example/vars.yml for details on these parameters:
 
-(or the location you configured in the `ansible/group_vars/all`)
-
-- `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.key`
-- `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.pem`
-
-
-
-
-
+1. Set /group_vars/all/my.yml:{{my_is_self_signed_root_cert}} to false
+2. If no DNS resolution in cluster, set /group_vars/all/my.yml:{{my_etc_hosts_file_configure}} to true
+3. Configure /group_vars/all/my.yml:{{my_ssl_certs_common_name}} -> prod.mysite.net
+4. Configure /group_vars/all/my.yml:{{my_ssl_cluster_name}}
+5. Configure /group_vars/all/my.yml:{{my_ssl_certs_organization}}
+6. Configure /group_vars/all/my.yml:{{my_ssl_certs_country}}
+7. Configure /group_vars/all/my.yml:{{my_ssl_certs_root_directory}}
+8. Manually make the directory {{my_ssl_certs_root_directory}}/prod.mysite.net on the ansible host
+8. You need two and only two files: e.g prod.mysite.net.pem and prod.mysite.net.key
+9. The setting {{my_ssl_certs_common_name}} must match prod.mysite.net
+10. IMPORTANT: Your public certificate prod.mysite.net.pem must contain your wildcard certificate then any intermediary certificates in the correct order then your root certificate at the bottom, simply supplying the top level wildcard cetificate to the process will fail.
+11. Deploy your CA signed prod.mysite.net.pem and prod.mysite.net.key to directory path {{my_ssl_certs_root_directory}}/{{my_ssl_certs_common_name}} on the ansible host
 
 
 
