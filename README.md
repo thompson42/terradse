@@ -6,11 +6,14 @@ This project has a progress document down to ansible role level, please refer to
 
 This project also has a [NOTES](NOTES.md) page for processes and troubleshooting info.
 
-# Requires the following python libraries on the Ansible host machine:
+# Requires the following libraries on the Ansible host machine:
 
-1. ruamel.yaml
-2. dse-driver
-3. pyopenssl
+1. python dse-driver
+2. python pyopenssl
+3. python pyyaml
+4. Oracle Java 8
+5. Oracle Java 8 ca-certificates
+6. Oracle Java 8 unlimited-jce-policy
 
 They are listed in the `requirements.txt`, and can be installed via:
 
@@ -59,7 +62,7 @@ Note: You will need the `ansible/hosts` file from the above cluster creation pro
 6. In the hosts file create the [add_node:vars] section with the same contents as in the hosts_add_node_example file
 7. In the [add_node:vars] section configure your new node's type; spark, solr etc
 8. Override default settings in group_vars/all/vars.yml with a my_ prefix in the group_vars/all/my.yml see group_vars/all_example for examples of how to do this.
-9. Make sure all settings in group_vars/all/my.yml are the same as when the cluster was generated.
+9. Make sure all settings in group_vars/all/my.yml are the same as when the original cluster that was generated with this tool.
 10. cd to the terraDSE directory and run ./runterra_add_node.sh and monitor Opscenter as the new node comes up.
 
 ```
@@ -78,7 +81,7 @@ NOTE: Only the ansible functionality works, the Terraform functionality is under
 6. In the hosts file create the [add_datacenter:vars] section with the same contents as in the hosts_add_datacenter_example file
 7. In the [add_datacenter:vars] section configure your new DCs type,\; spark, solr etc
 8. Override default settings in group_vars/all/vars.yml with a my_ prefix in the group_vars/all/my.yml see group_vars/all_example for examples of how to do this.
-9. Make sure all settings in group_vars/all/my.yml are the same as when the cluster was generated.
+9. Make sure all settings in group_vars/all/my.yml are the same as when the original cluster that was generated with this tool.
 10. cd to the terraDSE directory and run ./runterra_add_datacenter.sh and monitor Opscenter as the new DC comes up.
 
 ```

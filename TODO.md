@@ -68,7 +68,12 @@ See /group_vars/all_example/vars.yml for details on these parameters:
 5. Configure /group_vars/all/my.yml:{{my_ssl_certs_organization}}
 6. Configure /group_vars/all/my.yml:{{my_ssl_certs_country}}
 7. Configure /group_vars/all/my.yml:{{my_ssl_certs_root_directory}}
-8. Deploy your CA signed Wildcard root certificate to directory path {{my_ssl_certs_root_directory}}/{{my_ssl_certs_common_name}} on the ansible host
+8. Manually make the directory {{my_ssl_certs_root_directory}}/{{my_ssl_certs_common_name}}
+8. You need two and only two files: e.g star.mysite.net.pem and star.mysite.net.key
+9. The setting {{my_ssl_certs_common_name}} must match star.mysite.net
+10. IMPORTANT: Your public certificate star.mysite.net.pem must contain your wildcard certificate then any intermediary certificates in the correct order then your root certificate at the bottom, simply supplying the top level wildcard cetificate to the process will fail.
+11. Deploy your CA signed .pem and .key to directory path {{my_ssl_certs_root_directory}}/{{my_ssl_certs_common_name}} on the ansible host
+
 
 #### CA signed certificates (1x supplied for each node e.g ip-10-0-0-1.mysite.net, ip-10-0-0-2.mysite.net ) - ON HOLD
 
