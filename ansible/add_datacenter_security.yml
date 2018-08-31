@@ -23,6 +23,7 @@
   become: no
   connection: local
   roles:
+    - { role: security_create_truststores }
     - { role: security_create_keystores }
 
 
