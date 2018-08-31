@@ -82,7 +82,6 @@
     lineinfile:
       path: "{{item}}"
       regexp: 'END CERTIFICATE'
-      state: present
     check_mode: yes
     register: command_results
     with_fileglob: "{{  ssl_certs_path + '/' + ssl_certs_common_name + '-*' }}"
