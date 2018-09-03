@@ -429,7 +429,7 @@ auto_bootstrap=0
 
 # Bring up a new DC within an existing cluster
 
-- TESTING NOW :question:
+- COMPLETE :heavy_check_mark:
 
 This new DC could have various reasons for existing:
 
@@ -437,6 +437,8 @@ This new DC could have various reasons for existing:
 2. A new DC type, i.e. a new Graph DC in a cluster with C* and Spark DC's only
 3. A backup DC i.e. a new Graph DC in AZ2 in a cluster with an existing Graph DC in AZ1
 4. A geographically seperate replicated edge DC 
+
+For STATIC INVENTORY (hosts file):
 
 ```
 [add_datacenter]
@@ -451,6 +453,8 @@ graph_enabled=1
 auto_bootstrap=0
 
 ```
+
+For DYNAMIC INVENTORY the above configuration will be generated off differences in tfstate_current and tf_state_latest.
 
 # Bring up a replacement node in a specific DC in an existing cluster
 

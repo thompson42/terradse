@@ -21,6 +21,7 @@
     - { role: dse_common }
     - { role: dse_instbin }
     - { role: dse_updcfg }
+    - { role: dse_set_heap }
   vars:
     add_datacenter: false
     

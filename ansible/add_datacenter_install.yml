@@ -39,6 +39,7 @@
     - { role: dse_osparam_ssd_change, when: is_ssd_storage | bool }
     - { role: dse_instbin }
     - { role: dse_updcfg }
+    - { role: dse_set_heap }
   vars:
     add_datacenter: true
 

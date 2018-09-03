@@ -15,7 +15,7 @@ This project also has a [NOTES](NOTES.md) page for processes and troubleshooting
 5. Oracle Java 8 ca-certificates
 6. Oracle Java 8 unlimited-jce-policy
 
-They are listed in the `requirements.txt`, and can be installed via:
+The Python requirements are listed in the `requirements.txt`, and can be installed via:
 
 ```sh
 pip -r requirements.txt
@@ -23,7 +23,7 @@ pip -r requirements.txt
 
 # Sharp edges:
 
-1. Please only use Ubuntu 16.04 LTS for now as the target operating system (tested on 16.04.2)
+1. Please only use Ubuntu 16.04 LTS for now as the target operating system (tested on 16.04.2 and 16.04.5)
 2. Please use Python 2.7.12 for the ansible host and the Python on each target node
 3. Please use Ansible 2.4.3.0 or later
 4. TerraDSE currently targets Datastax Enterprise 5.1.x, 6.0.x and Opscenter 6.5.x, only use these for now.
