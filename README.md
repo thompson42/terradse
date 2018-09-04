@@ -33,57 +33,13 @@ pip -r requirements.txt
 8. This software is not owned or endorsed by Datastax Inc.
 9. This software is offered free of charge with no promise of functionality or fitness of purpose and no liability for damages incurred from its use.
 
-| First Header  | Second Header |
-| ------------- | ------------- |
-| [Create initial cluster](docs/create_initial_cluster.md)  | Quickstart steps for initial cluster creation  |
-| Content Cell  | Content Cell  |
+| Link  | Summary | State |
+| ------------- | ------------- | ------------- |
+| [Create initial cluster](docs/create_initial_cluster.md)  | Quickstart steps for initial cluster creation  | Operational |
+| [Add a node to existing datacenter](docs/add_node.md)  | Quickstart steps to add a new node to an existing datacenter  | Testing |
+| [Add a datacenter to existing cluster](docs/add_datacenter.md)  | Quickstart steps to add a full datacenter to an existing cluster  | Operational |
+| [SSL Certificates](docs/ssl_certificates.md)  | Self signed and CA wildcard certificates  | Operational |
 
-
-## Quickstart steps to add a node to the above cluster
-
-TESTING
-
-Note: You will need the `ansible/hosts` file from the above cluster creation process to successfully add a node to this cluster due to the fact we have to regenerate keystores in some cases to add the new node's certificate. The hosts file needs to be 100% accurate, do NOT attempt to add a node into this cluster if you are not sure the hosts file is accurate.
-
-1. Make sure you have a hosts file that reflects your target cluster AND a group_vars/all/my.vars that matches the existing nodes in the DC
-2. Create your new node
-3. Manually insert the new node's details into your hosts file, use the hosts_add_node_example file as a guide
-4. In the hosts file create the [add_node] section and list the node below it
-5. For the node listed under [add_node] in the dc= field put the name of the DC you are adding the node to
-6. In the hosts file create the [add_node:vars] section with the same contents as in the hosts_add_node_example file
-7. In the [add_node:vars] section configure your new node's type; spark, solr etc
-8. Override default settings in group_vars/all/vars.yml with a my_ prefix in the group_vars/all/my.yml see group_vars/all_example for examples of how to do this.
-9. Make sure all settings in group_vars/all/my.yml are the same as when the original cluster that was generated with this tool.
-10. cd to the terraDSE directory and run ./runterra_add_node.sh and monitor Opscenter as the new node comes up.
-
-If using a terraform dynamic inventory run your custom Terraform script with the required tags, ignore steps 1->8 and complete steps 9) and 10) - see instructions [HERE](https://github.com/thompson42/terraform-dynamic-inventory)
-
-```
-NOTE: A NEW DYNAMIC INVENTORY PROCESS IS NOW AVAILABLE, SEE THE REPO AND INSTRUCTIONS ON HOW TO USE IT WITH TERRADSE [HERE](https://github.com/thompson42/terraform-dynamic-inventory)
-```
-
-## Quickstart steps to add a full datacenter to the above cluster
-
-#### Manual method for basic AWS environments:
-
-1. Make sure you have a hosts file that reflects your target cluster AND a group_vars/all/my.vars that matches the existing nodes in the cluster
-2. Create your new nodes
-3. Manually insert the new nodes' details into your hosts file, use the hosts_add_datacenter_example file as a guide
-4. In the hosts file create the [add_datacenter] section and list the nodes below it
-5. For the nodes listed under [add_datacenter] in the dc= field put the name of your new DC: cannot be dse_graph, dse_search, dse_core or dse_analytics (they are reserved)
-6. In the hosts file create the [add_datacenter:vars] section with the same contents as in the hosts_add_datacenter_example file
-7. In the [add_datacenter:vars] section configure your new DCs type,\; spark, solr etc
-8. Override default settings in group_vars/all/vars.yml with a my_ prefix in the group_vars/all/my.yml see group_vars/all_example for examples of how to do this.
-9. Make sure all settings in group_vars/all/my.yml are the same as when the original cluster that was generated with this tool.
-10. cd to the terraDSE directory and run ./runterra_add_datacenter.sh and monitor Opscenter as the new DC comes up.
-
-#### Dynamic inventory method for VPC environments:
-
-If using a terraform dynamic inventory run your custom Terraform script with the required tags, ignore steps 1->8 and complete steps 9) and 10) - see instructions [HERE](https://github.com/thompson42/terraform-dynamic-inventory)
-
-```
-NOTE: A NEW DYNAMIC INVENTORY PROCESS IS NOW AVAILABLE, SEE THE REPO AND INSTRUCTIONS ON HOW TO USE IT WITH TERRADSE [HERE](https://github.com/thompson42/terraform-dynamic-inventory)
-```
 
 ## Basic processes: 
 
@@ -407,60 +363,6 @@ Note: DSE 5.1.4, DSE 5.1.5, and 5.1.6 users should refer to the release notes fo
 [Running spark-submit job with internal authentication](https://docs.datastax.com/en/dse/5.1/dse-dev/datastax_enterprise/spark/sparkInternalAuth.html)
 
 [Managing Spark application permissions](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuthSpark.html)
-
-### 6. SSL certificates
-
-SSL certificates can be sourced 2 ways:
-
-1. Self signed certificates (for Development, Test, CI, CD and other ephemeral  environments)
-2. Trusted CA signed certificates (for Production)
-
-#### 6.1 To generate and deploy self signed certificates to the ansible host:
-
-Note that is is NOT the distribution phase to target nodes, merely the creation and storage of SSL certificates on the ansible host in a known location. The distribution of SSL certs and keys out into the DSE cluster is taken up by two additional roles: `{ role: security_create_keystores }` and `{ role: security_create_truststores }`
-
-1. Configure default settings for your self signed certificate in: [ansible/roles/security_create_root_certificate/defaults/main.yml](ansible/roles/security_create_root_certificate/defaults/main.yml)
-
-Pay special attention to the params:
-
-```
-ssl_certs_path_owner: "cassandra"
-ssl_certs_path_group: "cassandra"
-```
-
-2. In the `ansible/dse_security.yml` playbook add the following line in the area indicated by: `EDIT LIST`
-
-```
-{ role: security_create_root_certificate }
-```
-
-This will create a certificate and private key in the following directories on the ansible host (NOT the target nodes):
-
-- `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.key` -> `{myserver.mydomain.com}` is passed in by `{{ansible_fqdn}}`
-- `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.pem`
-
-#### 6.2 To use CA signed WILDCARD certificates:
-
-This method takes a CA signed WILDCARD certificate (e.g. *.prod.mysite.net) and treats it as a root certificate,  using it to sign individual certificates for each node, each node.
-
-See /group_vars/all_example/vars.yml for details on these parameters:
-
-1. Set /group_vars/all/my.yml:{{my_is_self_signed_root_cert}} to false
-2. If no DNS resolution in cluster, set /group_vars/all/my.yml:{{my_etc_hosts_file_configure}} to true
-3. Configure /group_vars/all/my.yml:{{my_ssl_certs_common_name}} -> prod.mysite.net
-4. Configure /group_vars/all/my.yml:{{my_ssl_cluster_name}}
-5. Configure /group_vars/all/my.yml:{{my_ssl_certs_organization}}
-6. Configure /group_vars/all/my.yml:{{my_ssl_certs_country}}
-7. Configure /group_vars/all/my.yml:{{my_ssl_certs_root_directory}}
-8. Manually make the directory {{my_ssl_certs_root_directory}}/prod.mysite.net on the ansible host
-8. You need two and only two files: e.g prod.mysite.net.pem and prod.mysite.net.key
-9. The setting {{my_ssl_certs_common_name}} must match prod.mysite.net
-10. IMPORTANT: Your public certificate prod.mysite.net.pem must contain your wildcard certificate then any intermediary certificates in the correct order then your root certificate at the bottom, simply supplying the top level wildcard cetificate to the process will fail.
-11. Deploy your CA signed prod.mysite.net.pem and prod.mysite.net.key to directory path {{my_ssl_certs_root_directory}}/{{my_ssl_certs_common_name}} on the ansible host
-
-
-
-
 
 
 
