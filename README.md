@@ -1,4 +1,4 @@
-# Automate the Launch of AWS Instances for a Secure multi-DC DSE cluster with OpsCenter
+## Automate the Launch of AWS Instances for a Secure multi-DC DSE cluster with OpsCenter
 
 The aim of this project is to develop a complete end to end Terraform + Ansible DSE automation system which invokes ALL security capabilities of the DSE platform and ALL best practices of the DSE platform.
 
@@ -6,7 +6,7 @@ This project has a progress document down to ansible role level, please refer to
 
 This project also has a [NOTES](NOTES.md) page for processes and troubleshooting info.
 
-# Requires the following libraries on the Ansible host machine:
+## Requires the following libraries on the Ansible host machine:
 
 1. python dse-driver
 2. python pyopenssl
@@ -21,7 +21,7 @@ The Python requirements are listed in the `requirements.txt`, and can be install
 pip -r requirements.txt
 ```
 
-# Sharp edges:
+## Sharp edges:
 
 1. Please only use Ubuntu 16.04 LTS for now as the target operating system (tested on 16.04.2 and 16.04.5)
 2. Please use Python 2.7.12 for the ansible host and the Python on each target node
@@ -33,9 +33,9 @@ pip -r requirements.txt
 8. This software is not owned or endorsed by Datastax Inc.
 9. This software is offered free of charge with no promise of functionality or fitness of purpose and no liability for damages incurred from its use.
 
-# Quickstart steps for initial cluster creation:
+## Quickstart steps for initial cluster creation:
 
-## Basic AWS environments:
+#### Manual method for basic AWS environments:
 
 This process creates your initial DSE cluster AND a seperate OpsCenter cluster for metrics.
 
@@ -54,7 +54,7 @@ e.g. if a setting is [dse_repo_email] in `ansible/group_vars/all_example/vars.ym
 
 MUST SEE BELOW for a more full description and more detailed instructions - you will need to set command line arguements to each of the scripts in 6) 7) and 8)
 
-## VPC users:
+#### Dynamic inventory method for VPC environments:
 
 You are expected to supply your own Terraform scripts, then advantage of dynamic inventory in TerraDSE, plese read the documentation for dynamic inventory generation: [HERE](https://github.com/thompson42/terraform-dynamic-inventory) and then:
 
@@ -66,20 +66,19 @@ e.g. if a setting is [dse_repo_email] in `ansible/group_vars/all_example/vars.ym
 
 4. Run `./runansi_extended.sh` (expects your key to be: `~/.ssh/id_rsa_aws`, edit if necessary)
 
-
 ```
 NOTE: A NEW DYNAMIC INVENTORY PROCESS IS NOW AVAILABLE, SEE THE REPO AND INSTRUCTIONS ON HOW TO USE IT WITH TERRADSE [HERE](https://github.com/thompson42/terraform-dynamic-inventory)
 ```
 
-# Quickstart steps to add a node to the above cluster
+## Quickstart steps to add a node to the above cluster
 
-(TERRAFORM PART IN DEVELOPMENT, ANSIBLE PART IN TESTING)
+TESTING
 
 Note: You will need the `ansible/hosts` file from the above cluster creation process to successfully add a node to this cluster due to the fact we have to regenerate keystores in some cases to add the new node's certificate. The hosts file needs to be 100% accurate, do NOT attempt to add a node into this cluster if you are not sure the hosts file is accurate.
 
 1. Make sure you have a hosts file that reflects your target cluster AND a group_vars/all/my.vars that matches the existing nodes in the DC
 2. Create your new node
-3. Manually insert the node details into your hosts file, use the hosts_add_node_example file as a guide
+3. Manually insert the new node's details into your hosts file, use the hosts_add_node_example file as a guide
 4. In the hosts file create the [add_node] section and list the node below it
 5. For the node listed under [add_node] in the dc= field put the name of the DC you are adding the node to
 6. In the hosts file create the [add_node:vars] section with the same contents as in the hosts_add_node_example file
@@ -88,32 +87,36 @@ Note: You will need the `ansible/hosts` file from the above cluster creation pro
 9. Make sure all settings in group_vars/all/my.yml are the same as when the original cluster that was generated with this tool.
 10. cd to the terraDSE directory and run ./runterra_add_node.sh and monitor Opscenter as the new node comes up.
 
-If using a dynamic inventory exclude steps 1->8 ! 
+If using a terraform dynamic inventory run your custom Terraform script with the required tags, ignore steps 1->8 and complete steps 9) and 10) - see instructions [HERE](https://github.com/thompson42/terraform-dynamic-inventory)
 
 ```
 NOTE: A NEW DYNAMIC INVENTORY PROCESS IS NOW AVAILABLE, SEE THE REPO AND INSTRUCTIONS ON HOW TO USE IT WITH TERRADSE [HERE](https://github.com/thompson42/terraform-dynamic-inventory)
 ```
 
-# Quickstart steps to add a full datacenter to the above cluster
+## Quickstart steps to add a full datacenter to the above cluster
+
+#### Manual method for basic AWS environments:
 
 1. Make sure you have a hosts file that reflects your target cluster AND a group_vars/all/my.vars that matches the existing nodes in the cluster
 2. Create your new nodes
-3. Manually insert the node details into your hosts file, use the hosts_add_datacenter_example file as a guide
+3. Manually insert the new nodes' details into your hosts file, use the hosts_add_datacenter_example file as a guide
 4. In the hosts file create the [add_datacenter] section and list the nodes below it
-5. For the nodes listed under [add_datacenter] in the dc= field put the name of your new DC
+5. For the nodes listed under [add_datacenter] in the dc= field put the name of your new DC: cannot be dse_graph, dse_search, dse_core or dse_analytics (they are reserved)
 6. In the hosts file create the [add_datacenter:vars] section with the same contents as in the hosts_add_datacenter_example file
 7. In the [add_datacenter:vars] section configure your new DCs type,\; spark, solr etc
 8. Override default settings in group_vars/all/vars.yml with a my_ prefix in the group_vars/all/my.yml see group_vars/all_example for examples of how to do this.
 9. Make sure all settings in group_vars/all/my.yml are the same as when the original cluster that was generated with this tool.
 10. cd to the terraDSE directory and run ./runterra_add_datacenter.sh and monitor Opscenter as the new DC comes up.
 
-If using a dynamic inventory exclude steps 1->8 ! 
+#### Dynamic inventory method for VPC environments:
+
+If using a terraform dynamic inventory run your custom Terraform script with the required tags, ignore steps 1->8 and complete steps 9) and 10) - see instructions [HERE](https://github.com/thompson42/terraform-dynamic-inventory)
 
 ```
 NOTE: A NEW DYNAMIC INVENTORY PROCESS IS NOW AVAILABLE, SEE THE REPO AND INSTRUCTIONS ON HOW TO USE IT WITH TERRADSE [HERE](https://github.com/thompson42/terraform-dynamic-inventory)
 ```
 
-# Basic processes: 
+## Basic processes: 
 
 The scripts in this repository have 3 major parts:
 1. Terraform scripts to launch the required AWS resources (EC2 instances, security groups, etc.) based on the target DSE cluster toplogy.
@@ -122,7 +125,7 @@ The scripts in this repository have 3 major parts:
    1. generate the ansible host inventory file (required by the ansible playbooks) out of the terraform state output
    2. lauch the terraform scripts and ansible playbooks
 
-## 1. Terraform Introduction and Cluster Topology
+#### 1. Terraform Introduction and Cluster Topology
 
 Terraform is a great tool to plan, create, and manage infrastructure as code. Through a mechanism called ***providers***, it offers an agonstic way to manage various infrastructure resources (e.g. physical machines, VMs, networks, containers, etc.) from different underlying platforms such as AWS, Azure, OpenStack, and so on. In this respository, I focus on using Terraform to launch AWS resources due to its popularity and 1-year free-tier access. For more information about Terraform itself, please check HashiCorp's document space for Terraform at https://www.terraform.io/docs/.
 
@@ -139,11 +142,11 @@ Currently, the number of nodes per DC is configurable through Terraform variable
 The reason of setting up a different monitoring cluster other than the application cluster is to follow the field best practice of physically separating the storage of monitoring metrics data in a different DSE cluster in order to avoid the hardware resource contentions that could happen when manaing the metrics data and application data together. 
 
 
-## 2. Use Terraform to Launch Infrastructure Resources
+#### 2. Use Terraform to Launch Infrastructure Resources
 
 **NOTE:** a linux bash script, ***runterra.sh***, is provided to automate the execution the terraform scripts.
 
-### 2.1. Pre-requisites
+##### 2.1. Pre-requisites
 
 In order to run the terraform script sucessfully, the following procedures need to be executed in advance:
 
@@ -151,9 +154,9 @@ In order to run the terraform script sucessfully, the following procedures need 
 2. Install and configure AWS CLI properly. Make sure you have an AWS account that have the enough privilege to create and configure AWS resources.
 3. Create a SSH key-pair. The script automatically uploads the public key to AWS (to create an AWS key pair resource), so the launched AWS EC2 instances can be connected through SSH. The names of the SSH key-pair, by default, should be “id_rsa_aws and id_rsa_aws.pub”. If you choose other names, please make sure to update the Terraform configuration variable accordingly.
 
-### 2.2. Provision AWS Resources 
+#### 2.2. Provision AWS Resources 
 
-#### 2.2.1. EC2 Count and Type
+##### 2.2.1. EC2 Count and Type
 
 The number and type of AWS EC2 instances are determined at DataCenter (DC) level through terraform variable mappings, with each DC has its own instance type and count as determined by the target DSE cluster topology. The example for the example cluster topology is as below:
 
@@ -186,7 +189,7 @@ When provisioning the required AWS EC2 instances for a specific DC, the type and
 
 ```
 #
-# EC2 instances for DSE cluster, "DSE Search" DC
+## EC2 instances for DSE cluster, "DSE Search" DC
 # 
 resource "aws_instance" "dse_search" {
    ... ...
@@ -196,7 +199,7 @@ resource "aws_instance" "dse_search" {
 }
 ```
 
-#### 2.2.2. AWS Key-Pair
+##### 2.2.2. AWS Key-Pair
 
 The script also creates an AWS key-pair resource that can be associated with the EC2 instances. The AWS key-pair resource is created from a locally generated SSH public key and the corresponding private key can be used to log into the EC2 instances.
 
@@ -213,7 +216,7 @@ resource "aws_instance" "dse_search" {
 }
 ```
 
-#### 2.2.3. Security Group
+##### 2.2.3. Security Group
 
 In order for the DSE cluster and OpsCenter to work properly, certain ports on the ec2 instances have to be open, as per the following DataStax documents:
 * [Securing DataStax Enterprise ports](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secFirewallPorts.html)
@@ -255,7 +258,7 @@ resource "aws_instance" "dse_search" {
 }
 ```
 
-#### 2.2.4. User Data
+##### 2.2.4. User Data
 
 One of the key requirements to run DSE cluster is to enable NTP service. The script achieves this through EC2 instance user data. which is provided through a terraform template file. 
 
@@ -280,12 +283,12 @@ resource "aws_instance" "dse_search" {
 
 Other than NTP service, python (minimal version) is also installed in order for Ansible to work properly. Please note that Java, as another essential software required by DSE and OpsCenter software, is currently installed through Ansible and therefore not listed here as part of the User Data installation. 
 
-### 2.3. Limitation 
+#### 2.3. Limitation 
 
 The terraform script presented in this section only focuses on the most fundamental AWS resources for DSE and OpsCenter installation and operation, such as EC2 instances and security groups in particular, For other AWS resources such as VPC, IP Subnet, and so on, we just rely on the default as provided by AWS. But the script should be very easy to extend to include other customized AWS resources.
 
 
-## 3. Generate Ansible Inventory File Automatically
+### 3. Generate Ansible Inventory File Automatically
 
 After the infrastructure instances have been provisioned, we need to install and configure DSE and OpsCenter and these instances accordingly, which is through the Ansible framework that I presented before at [here](https://github.com/yabinmeng/dseansible). One key item in the Ansible framework is the Ansible inventory file which determines key DSE node characteristics such as node IP, seed node, VNode, workload type, and so on. 
 
@@ -326,7 +329,7 @@ A linux script file, ***genansinv_extended.sh***, is providied for this purpose.
   ```
 
 
-## 4. This base forked version features:
+### 4. This base forked version features:
 
 1. `dse_install.yml`: installs and configures a multi-DC DSE cluster. This is the same functionality as the previous version.
 2. `opsc_install.yml`: installs OpsCenter server, datastax-agents, and configures accordingly to allow proper communication between OpsCenter server and datastax-agents.
@@ -334,9 +337,9 @@ A linux script file, ***genansinv_extended.sh***, is providied for this purpose.
 
 For operational simplicity, a linux script file, ***runansi_extended.sh***, is provided to execute these Ansible playbooks.
 
-## 5. Additional features introduced by this fork
+### 5. Additional features introduced by this fork
 
-### 5.1 Addition of a configurable DSE Security (dse_security.yml) playbook
+#### 5.1 Addition of a configurable DSE Security (dse_security.yml) playbook
 
 This playbook concerns itself with security of DSE cluster nodes including required prerequisite table and replication configurations, installation of Python and Java security libraries, a shopping list of security items you want to implement, and a start/stop of DSE on the the nodes at the end to force the changes.
 
@@ -349,7 +352,7 @@ cd ansible
 ansible-playbook -i hosts dse_security.yml --private-key=~/.ssh/id_rsa_aws
 ```
 
-### 5.2 Addition of a configurable OpsCenter Security (opsc_security.yml) playbook
+#### 5.2 Addition of a configurable OpsCenter Security (opsc_security.yml) playbook
 
 This playbook concerns itself with web browser -> OpsCenter server SSL/TLS HTTPS access and OpsCenter server to Agents on DSE nodes.
 
@@ -360,7 +363,7 @@ cd ansible
 ansible-playbook -i hosts opsc_security.yml --private-key=~/.ssh/id_rsa_aws
 ```
 
-### 5.3 Addition of a configurable Spark Secuirty (spark_security.yml) playbook
+#### 5.3 Addition of a configurable Spark Secuirty (spark_security.yml) playbook
 
 This playbook concerns itself with forcing authentication at spark submit level, to block unauthorized access to the Spark service byt calling the role: security_spark_activate, see section 5.7.2 "DSE Unified Authentication and Spark" below.
 
@@ -371,7 +374,7 @@ cd ansible
 ansible-playbook -i hosts spark_security.yml --private-key=~/.ssh/id_rsa_aws
 ```
 
-### 5.4 Creation of independently runnable Security_xyz encryption roles under ansible/roles to configure:
+#### 5.4 Creation of independently runnable Security_xyz encryption roles under ansible/roles to configure:
 
 1. Client -> node encryption: `security_client_to_node`
 2. Node -> node encryption: `security__node_to_node`
@@ -379,17 +382,17 @@ ansible-playbook -i hosts spark_security.yml --private-key=~/.ssh/id_rsa_aws
 4. Agent -> DSE encryption: `security_opsc_agents_xyz`
 5. OpsCenter->Agent: `security_opsc_cluster_configure`
 
-### 5.5 Introduction of spark and graph DSE datacenter types 
+#### 5.5 Introduction of spark and graph DSE datacenter types 
 
 1. Extended versions of terraform file, use: `terraform_extended.sh`
 2. Extended versions of `.sh` scripts to handle the new DC types
 
 
-### 5.6 Added `dse_set_heap` role to automate setting HEAP for jvm.options file
+#### 5.6 Added `dse_set_heap` role to automate setting HEAP for jvm.options file
 
 1. See new params in `group_vars/all`: `[heap_xms]` and `[heap_xmx]` - always set them both to the same value to avoid runtime memory allocation issues.
 
-### 5.7 DSE Unified Authentication
+#### 5.7 DSE Unified Authentication
 
 Additional security roles: `security_unified_auth_activate` and `security_install` to implement the core configuration settings for DSE Unified Authentication.
 
@@ -405,7 +408,7 @@ Special note: default install cassandra superuser account:
 3. A possible automation approach is to use this user/role library: [ansible-module-cassandra](https://github.com/Ensighten/ansible-module-cassandra)
 4. A candidate role for this process is `roles:security_install`
 
-### 5.7.1 Roles for DSE Unified Authentication
+#### 5.7.1 Roles for DSE Unified Authentication
 
 [Creating Roles for Internal Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secRolesInternal.html)
 
@@ -415,7 +418,7 @@ Once the security_unified_auth_activate role has run you should have a system th
 CREATE ROLE jane WITH LOGIN = true AND PASSWORD = 'Abc123Jane';
 ```
 
-### 5.7.2 DSE Unified Authentication and Spark Security
+#### 5.7.2 DSE Unified Authentication and Spark Security
 
 Addition of role: `security_spark_auth_activate`
 
@@ -436,14 +439,14 @@ Note: DSE 5.1.4, DSE 5.1.5, and 5.1.6 users should refer to the release notes fo
 
 [Managing Spark application permissions](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuthSpark.html)
 
-## 6. SSL certificates
+### 6. SSL certificates
 
 SSL certificates can be sourced 2 ways:
 
 1. Self signed certificates (for Development, Test, CI, CD and other ephemeral  environments)
 2. Trusted CA signed certificates (for Production)
 
-### 6.1 To generate and deploy self signed certificates to the ansible host:
+#### 6.1 To generate and deploy self signed certificates to the ansible host:
 
 Note that is is NOT the distribution phase to target nodes, merely the creation and storage of SSL certificates on the ansible host in a known location. The distribution of SSL certs and keys out into the DSE cluster is taken up by two additional roles: `{ role: security_create_keystores }` and `{ role: security_create_truststores }`
 
@@ -467,7 +470,7 @@ This will create a certificate and private key in the following directories on t
 - `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.key` -> `{myserver.mydomain.com}` is passed in by `{{ansible_fqdn}}`
 - `/etc/ssl/{myserver.mydomain.com}/myserver.mydomain.com.pem`
 
-### 6.2 To use CA signed WILDCARD certificates:
+#### 6.2 To use CA signed WILDCARD certificates:
 
 This method takes a CA signed WILDCARD certificate (e.g. *.prod.mysite.net) and treats it as a root certificate,  using it to sign individual certificates for each node, each node.
 
