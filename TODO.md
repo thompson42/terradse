@@ -402,7 +402,7 @@ A username / password pair is required once JMX Authentication activated
 [CQLSHRC](https://docs.datastax.com/en/dse/5.1/cql/cql/cql_reference/cqlsh_commands/cqlshCqlshrc.html)
 
 1. Needs to be optional with default of false, hardened environments would not accept deployment of credentials on nodes.
-2. Need a DSE Unified Authentication account/password stored in clear text in a ~/.cqlshrc file on each node in /home/<ec2-user>/.cqlshrc
+2. Need a DSE Unified Authentication account/password stored in clear text in a ~/.cqlshrc file on each node in /home/ec2-user/.cqlshrc
 3. Can't be a DSE admin account, needs to be a read-only account?
 
 Better approach to CQLSH/cqlshrc, DSE/.dserc, Spark shell etc is use Datastax Studio for all CQL/Gremlin/SparkSQL
