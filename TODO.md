@@ -437,7 +437,7 @@ role: security_audit_logging_configure - COMPLETE :heavy_check_mark:
 
 #### Run ansible via runansi_add_node.sh - TODO :x:
 
-Works for initial creation of datacenters, probably doesn't work for adding a noew node to a datacenter that has been added later, has no concept of node tupe for dse_name_2 datacenter name, needs flowing block:
+Works for initial creation of datacenters, probably doesn't work for adding a new node to a datacenter that has been added later, has no concept of node type for dse_name_2 datacenter name, needs flowing block:
 
 ```
 solr_enabled=0
