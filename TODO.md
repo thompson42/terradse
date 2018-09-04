@@ -304,7 +304,7 @@ role: spark_worker_log_rolling_configure
 
 role: spark_alwaysonsql_configure
 
-# Spark Disk Encryption
+## Spark Disk Encryption
 
 #### Spark disk encryption of driver temp files and shuffle files on disk (only available DSE 6.0 onwards) - TODO :x:
 
@@ -373,8 +373,8 @@ NOTE:
 
 -> playbook: jmx_security.yml - TODO :x:
 
+[Setting up SSL for nodetool, dsetool, and dse advrep](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html)
 [Securing jConsole SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html)
-[Securing NodeTool SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html)
 
 ## JMX Unified Authentication 
 
@@ -391,15 +391,21 @@ JMX authenticationis set up in TerraDSE to pass thru to DSE Unified Authenticati
 
 role: /ansible/roles/security_jmx_auth_activate
 
-#### Tools: nodetool, dse, dse client-tool, dsetool, advrep
+#### Tools: nodetool, dse, dse client-tool, dsetool, advrep - TEST :x:
 
 Passes -> JMX Authentication -> DSE Unified Authentication
 
 A username / password pair is required once JMX Authentication activated
 
-#### CQLSH and .cqlshrc file - TODO :x:
+#### CQLSH and .cqlshrc file creation and distribution - TODO :x:
 
 [CQLSHRC](https://docs.datastax.com/en/dse/5.1/cql/cql/cql_reference/cqlsh_commands/cqlshCqlshrc.html)
+
+1. Needs to be optional with default of false, hardened environments would not accept deployment of credentials on nodes.
+2. Need a DSE Unified Authentication account/password stored in clear text in a ~/.cqlshrc file on each node in /home/<ec2-user>/.cqlshrc
+3. Can't be a DSE admin account, needs to be a read-only account?
+
+Better approach to CQLSH/cqlshrc, DSE/.dserc, Spark shell etc is use Datastax Studio for all CQL/Gremlin/SparkSQL
 
 ## LDAP Authentication 
 
