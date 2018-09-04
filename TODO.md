@@ -368,14 +368,20 @@ NOTE:
 1. This playbook is here as a convenience, currently empty it could be used to automate user/role creation.
 2. This role is currently commented out in the runansi_extended.sh script
 
-# JMX Transport Encryption
+# Tools
+
+## CQLSH and .cqlshrc file - TODO :x:
+
+[CQLSHRC](https://docs.datastax.com/en/dse/5.1/cql/cql/cql_reference/cqlsh_commands/cqlshCqlshrc.html)
+
+## JMX Transport Encryption
 
 -> playbook: jmx_security.yml - TODO :x:
 
 [Securing jConsole SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureJconsoleSSL.html)
 [Securing NodeTool SSL](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secureNodetoolSSL.html)
 
-# JMX Unified Authentication 
+## JMX Unified Authentication 
 
 -> playbook: jmx_authentication.yml
 
@@ -388,7 +394,9 @@ NOTE:
 
 role: /ansible/roles/security_jmx_auth_activate
 
-### LDAP Authentication - TODO :x:
+# LDAP Authentication 
+
+- TODO :x:
 
 1. Configure selected authentication scheme options: [LDAP Schemes](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secLDAPScheme.html)
 2. Adjust the credentials_validity_in_ms and credentials_update_interval_in_ms as required for your environment in the dse.yaml.
