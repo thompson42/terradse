@@ -1,11 +1,11 @@
 
 
-# Testing
+## Testing
 
 1. Need to check Vnode allocation on all types (core, search,analytic, graph) in a dry run.
 2. Audit all final file ownership on target dse nodes (ctool comparable sys.)
 
-# Terraform
+## Terraform
 
 #### Ports - TODO :x:
 
@@ -21,19 +21,19 @@ Not allowing this means AlwaysOnSQL service only starts up on the local node.
   }
 ```
 
-# Ansible Configuration
+## Ansible Configuration
 
 #### move id_rsa_aws to ansible.cfg
 
 And remove from all bash references e.g. runansi_extended.sh etc.
 
-# Ansible Vault
+## Ansible Vault
 
 #### Shift sensitive passwords to ansible vault - TODO :x:
 
 vars: /ansible/group_vars/all
 
-# Primary sanity check and early exit from Ansible process
+## Primary sanity check and early exit from Ansible process
 
 #### If data exists in the configured DSE data directory exit the entire process ! - COMPLETE :heavy_check_mark:
 
@@ -43,7 +43,7 @@ Called by playbooks: dse_install.yml, add_node_install.yml and opsc_install.yml
 
 role: role: dse_test_for_data_directory
 
-# DSE cluster Transport Encryption 
+## DSE cluster Transport Encryption 
 
 -> playbook: dse_security.yml
 
@@ -99,7 +99,7 @@ role: security_node_to_node
 
 role: security_client_to_node
 
-# DSE cluster Unified Authentication 
+## DSE cluster Unified Authentication 
 
 -> playbook: dse_authentication.yml
 
@@ -107,7 +107,7 @@ role: security_client_to_node
 
 role: security_unified_auth_activate
 
-# DSE cluster Authorisation and Roles 
+## DSE cluster Authorisation and Roles 
 
 -> playbook: dse_authorisation_roles.yml
 
@@ -129,13 +129,13 @@ role: /ansible/roles/security_cassandra_change_superuser
 
 role: /ansible/roles/security_keyspaces_configure
 
-# DSE Disk Encryption (TDE)
+## DSE Disk Encryption (TDE)
 
 [Transparent data encryption](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secEncryptEnable.html)
 
 - TODO :x:
 
-# Opscenter Transport Encryption 
+## Opscenter Transport Encryption 
 
 -> playbook: opsc_security.yml
 
@@ -187,7 +187,7 @@ Various roles including:
 4. security_opsc_create_truststores
 5. security_opsc_cluster_configure
 
-# Opscenter Authentication
+## Opscenter Authentication
 
 playbook: opsc_authentication.yml
 
@@ -199,7 +199,7 @@ role: /ansible/roles/security_opsc_configure
 
 role: /ansible/roles/security_unified_auth_activate
 
-# Opscenter Authorisation and Roles
+## Opscenter Authorisation and Roles
 
 -> playbook: opsc_authorisation_roles.yml
 
@@ -211,7 +211,7 @@ role: /ansible/roles/security_opsc_change_admin
 
 role: /ansible/roles/security_change_superuser
 
-# Spark Transport Encryption 
+## Spark Transport Encryption 
 
 -> playbook: spark_security.yml
 
@@ -258,7 +258,7 @@ Uses the same keystore and trustore as client->node and node->node encryption.
 
 role: security_spark_alwaysonsql_configure
 
-# Spark Authentication 
+## Spark Authentication 
 
 -> playbook: spark_authentication 
 
@@ -274,7 +274,7 @@ Shares common role with AlwaysOnSQL transport encryption:
 
 role: security_spark_alwaysonsql_configure
 
-# Spark Authorization and Roles 
+## Spark Authorization and Roles 
 
 -> playbook: spark_authorisation_roles.yml
 
@@ -284,7 +284,7 @@ NOTE:
 
 Create a Spark role and user? Limit spark jobs by user?
 
-# Spark Systems Configuration
+## Spark Systems Configuration
 
 #### Configure and activate DSEFS on Spark nodes - COMPLETE :heavy_check_mark::
 
@@ -312,7 +312,7 @@ role: spark_alwaysonsql_configure
 
 role: security_spark_auth_activate/templates/spark_defaults.conf
 
-# Graph Transport Encryption
+## Graph Transport Encryption
 
 -> - COMPLETE :heavy_check_mark:
 
@@ -320,7 +320,7 @@ Enable SSL client-to-node encryption on the DSE Graph node by setting the client
 
 role: security_client_to_node
 
-# Graph Authentication
+## Graph Authentication
 
 -> - COMPLETE :heavy_check_mark:
 
@@ -328,7 +328,7 @@ Allow only authenticated users to access DSE Graph data by enabling DSE Unified 
 
 role: security_unified_auth_activate
 
-# Graph Authorisation and Roles
+## Graph Authorisation and Roles
 
 -> playbook: graph_authorisation_roles.yml
 
@@ -342,7 +342,7 @@ NOTE:
 
 [Providing credentials for DSE Graph](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secDSEGraphCred.html)
 
-# Search Transport Encryption
+## Search Transport Encryption
 
 -> - COMPLETE :heavy_check_mark:
 
@@ -350,7 +350,7 @@ Encrypt connections using SSL between HTTP clients and CQL shell to with client-
 
 role: security_client_to_node
 
-# Search Authentication
+## Search Authentication
 
 -> - COMPLETE :heavy_check_mark:
 
@@ -358,7 +358,7 @@ Perform index management tasks with the CQL shell by DSE Unified Authentication.
 
 role: security_unified_auth_activate
 
-# Search Authorisation and Roles
+## Search Authorisation and Roles
 
 -> playbook: search_authorisation_roles.yml
 
@@ -368,11 +368,6 @@ NOTE:
 1. This playbook is here as a convenience, currently empty it could be used to automate user/role creation.
 2. This role is currently commented out in the runansi_extended.sh script
 
-# Tools
-
-## CQLSH and .cqlshrc file - TODO :x:
-
-[CQLSHRC](https://docs.datastax.com/en/dse/5.1/cql/cql/cql_reference/cqlsh_commands/cqlshCqlshrc.html)
 
 ## JMX Transport Encryption
 
@@ -390,18 +385,30 @@ NOTE:
 
 #### Activate JMX Authentication - COMPLETE :heavy_check_mark:
 
+JMX authenticationis set up in TerraDSE to pass thru to DSE Unified Authentication
+
 [Managing JMX Access Control to MBeans](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secJmxAccessControl.html)
 
 role: /ansible/roles/security_jmx_auth_activate
 
-# LDAP Authentication 
+#### Tools: nodetool, dse, dse client-tool, dsetool, advrep
+
+Passes -> JMX Authentication -> DSE Unified Authentication
+
+A username / password pair is required once JMX Authentication activated
+
+#### CQLSH and .cqlshrc file - TODO :x:
+
+[CQLSHRC](https://docs.datastax.com/en/dse/5.1/cql/cql/cql_reference/cqlsh_commands/cqlshCqlshrc.html)
+
+## LDAP Authentication 
 
 - TODO :x:
 
 1. Configure selected authentication scheme options: [LDAP Schemes](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secLDAPScheme.html)
 2. Adjust the credentials_validity_in_ms and credentials_update_interval_in_ms as required for your environment in the dse.yaml.
 
-# Audit Logging 
+## Audit Logging 
 
 [Enabling data auditing in DataStax Enterprise](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuditEnable.html)
 
@@ -416,7 +423,7 @@ In logback.xml we can control log rotation.
 
 role: security_audit_logging_configure - COMPLETE :heavy_check_mark:
 
-# Add a new node to an existing DC within an existing cluster
+## Add a new node to an existing DC within an existing cluster
 
 #### Terraform provision new node via runterra_add_node.sh - TESTING NOW :question:
 
@@ -433,9 +440,7 @@ graph_enabled=1
 auto_bootstrap=0
 ```
 
-
-
-# Bring up a new DC within an existing cluster
+## Bring up a new DC within an existing cluster
 
 - COMPLETE :heavy_check_mark:
 
@@ -464,11 +469,11 @@ auto_bootstrap=0
 
 For DYNAMIC INVENTORY the above configuration will be generated off differences in tfstate_current and tf_state_latest.
 
-# Bring up a replacement node in a specific DC in an existing cluster
+## Bring up a replacement node in a specific DC in an existing cluster
 
 Replace a node in a DC. - ON HOLD
 
-# OpsCenter DSE cluster backup automation
+## OpsCenter DSE cluster backup automation
 
 NOTE: 
 
@@ -484,7 +489,7 @@ role: /ansible/roles/opsc_backups_configure
 
 role: /ansible/roles/opsc_backups_configure
 
-# OpsCenter services automation
+## OpsCenter services automation
 
 -> playbook: opsc_services_configure.yml
 
@@ -492,7 +497,7 @@ role: /ansible/roles/opsc_backups_configure
 
 role: /ansible/roles/opsc_services_configure
 
-# DSE Best Practice configurations and DSE Operations
+## DSE Best Practice configurations and DSE Operations
 
 #### Optimise Linux OS general settings for DSE - COMPLETE :heavy_check_mark:
 
