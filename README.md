@@ -33,9 +33,9 @@ The scripts in this repository have 3 major parts:
 | Link  | Summary | State |
 | ------------- | ------------- | ------------- |
 
-| [Security Features](docs/security_features.md)  | This solution is a work in progress, please refer to the security features document to keep abreast of changes  |  |
-| [FAQ](docs/faq.md)  | Frequently asked questions  |  |
-| [Ansible client machine requirements](docs/ansible_requirements.md)  | In order to run this solution your ansible client machine will require the following libraries installed  |  |
+| [Security Features](docs/security_features.md)  | This solution is a work in progress, please refer to the security features document to keep abreast of changes  | WIP |
+| [FAQ](docs/faq.md)  | Frequently asked questions  | WIP |
+| [Ansible client machine requirements](docs/ansible_requirements.md)  | In order to run this solution your ansible client machine will require the following libraries installed  | Operational |
 | [Create the initial cluster](docs/create_initial_cluster.md)  | Quickstart steps for initial cluster creation  | Operational |
 | [Add a new node to existing datacenter](docs/add_node.md)  | Quickstart steps to add a new node to an existing datacenter  | Testing |
 | [Add a new datacenter to existing cluster](docs/add_datacenter.md)  | Quickstart steps to add a full datacenter to an existing cluster  | Operational |
