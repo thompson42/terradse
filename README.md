@@ -16,8 +16,9 @@ This project also has a [FAQ](docs/faq.md) page for processes and troubleshootin
 5. TerraDSE needs to run in the sequence defined in runterra_<action>.sh due to dependent steps, please do not edit this process, it's brittle.
 6. TerraDSE expects to be able to get out of your network to install software from various locations including datastax.com, Ubuntu repos, Java repos and Python repos.
 7. TerraDSE currently gives you a reasonable level of security but holes do exist, please keep up to date with where we are at with security on the [Security Features](docs/security_features.md) page.
-8. This software is not owned or endorsed by Datastax Inc.
-9. This software is offered free of charge with no promise of functionality or fitness of purpose and no liability for damages incurred from its use.
+8. There is cuurently no way to allocate a different JVM HEAP to Opscenter nodes compared to DSE nodes, what evver you set your heap settings to, make sure you have sufficient RAM if running smaller OpsCenter nodes.
+9. This software is not owned or endorsed by Datastax Inc.
+10. This software is offered free of charge with no promise of functionality or fitness of purpose and no liability for damages incurred from its use.
 
 ## Basic processes: 
 
