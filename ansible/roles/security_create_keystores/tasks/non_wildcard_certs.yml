@@ -93,7 +93,7 @@
       size: "-1k"
     with_items: "{{ command_results.results }}"
     when: item.changed
-    no_log: false
+    no_log: true
 
 - block:
   - name: Import the root certificate into each node's keystore
