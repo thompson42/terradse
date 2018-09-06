@@ -32,7 +32,6 @@ The scripts in this repository have 3 major parts:
 
 | Link  | Summary | State |
 | ------------- | ------------- | ------------- |
-
 | [Security Features](docs/security_features.md)  | This solution is a work in progress, please refer to the security features document to keep abreast of changes  | WIP |
 | [FAQ](docs/faq.md)  | Frequently asked questions  | WIP |
 | [Ansible client machine requirements](docs/ansible_requirements.md)  | In order to run this solution your ansible client machine will require the following libraries installed  | Operational |
