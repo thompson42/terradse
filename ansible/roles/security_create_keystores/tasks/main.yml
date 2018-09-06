@@ -1,6 +1,6 @@
 ---
 
-- debug: msg: "{{is_wildcard_cert}}
+- debug: msg: "{{is_wildcard_cert}}"
 
 - name: INCLUDE > Do non wildcard certs
   include: tasks/non_wildcard_certs.yml
