@@ -39,7 +39,8 @@
       host: "{{item[0]}}"
       cert: "{{item[1]}}"
     with_nested:
-    - "{{ groups['dse'] + groups['opsc_dsecore'] + groups['add_node'] | default([]) + groups['add_datacenter'] | default([]) }}"
+#    - "{{ groups['dse'] + groups['opsc_dsecore'] + groups['add_node'] | default([]) + groups['add_datacenter'] | default([]) }}"
+    - "{{ groups['dse'] + groups['opsc_dsecore'] }}"
     - "{{lookup('fileglob', ssl_certs_path + '/'+ ssl_certs_common_name +'-*').split(',') | sort |  reverse | list }}"
 
 
@@ -67,6 +68,6 @@
     with_items:
     - "{{ groups['dse']}}"
     - "{{ groups['opsc_dsecore']}}"
-    - "{{ groups['add_node'] | default([]) }}"
-    - "{{ groups['add_datacenter'] | default([]) }}"
+#    - "{{ groups['add_node'] | default([]) }}"
+#    - "{{ groups['add_datacenter'] | default([]) }}"
     
