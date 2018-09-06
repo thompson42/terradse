@@ -138,9 +138,9 @@ security_group: cassandra
 # Cluster security settings set by server_encryption_options 
 # and client_encryption_options in cassandra.yaml
 cluster_keystore_path: "{{ my_cluster_keystore_path | default( dse_config_dir + '/keystore.jks') }}"
-cluster_keystore_password: "{{ my_cluster_keystore_password | default('cluster_keystore_password') }}"                  #EDIT: Change from default (Use ansible-vault)
+cluster_keystore_password: "{{ my_cluster_keystore_password | default('cluster_keystore_password') }}"                  #EDIT: Change from default (Use ansible-vault) WARNING: only use letters and numbers, chars like [&] break xml configs (e.g. /etc/dse/hadoop2-client/dse-core-default.xml)
 cluster_truststore_path: "{{ my_cluster_truststore_path | default(dse_config_dir + '/truststore.jks') }}"
-cluster_truststore_password: "{{ my_cluster_truststore_password | default('cluster_keystore_password') }}"              #EDIT: Change from default (Use ansible-vault)
+cluster_truststore_password: "{{ my_cluster_truststore_password | default('cluster_keystore_password') }}"              #EDIT: Change from default (Use ansible-vault) WARNING: only use letters and numbers, chars like [&] break xml configs (e.g. /etc/dse/hadoop2-client/dse-core-default.xml)
  
 # Root certificate
 #-------------------------------------------------------------------------------

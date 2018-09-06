@@ -1,27 +1,13 @@
+
 ## Automate the Launch of AWS Instances for a Secure multi-DC DSE cluster with OpsCenter
 
 The aim of this project is to develop a complete end to end Terraform + Ansible DSE automation system which invokes ALL security capabilities of the DSE platform and ALL best practices of the DSE platform.
 
-This project has a progress document down to ansible role level, please refer to this document to keep up to date on where the system is at: [TODO](TODO.md)
+This project has a progress document down to ansible role level, please refer to this document to keep up to date on where the system is at: [[Security Features](docs/security_features.md)
 
-This project also has a [NOTES](NOTES.md) page for processes and troubleshooting info.
+This project also has a [FAQ](docs/faq.md) page for processes and troubleshooting info.
 
-## Requires the following libraries on the Ansible host machine:
-
-1. python dse-driver
-2. python pyopenssl
-3. python pyyaml
-4. Oracle Java 8
-5. Oracle Java 8 ca-certificates
-6. Oracle Java 8 unlimited-jce-policy
-
-The Python requirements are listed in the `requirements.txt`, and can be installed via:
-
-```sh
-pip -r requirements.txt
-```
-
-## Sharp edges:
+## Sharp edges
 
 1. Please only use Ubuntu 16.04 LTS for now as the target operating system (tested on 16.04.2 and 16.04.5)
 2. Please use Python 2.7.12 for the ansible host and the Python on each target node
@@ -29,17 +15,9 @@ pip -r requirements.txt
 4. TerraDSE currently targets Datastax Enterprise 5.1.x, 6.0.x and Opscenter 6.5.x, only use these for now.
 5. TerraDSE needs to run in the sequence defined in runterra_<action>.sh due to dependent steps, please do not edit this process, it's brittle.
 6. TerraDSE expects to be able to get out of your network to install software from various locations including datastax.com, Ubuntu repos, Java repos and Python repos.
-7. TerraDSE currently gives you a reasonable level of security but holes do exist, please keep up to date with where we are at with security on the [TODO](TODO.md) page.
+7. TerraDSE currently gives you a reasonable level of security but holes do exist, please keep up to date with where we are at with security on the [Security Features](docs/security_features.md) page.
 8. This software is not owned or endorsed by Datastax Inc.
 9. This software is offered free of charge with no promise of functionality or fitness of purpose and no liability for damages incurred from its use.
-
-| Link  | Summary | State |
-| ------------- | ------------- | ------------- |
-| [Create initial cluster](docs/create_initial_cluster.md)  | Quickstart steps for initial cluster creation  | Operational |
-| [Add a node to existing datacenter](docs/add_node.md)  | Quickstart steps to add a new node to an existing datacenter  | Testing |
-| [Add a datacenter to existing cluster](docs/add_datacenter.md)  | Quickstart steps to add a full datacenter to an existing cluster  | Operational |
-| [SSL Certificates](docs/ssl_certificates.md)  | Self signed and CA wildcard certificates  | Operational |
-
 
 ## Basic processes: 
 
@@ -49,6 +27,20 @@ The scripts in this repository have 3 major parts:
 3. Linux bash scripts to 
    1. generate the ansible host inventory file (required by the ansible playbooks) out of the terraform state output
    2. lauch the terraform scripts and ansible playbooks
+
+## Documentation
+
+| Link  | Summary | State |
+| ------------- | ------------- | ------------- |
+
+| [Security Features](docs/security_features.md)  | This solution is a work in progress, please refer to the security features document to keep abreast of changes  |  |
+| [FAQ](docs/faq.md)  | Frequently asked questions  |  |
+| [Ansible client machine requirements](docs/ansible_requirements.md)  | In order to run this solution your ansible client machine will require the following libraries installed  |  |
+| [Create the initial cluster](docs/create_initial_cluster.md)  | Quickstart steps for initial cluster creation  | Operational |
+| [Add a new node to existing datacenter](docs/add_node.md)  | Quickstart steps to add a new node to an existing datacenter  | Testing |
+| [Add a new datacenter to existing cluster](docs/add_datacenter.md)  | Quickstart steps to add a full datacenter to an existing cluster  | Operational |
+| [SSL Certificates](docs/ssl_certificates.md)  | Self signed and CA wildcard certificates  | Operational |
+
 
 #### 1. Terraform Introduction and Cluster Topology
 
@@ -213,7 +205,7 @@ Other than NTP service, python (minimal version) is also installed in order for 
 The terraform script presented in this section only focuses on the most fundamental AWS resources for DSE and OpsCenter installation and operation, such as EC2 instances and security groups in particular, For other AWS resources such as VPC, IP Subnet, and so on, we just rely on the default as provided by AWS. But the script should be very easy to extend to include other customized AWS resources.
 
 
-### 3. Generate Ansible Inventory File Automatically
+### 3. Generate Ansible Inventory File (ansible/hosts)
 
 After the infrastructure instances have been provisioned, we need to install and configure DSE and OpsCenter and these instances accordingly, which is through the Ansible framework that I presented before at [here](https://github.com/yabinmeng/dseansible). One key item in the Ansible framework is the Ansible inventory file which determines key DSE node characteristics such as node IP, seed node, VNode, workload type, and so on. 
 
