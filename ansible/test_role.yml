@@ -1,9 +1,10 @@
 
 
-# Activate DSE Unified Authentication on DSE nodes
+#create core DSE / OPSC storage node truststores and keystores (local)
 - hosts: localhost
   any_errors_fatal: true
   become: no
   connection: local
   roles:
-    - { role: dummy_role }
+    - { role: security_create_truststores }
+    - { role: security_create_keystores }
