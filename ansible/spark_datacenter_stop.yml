@@ -3,7 +3,7 @@
 # Stop DSE seed nodes 
 - hosts: dse_analytics
   any_errors_fatal: true
-  name: Start seed node 
+  name: Stop seed node 
   serial: 1
   become: true
   become_method: sudo
@@ -15,7 +15,7 @@
 # Stop DSE non-seed nodes 
 - hosts: dse_analytics
   any_errors_fatal: true
-  name: Start non-seed node one by one
+  name: Stop non-seed node one by one
   serial: 1
   become: true
   become_method: sudo

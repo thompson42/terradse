@@ -3,7 +3,7 @@
 
 The aim of this project is to develop a complete end to end Terraform + Ansible DSE automation system which invokes ALL security capabilities of the DSE platform and ALL best practices of the DSE platform.
 
-This project has a progress document down to ansible role level, please refer to this document to keep up to date on where the system is at: [[Security Features](docs/security_features.md)
+This project has a progress document down to ansible role level, please refer to this document to keep up to date on where the system is at: [Security Features](docs/security_features.md)
 
 This project also has a [FAQ](docs/faq.md) page for processes and troubleshooting info.
 
@@ -13,10 +13,10 @@ This project also has a [FAQ](docs/faq.md) page for processes and troubleshootin
 2. Please use Python 2.7.12 for the ansible host and the Python on each target node
 3. Please use Ansible 2.4.3.0 or later
 4. TerraDSE currently targets Datastax Enterprise 5.1.x, 6.0.x and Opscenter 6.5.x, only use these for now.
-5. TerraDSE needs to run in the sequence defined in runterra_<action>.sh due to dependent steps, please do not edit this process, it's brittle.
+5. TerraDSE needs to run in the sequence defined in runansi_extended.sh, runansi_add_node.sh and runansi_add_datacenter.sh due to dependent steps, please do not edit this process, it's brittle.
 6. TerraDSE expects to be able to get out of your network to install software from various locations including datastax.com, Ubuntu repos, Java repos and Python repos.
 7. TerraDSE currently gives you a reasonable level of security but holes do exist, please keep up to date with where we are at with security on the [Security Features](docs/security_features.md) page.
-8. There is cuurently no way to allocate a different JVM HEAP to Opscenter nodes compared to DSE nodes, what evver you set your heap settings to, make sure you have sufficient RAM if running smaller OpsCenter nodes.
+8. There is currently no way to allocate a different JVM HEAP size to Opscenter nodes compared to DSE nodes, make sure you have sufficient RAM if running smaller OpsCenter nodes.
 9. This software is not owned or endorsed by Datastax Inc.
 10. This software is offered free of charge with no promise of functionality or fitness of purpose and no liability for damages incurred from its use.
 
