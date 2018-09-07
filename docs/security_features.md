@@ -1,11 +1,17 @@
 
 
-# Security Features
+# Security and Automation Features
 
 ## Testing
 
 1. Need to check Vnode allocation on all types (core, search,analytic, graph) in a dry run.
 2. Audit all final file ownership on target dse nodes (ctool comparable sys.)
+
+## HEAP allication
+
+1. See new params in `group_vars/all`: `[heap_xms]` and `[heap_xmx]` - always set them both to the same value to avoid runtime memory allocation issues.
+
+No load systems will need 4GB heaps, development and staging should have 8GB heaps and load testing/production systems should have 20GB heaps.
 
 ## Terraform
 

@@ -3,15 +3,15 @@
 TFSTATE_FILE=/tmp/tfshow.txt
 terraform show terraform_extended/terraform.tfstate > $TFSTATE_FILE
 
-if [ $# -lt 3 ]
+if [ $# -lt 1 ]
 then
-  echo "Error: script has less than 3 arguments, requires number_of_seeds_per_dc, dse_appcluster_name, dse_opscluster_name"
-  echo "-- usage: genansinv_extended.sh [<number_of_seeds_per_dc>] [<dse_appcluster_name>] [<dse_opsccluster_name>]"
+  echo "Error: script has less than 1 arguments, requires number_of_seeds_per_dc"
+  echo "-- usage: genansinv_extended.sh [<number_of_seeds_per_dc>]"
   exit 1
 fi
 
-DSE_APPCLUSTER_NAME="$2"
-DSE_OPSCCLUSTER_NAME="$3"
+DSE_APPCLUSTER_NAME="DseCluster"
+DSE_OPSCCLUSTER_NAME="OpscCluster"
 
 dse_nodetype=()
 public_ip=()
@@ -26,7 +26,7 @@ pmsg() {
 
 usage() {
    echo "Error: [<number_of_seeds_per_dc>] accepts a postive number as the only input parameter"
-   echo "-- usage: genansinv_extended.sh [<number_of_seeds_per_dc>] [<dse_appcluster_name>] [<dse_opsccluster_name>]"
+   echo "-- usage: genansinv_extended.sh [<number_of_seeds_per_dc>]"
 }
 
 # check if an input is a positive number
