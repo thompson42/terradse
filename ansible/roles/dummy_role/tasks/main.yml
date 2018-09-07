@@ -1,23 +1,22 @@
 
-- name: Add apt repository
-  apt_repository:
-      repo: 'ppa:webupd8team/java'
-      state: present
-      update_cache: yes
-
-- name: Accept license
-  debconf:
-    name: 'oracle-java8-installer'
-    question: 'shared/accepted-oracle-license-v1-1'
-    value: 'true'
-    vtype: 'select'
-
-- name: Install java
-  apt: name={{ item }} state=present
-  with_items:
-      - oracle-java8-installer
-      - ca-certificates
-      - oracle-java8-set-default
-      - oracle-java8-unlimited-jce-policy
+- name: Shut down "cassandra/dse" service
+  service:
+    name: dse
+    state: stopped
+    
+- name: Configure DSE Graph workload type
+  lineinfile:
+    name: "{{ dse_default_dir }}/dse"
+    regexp: '^GRAPH_ENABLED='
+    line: "GRAPH_ENABLED=1"
+    owner: cassandra
+    group: cassandra
+    mode: 0644
+    
+- name: Start cassandra or dse service
+  service:
+    name: dse
+    state: restarted
+  ignore_errors: true
       
 

@@ -1,10 +1,11 @@
 
-
-#create core DSE / OPSC storage node truststores and keystores (local)
-- hosts: localhost
+ 
+- hosts: dse_analytics
   any_errors_fatal: true
-  become: no
-  connection: local
+  name: Rolling activate graph...
+  become: true
+  become_method: sudo
   roles:
-    - { role: security_create_truststores }
-    - { role: security_create_keystores }
+    - { role: dummy_role }
+
+
