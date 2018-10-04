@@ -193,3 +193,28 @@ is_automated_backup: "{{ my_is_automated_backup | default(false) }}"            
 backup_path: "{{ my_backup_path | default('/mnt/backups') }}"                                                           #EDIT: Should be located off node to be of any use
 backup_keyspace_list: "{{ my_backup_keyspace_list | default('keyspace1,keyspace2,keyspace3') }}"                        #EDIT: list keyspaces to backup, empty list means ALL keyspaces
 
+# LDAP Configuration
+#-------------------------------------------------------------------------------
+is_ldap_authentication: "{{ my_is_ldap_authentication | default(false) }}"
+is_ldap_role_management: "{{ my_is_ldap_role_management | default(false) }}"
+
+#ldap_options in dse.yaml file:
+ldap_server_host: "{{ my_ldap_server_host | default('win2012ad_server.mycompany.lan') }}"
+ldap_server_port: "{{ my_ldap_server_port | default('389') }}"
+ldap_search_dn: "{{ my_ldap_search_dn | default('cn=lookup_user,cn=users,dc=win2012domain,dc=mycompany,dc=lan') }}"
+ldap_search_password: "{{ my_ldap_search_password | default('ldap_search_password') }}"
+ldap_use_ssl: "{{ my_ldap_use_ssl | default(false) }}"
+ldap_use_tls: "{{ my_ldap_use_tls | default(false) }}"
+ldap_truststore_path: "{{ my_ldap_truststore_path | default('path/to/truststore') }}"
+ldap_truststore_password: "{{ my_ldap_truststore_password| default('ldap_truststore_password') }}"
+ldap_truststore_type: "{{ my_ldap_truststore_type | default('jks') }}"
+ldap_user_search_base: "{{ my_ldap_user_search_base | default('cn=users,dc=win2012domain,dc=mycompany,dc=lan') }}"
+ldap_user_search_filter: "{{ my_ldap_user_search_filter | default('(sAMAccountName={0})') }}"
+ldap_credentials_validity_in_ms: "{{ my_ldap_credentials_validity_in_ms | default('0') }}"
+ldap_search_validity_in_seconds: "{{ my_ldap_search_validity_in_seconds | default('0') }}"
+
+#ldap_options.connection_pool in dse.yaml file:
+ldap_connection_pool_max_active: "{{ my_ldap_connection_pool_max_active | default('8') }}"
+ldap_connection_pool_max_idle: "{{ my_ldap_connection_pool_max_idle | default('8') }}"
+
+

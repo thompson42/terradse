@@ -1,0 +1,9 @@
+
+# Activate Role Management on DSE nodes
+- hosts: dse
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: security_role_management_internal, when: not is_ldap_role_management | bool }
+    - { role: security_role_management_ldap, when: is_ldap_role_management | bool }

@@ -6,7 +6,7 @@
 # https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secEnableDseAuthenticator.html
   
 # In the cassandra.yaml file the following should all be setup already, but make sure here:
-- name: Configure DSE Unified Authentication authenticator, authorizer, role_manager in cassandra.yaml.
+- name: Configure DSE Unified Authentication authenticator, authorizer in cassandra.yaml.
   yedit:
     src: "{{ dse_config_dir }}/cassandra/cassandra.yaml"
     edits:
@@ -14,26 +14,6 @@
       value: com.datastax.bdp.cassandra.auth.DseAuthenticator
     - key: authorizer
       value: com.datastax.bdp.cassandra.auth.DseAuthorizer
-    - key: role_manager
-      value: com.datastax.bdp.cassandra.auth.DseRoleManager
-
-
-# Configure DSE Authenticator in dse.yaml (/etc/dse/dse.yaml)
-# Extended settings:
-# allow_digest_with_kerberos: true
-# plain_text_without_ssl: warn
-# transitional_mode: disabled
-# other_schemes:
-# scheme_permissions: false
-- name: Configure DSE Authenticator in dse.yaml (/etc/dse/dse.yaml)
-  yedit:
-    src: "{{ dse_config_dir }}/dse.yaml"
-    edits:
-    - key: authentication_options.enabled
-      value: true
-    - key: authentication_options.default_scheme
-      value: internal
-
 
 #Configure the DSE Authorizer in dse.yaml (/etc/dse/dse.yaml)
 - name: Configure the DSE Authorizer in dse.yaml (/etc/dse/dse.yaml)
@@ -43,13 +23,21 @@
     - key: authorization_options.enabled
       value: true
 
-
-#Configure the DSE Role Manager in dse.yaml (/etc/dse/dse.yaml)
-- name: Configure the DSE Role Manager in dse.yaml (/etc/dse/dse.yaml)
+# Configure DSE Authenticator in dse.yaml (/etc/dse/dse.yaml)
+# Extended settings:
+# allow_digest_with_kerberos: true
+# plain_text_without_ssl: warn
+# transitional_mode: disabled
+# other_schemes:
+# scheme_permissions: false
+- name: Configure INTERNAL DSE Authenticator in dse.yaml (/etc/dse/dse.yaml)
   yedit:
     src: "{{ dse_config_dir }}/dse.yaml"
     edits:
-    - key: role_management_options.mode
+    - key: authentication_options.enabled
+      value: true
+    - key: authentication_options.default_scheme
       value: internal
+
 
 

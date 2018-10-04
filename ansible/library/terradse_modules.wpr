@@ -4,11 +4,18 @@
 # Wing IDE project file                                          #
 ##################################################################
 [project attributes]
+proj.directory-list = [{'dirloc': loc('inventory_generator_test_data'),
+                        'excludes': (),
+                        'filter': u'*',
+                        'include_hidden': False,
+                        'recursive': True,
+                        'watch_for_changes': True}]
 proj.file-list = [loc('cassandra_grant.py'),
                   loc('cassandra_role.py'),
+                  loc('inventory_generator.py'),
                   loc('keyspace_replication_configure.py'),
-                  loc('test.py'),
                   loc('test_ssl_client.py'),
                   loc('yedit.py'),
-                  loc('yedit_debug.py')]
+                  loc('yedit_debug.py'),
+                  loc('yedit_test.py')]
 proj.file-type = 'shared'

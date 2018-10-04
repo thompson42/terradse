@@ -33,14 +33,16 @@ The scripts in this repository have 3 major parts:
 
 | Link  | Summary | State |
 | ------------- | ------------- | ------------- |
-| [Security and Automation Features](docs/security_features.md)  | This solution is a work in progress, please refer to the security features document to keep abreast of changes  | WIP |
+| [Security and automation features](docs/security_features.md)  | This solution is a work in progress, please refer to the security features document to keep abreast of changes  | WIP |
 | [FAQ](docs/faq.md)  | Frequently asked questions  | |
 | [Ansible client machine requirements](docs/ansible_requirements.md)  | In order to run this solution your ansible client machine will require the following libraries installed  | Operational |
+| [Static ansible inventory](docs/static_inventory.md)  | How to manually manage your Ansible inventory via a hosts .ini file   | Operational |
+| [Dynamic ansible inventory](docs/dynamic_inventory.md)  | How to dynamically manage your Ansible inventory via EC2 tags and Terraform state files   | Operational |
 | [Create the initial cluster](docs/create_initial_cluster.md)  | Quickstart steps for initial cluster creation  | Operational |
 | [Add a new node to existing datacenter](docs/add_node.md)  | Quickstart steps to add a new node to an existing datacenter  | Testing |
 | [Add a new datacenter to existing cluster](docs/add_datacenter.md)  | Quickstart steps to add a full datacenter to an existing cluster  | Operational |
 | [DSE Unified Authentication](docs/dse_authentication.md)  | Notes on how to use DSE Unified Authentication  | Operational |
-| [SSL Certificates](docs/ssl_certificates.md)  | Self signed and CA wildcard certificates  | Operational |
+| [SSL certificates](docs/ssl_certificates.md)  | Self signed and CA wildcard certificates  | Operational |
 | [This fork compared to upstream](docs/forked_version.md)  | Why this fork?  |  |
 | [Limitations](docs/limitations.md)  | Limitations of this automation solution  |  |
 

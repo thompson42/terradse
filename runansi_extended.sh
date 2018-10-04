@@ -45,6 +45,11 @@ echo
 ansible-playbook -i hosts dse_authentication.yml --private-key=~/.ssh/id_rsa_aws
 echo
 
+echo ">>>> Configure DSE Role Management <<<<"
+echo
+ansible-playbook -i hosts dse_role_management.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
 echo
 echo ">>>> Start DSE cluster with Unified Authentication but no Transport Security <<<<"
 echo

@@ -113,7 +113,7 @@ role: security_client_to_node
 
 #### Activate DSE cluster Unified Authentication - COMPLETE :heavy_check_mark:
 
-role: security_unified_auth_activate
+role: security_auth_activate_internal
 
 ## DSE cluster Authorisation and Roles 
 
@@ -205,7 +205,7 @@ role: /ansible/roles/security_opsc_configure
 
 #### Activate OPSC DSECore Unified Authentication  - COMPLETE :heavy_check_mark:
 
-role: /ansible/roles/security_unified_auth_activate
+role: /ansible/roles/security_auth_activate_internal
 
 ## Opscenter Authorisation and Roles
 
@@ -334,7 +334,7 @@ role: security_client_to_node
 
 Allow only authenticated users to access DSE Graph data by enabling DSE Unified Authentication on the transactional database.
 
-role: security_unified_auth_activate
+role: security_auth_activate_internal
 
 ## Graph Authorisation and Roles
 
@@ -364,7 +364,7 @@ role: security_client_to_node
 
 Perform index management tasks with the CQL shell by DSE Unified Authentication.
 
-role: security_unified_auth_activate
+role: security_auth_activate_internal
 
 ## Search Authorisation and Roles
 

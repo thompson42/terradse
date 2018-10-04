@@ -1,0 +1,1346 @@
+{
+    "version": 3,
+    "terraform_version": "0.11.5",
+    "serial": 100,
+    "lineage": "3accf9a4-080f-9d11-ab11-dad513e38f6a",
+    "modules": [
+        {
+            "path": [
+                "root"
+            ],
+            "outputs": {},
+            "resources": {
+                "aws_ebs_volume.stg_dc1_data.0": {
+                    "type": "aws_ebs_volume",
+                    "depends_on": [
+                        "data.aws_subnet.stg_data2",
+                        "data.aws_vpc.stg_vpc"
+                    ],
+                    "primary": {
+                        "id": "vol-0159e6dcb8ce32273",
+                        "attributes": {
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_ebs_volume.stg_dc1_data.1": {
+                    "type": "aws_ebs_volume",
+                    "depends_on": [
+                        "data.aws_subnet.stg_data2",
+                        "data.aws_vpc.stg_vpc"
+                    ],
+                    "primary": {
+                        "id": "vol-0202300f8048c21ae",
+                        "attributes": {
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_ebs_volume.stg_dc1_data.2": {
+                    "type": "aws_ebs_volume",
+                    "depends_on": [
+                        "data.aws_subnet.stg_data2",
+                        "data.aws_vpc.stg_vpc"
+                    ],
+                    "primary": {
+                        "id": "vol-00bfebe5f264bdf68",
+                        "attributes": {
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_ebs_volume.stg_opsc_data.0": {
+                    "type": "aws_ebs_volume",
+                    "depends_on": [
+                        "data.aws_subnet.stg_data2",
+                        "data.aws_vpc.stg_vpc"
+                    ],
+                    "primary": {
+                        "id": "vol-07d5c41674a460933",
+                        "attributes": {
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_ebs_volume.stg_opsc_data.1": {
+                    "type": "aws_ebs_volume",
+                    "depends_on": [
+                        "data.aws_subnet.stg_data2",
+                        "data.aws_vpc.stg_vpc"
+                    ],
+                    "primary": {
+                        "id": "vol-0219b3802f71b5e99",
+                        "attributes": {
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_instance.stg_dc1_data_dse_graph.X": {
+                    "type": "aws_instance",
+                    "depends_on": [
+                        "aws_network_interface.stg_dc1_data.*",
+                        "data.aws_iam_instance_profile.stg_role",
+                        "data.aws_vpc.stg_vpc",
+                        "data.template_file.user_data"
+                    ],
+                    "primary": {
+                        "id": "i-0387ffbbcd2dceb5f",
+                        "attributes": {
+                            "associate_public_ip_address": "false",
+                            "availability_zone": "ap-southeast-2b",
+                            "credit_specification.#": "1",
+                            "credit_specification.0.cpu_credits": "standard",
+                            "disable_api_termination": "false",
+                            "ebs_block_device.#": "0",
+                            "ebs_optimized": "false",
+                            "get_password_data": "false",
+                            "iam_instance_profile": "OpenshiftNode",
+                            "instance_state": "running",
+                            "instance_type": "i3.xlarge",
+                            "ipv6_addresses.#": "0",
+                            "key_name": "",
+                            "monitoring": "false",
+                            "network_interface.#": "1",
+                            "network_interface.2147983395.delete_on_termination": "false",
+                            "network_interface.2147983395.device_index": "0",
+                            "network_interface.2147983395.network_interface_id": "eni-481fda65",
+                            "network_interface_id": "eni-481fda65",
+                            "password_data": "",
+                            "placement_group": "",
+                            "primary_network_interface_id": "eni-481fda65",
+                            "private_dns": "ip-10-0-0-9.ap-southeast-2.compute.internal",
+                            "private_ip": "10.0.0.9",
+                            "public_dns": "",
+                            "public_ip": "",
+                            "root_block_device.#": "1",
+                            "root_block_device.0.delete_on_termination": "true",
+                            "root_block_device.0.iops": "100",
+                            "root_block_device.0.volume_id": "vol-0d41ba1d5c9b51710",
+                            "root_block_device.0.volume_size": "30",
+                            "root_block_device.0.volume_type": "gp2",
+                            "security_groups.#": "0",
+                            "source_dest_check": "true",
+                            "subnet_id": "subnet-890d43ee",
+                            "tags.%": "3",
+                            "tags.Name": "stg-vpc.Dse1.1",
+                            "tags.ProjectRef": "dse-shrd/stg",
+                            "tags.Role": "DSE",
+                            "tags.DSEDataCenterName": "my_datacenter_name",
+                            "tags.DSENodeType": "dse_graph",
+                            "tenancy": "default"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 1200000000000,
+                                "update": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_instance.stg_dc1_data_dse_graph.0": {
+                    "type": "aws_instance",
+                    "depends_on": [
+                        "aws_network_interface.stg_dc1_data.*",
+                        "data.aws_iam_instance_profile.stg_role",
+                        "data.aws_vpc.stg_vpc",
+                        "data.template_file.user_data"
+                    ],
+                    "primary": {
+                        "id": "i-0387ffbbcd2dceb5f",
+                        "attributes": {
+                            "associate_public_ip_address": "false",
+                            "availability_zone": "ap-southeast-2b",
+                            "credit_specification.#": "1",
+                            "credit_specification.0.cpu_credits": "standard",
+                            "disable_api_termination": "false",
+                            "ebs_block_device.#": "0",
+                            "ebs_optimized": "false",
+                            "get_password_data": "false",
+                            "iam_instance_profile": "OpenshiftNode",
+                            "instance_state": "running",
+                            "instance_type": "i3.xlarge",
+                            "ipv6_addresses.#": "0",
+                            "key_name": "",
+                            "monitoring": "false",
+                            "network_interface.#": "1",
+                            "network_interface.2147983395.delete_on_termination": "false",
+                            "network_interface.2147983395.device_index": "0",
+                            "network_interface.2147983395.network_interface_id": "eni-481fda65",
+                            "network_interface_id": "eni-481fda65",
+                            "password_data": "",
+                            "placement_group": "",
+                            "primary_network_interface_id": "eni-481fda65",
+                            "private_dns": "ip-10-0-0-0.ap-southeast-2.compute.internal",
+                            "private_ip": "10.0.0.0",
+                            "public_dns": "",
+                            "public_ip": "",
+                            "root_block_device.#": "1",
+                            "root_block_device.0.delete_on_termination": "true",
+                            "root_block_device.0.iops": "100",
+                            "root_block_device.0.volume_id": "vol-0d41ba1d5c9b51710",
+                            "root_block_device.0.volume_size": "30",
+                            "root_block_device.0.volume_type": "gp2",
+                            "security_groups.#": "0",
+                            "source_dest_check": "true",
+                            "subnet_id": "subnet-890d43ee",
+                            "tags.%": "3",
+                            "tags.Name": "stg-vpc.Dse1.1",
+                            "tags.ProjectRef": "dse-shrd/stg",
+                            "tags.Role": "DSE",
+                            "tags.DSEDataCenterName": "my_datacenter_name",
+                            "tags.DSENodeType": "dse_graph",
+                            "tenancy": "default"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 1200000000000,
+                                "update": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_instance.stg_dc1_data_dse_graph.1": {
+                    "type": "aws_instance",
+                    "depends_on": [
+                        "aws_network_interface.stg_dc1_data.*",
+                        "data.aws_iam_instance_profile.stg_role",
+                        "data.aws_vpc.stg_vpc",
+                        "data.template_file.user_data"
+                    ],
+                    "primary": {
+                        "id": "i-046e646f2d9149073",
+                        "attributes": {
+                            "associate_public_ip_address": "false",
+                            "availability_zone": "ap-southeast-2b",
+                            "credit_specification.#": "1",
+                            "credit_specification.0.cpu_credits": "standard",
+                            "disable_api_termination": "false",
+                            "ebs_block_device.#": "0",
+                            "ebs_optimized": "false",
+                            "get_password_data": "false",
+                            "iam_instance_profile": "OpenshiftNode",
+                            "id": "i-046e646f2d9149073",
+                            "instance_state": "running",
+                            "instance_type": "i3.xlarge",
+                            "ipv6_addresses.#": "0",
+                            "key_name": "",
+                            "monitoring": "false",
+                            "network_interface.#": "1",
+                            "network_interface.2684282748.delete_on_termination": "false",
+                            "network_interface.2684282748.device_index": "0",
+                            "network_interface.2684282748.network_interface_id": "eni-7513d658",
+                            "network_interface_id": "eni-7513d658",
+                            "password_data": "",
+                            "placement_group": "",
+                            "primary_network_interface_id": "eni-7513d658",
+                            "private_dns": "ip-10-0-0-0.ap-southeast-2.compute.internal",
+                            "private_ip": "10.0.0.0",
+                            "public_dns": "",
+                            "public_ip": "",
+                            "root_block_device.#": "1",
+                            "root_block_device.0.delete_on_termination": "true",
+                            "root_block_device.0.iops": "100",
+                            "root_block_device.0.volume_id": "vol-034b03d743b1e3bf8",
+                            "root_block_device.0.volume_size": "30",
+                            "root_block_device.0.volume_type": "gp2",
+                            "security_groups.#": "0",
+                            "source_dest_check": "true",
+                            "subnet_id": "subnet-890d43ee",
+                            "tags.%": "3",
+                            "tags.Name": "stg-vpc.Dse1.2",
+                            "tags.ProjectRef": "dse-shrd/stg",
+                            "tags.Role": "DSE",
+                            "tags.DSEDataCenterName": "my_datacenter_name",
+                            "tags.DSENodeType": "dse_graph",
+                            "tenancy": "default"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 1200000000000,
+                                "update": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_instance.stg_dc1_data_dse_graph.2": {
+                    "type": "aws_instance",
+                    "depends_on": [
+                        "aws_network_interface.stg_dc1_data.*",
+                        "data.aws_iam_instance_profile.stg_role",
+                        "data.aws_vpc.stg_vpc",
+                        "data.template_file.user_data"
+                    ],
+                    "primary": {
+                        "id": "i-0fc573cfc7d44c657",
+                        "attributes": {
+                            "associate_public_ip_address": "false",
+                            "availability_zone": "ap-southeast-2b",
+                            "credit_specification.#": "1",
+                            "credit_specification.0.cpu_credits": "standard",
+                            "disable_api_termination": "false",
+                            "ebs_block_device.#": "0",
+                            "ebs_optimized": "false",
+                            "get_password_data": "false",
+                            "iam_instance_profile": "OpenshiftNode",
+                            "id": "i-0fc573cfc7d44c657",
+                            "instance_state": "running",
+                            "instance_type": "i3.xlarge",
+                            "ipv6_addresses.#": "0",
+                            "key_name": "",
+                            "monitoring": "false",
+                            "network_interface.#": "1",
+                            "network_interface.2758741790.delete_on_termination": "false",
+                            "network_interface.2758741790.device_index": "0",
+                            "network_interface.2758741790.network_interface_id": "eni-b91dd894",
+                            "network_interface_id": "eni-b91dd894",
+                            "password_data": "",
+                            "placement_group": "",
+                            "primary_network_interface_id": "eni-b91dd894",
+                            "private_dns": "ip-10-0-0-1.ap-southeast-2.compute.internal",
+                            "private_ip": "10.0.0.1",
+                            "public_dns": "",
+                            "public_ip": "",
+                            "root_block_device.#": "1",
+                            "root_block_device.0.delete_on_termination": "true",
+                            "root_block_device.0.iops": "100",
+                            "root_block_device.0.volume_id": "vol-0763d24a4911a9d41",
+                            "root_block_device.0.volume_size": "30",
+                            "root_block_device.0.volume_type": "gp2",
+                            "security_groups.#": "0",
+                            "source_dest_check": "true",
+                            "subnet_id": "subnet-890d43ee",
+                            "tags.%": "3",
+                            "tags.Name": "stg-vpc.Dse1.3",
+                            "tags.ProjectRef": "dse-shrd/stg",
+                            "tags.Role": "DSE",
+                            "tags.DSEDataCenterName": "my_datacenter_name",
+                            "tags.DSENodeType": "dse_graph",
+                            "tenancy": "default"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 1200000000000,
+                                "update": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_instance.stg_opsc_data_dse_opsc.0": {
+                    "type": "aws_instance",
+                    "depends_on": [
+                        "aws_network_interface.stg_opsc_data.*",
+                        "data.aws_iam_instance_profile.stg_role",
+                        "data.aws_vpc.stg_vpc",
+                        "data.template_file.user_data"
+                    ],
+                    "primary": {
+                        "id": "i-091ea864ad9662757",
+                        "attributes": {
+                            "associate_public_ip_address": "false",
+                            "availability_zone": "ap-southeast-2b",
+                            "credit_specification.#": "1",
+                            "credit_specification.0.cpu_credits": "standard",
+                            "disable_api_termination": "false",
+                            "ebs_block_device.#": "0",
+                            "ebs_optimized": "false",
+                            "get_password_data": "false",
+                            "iam_instance_profile": "OpenshiftNode",
+                            "id": "i-091ea864ad9662757",
+                            "instance_state": "running",
+                            "instance_type": "i3.xlarge",
+                            "ipv6_addresses.#": "0",
+                            "key_name": "",
+                            "monitoring": "false",
+                            "network_interface.#": "1",
+                            "network_interface.2123470623.delete_on_termination": "false",
+                            "network_interface.2123470623.device_index": "0",
+                            "network_interface.2123470623.network_interface_id": "eni-8414d1a9",
+                            "network_interface_id": "eni-8414d1a9",
+                            "password_data": "",
+                            "placement_group": "",
+                            "primary_network_interface_id": "eni-8414d1a9",
+                            "private_dns": "ip-10-0-0-2.ap-southeast-2.compute.internal",
+                            "private_ip": "10.0.0.2",
+                            "public_dns": "",
+                            "public_ip": "",
+                            "root_block_device.#": "1",
+                            "root_block_device.0.delete_on_termination": "true",
+                            "root_block_device.0.iops": "100",
+                            "root_block_device.0.volume_id": "vol-0034078f160ccc21f",
+                            "root_block_device.0.volume_size": "30",
+                            "root_block_device.0.volume_type": "gp2",
+                            "security_groups.#": "0",
+                            "source_dest_check": "true",
+                            "subnet_id": "subnet-890d43ee",
+                            "tags.%": "3",
+                            "tags.Name": "stg-vpc.Opsc1",
+                            "tags.ProjectRef": "dse-shrd/stg",
+                            "tags.Role": "OpsCenter",
+                            "tags.DSEDataCenterName": "opsc_dsecore",
+                            "tags.DSENodeType": "dse_core",
+                            "tenancy": "default"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 1200000000000,
+                                "update": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_instance.stg_opsc_data_dse_opsc.1": {
+                    "type": "aws_instance",
+                    "depends_on": [
+                        "aws_network_interface.stg_opsc_data.*",
+                        "data.aws_iam_instance_profile.stg_role",
+                        "data.aws_vpc.stg_vpc",
+                        "data.template_file.user_data"
+                    ],
+                    "primary": {
+                        "id": "i-01e5884a4aacd6a55",
+                        "attributes": {
+                            "associate_public_ip_address": "false",
+                            "availability_zone": "ap-southeast-2b",
+                            "credit_specification.#": "1",
+                            "credit_specification.0.cpu_credits": "standard",
+                            "disable_api_termination": "false",
+                            "ebs_block_device.#": "0",
+                            "ebs_optimized": "false",
+                            "get_password_data": "false",
+                            "iam_instance_profile": "OpenshiftNode",
+                            "id": "i-01e5884a4aacd6a55",
+                            "instance_state": "running",
+                            "instance_type": "i3.xlarge",
+                            "ipv6_addresses.#": "0",
+                            "key_name": "",
+                            "monitoring": "false",
+                            "network_interface.#": "1",
+                            "network_interface.1561568992.delete_on_termination": "false",
+                            "network_interface.1561568992.device_index": "0",
+                            "network_interface.1561568992.network_interface_id": "eni-b515d098",
+                            "network_interface_id": "eni-b515d098",
+                            "password_data": "",
+                            "placement_group": "",
+                            "primary_network_interface_id": "eni-b515d098",
+                            "private_dns": "ip-10-0-0-3.ap-southeast-2.compute.internal",
+                            "private_ip": "10.0.0.3",
+                            "public_dns": "",
+                            "public_ip": "",
+                            "root_block_device.#": "1",
+                            "root_block_device.0.delete_on_termination": "true",
+                            "root_block_device.0.iops": "100",
+                            "root_block_device.0.volume_id": "vol-06ddda71e7d24716a",
+                            "root_block_device.0.volume_size": "30",
+                            "root_block_device.0.volume_type": "gp2",
+                            "security_groups.#": "0",
+                            "source_dest_check": "true",
+                            "subnet_id": "subnet-890d43ee",
+                            "tags.%": "3",
+                            "tags.Name": "stg-vpc.Opsc2",
+                            "tags.ProjectRef": "dse-shrd/stg",
+                            "tags.Role": "OpsCenter",
+                            "tags.DSEDataCenterName": "opsc_dsecore",
+                            "tags.DSENodeType": "dse_core",
+                            "tenancy": "default"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 1200000000000,
+                                "update": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_network_interface.stg_dc1_data.0": {
+                    "type": "aws_network_interface",
+                    "depends_on": [
+                        "aws_security_group.stg_dse_node",
+                        "aws_security_group.stg_dse_peer",
+                        "data.aws_security_group.stg_data",
+                        "data.aws_subnet.stg_data2",
+                        "data.aws_vpc.stg_vpc"
+                    ],
+                    "primary": {
+                        "id": "eni-481fda65",
+                        "attributes": {
+                            "attachment.#": "0",
+                            "description": "",
+                            "id": "eni-481fda65",
+                            "private_dns_name": "ip-10-0-0-4.ap-southeast-2.compute.internal",
+                            "private_ip": "10.0.0.4",
+                            "private_ips.#": "1",
+                            "private_ips.2493478006": "10.0.0.4",
+                            "security_groups.#": "3",
+                            "security_groups.1294561141": "sg-8a2503f3",
+                            "security_groups.2149224266": "sg-f9034b80",
+                            "security_groups.425576852": "sg-1b220462",
+                            "source_dest_check": "true",
+                            "subnet_id": "subnet-890d43ee",
+                            "tags.%": "3",
+                            "tags.Name": "stg-vpc.Dse1.1",
+                            "tags.ProjectRef": "dse-shrd/stg",
+                            "tags.Role": "DSE"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_network_interface.stg_dc1_data.1": {
+                    "type": "aws_network_interface",
+                    "depends_on": [
+                        "aws_security_group.stg_dse_node",
+                        "aws_security_group.stg_dse_peer",
+                        "data.aws_security_group.stg_data",
+                        "data.aws_subnet.stg_data2",
+                        "data.aws_vpc.stg_vpc"
+                    ],
+                    "primary": {
+                        "id": "eni-7513d658",
+                        "attributes": {
+                            "attachment.#": "0",
+                            "description": "",
+                            "id": "eni-7513d658",
+                            "private_dns_name": "ip-10-0-0-5.ap-southeast-2.compute.internal",
+                            "private_ip": "10.0.0.5",
+                            "private_ips.#": "1",
+                            "private_ips.4200910220": "10.0.0.5",
+                            "security_groups.#": "3",
+                            "security_groups.1294561141": "sg-8a2503f3",
+                            "security_groups.2149224266": "sg-f9034b80",
+                            "security_groups.425576852": "sg-1b220462",
+                            "source_dest_check": "true",
+                            "subnet_id": "subnet-890d43ee",
+                            "tags.%": "3",
+                            "tags.Name": "stg-vpc.Dse1.2",
+                            "tags.ProjectRef": "dse-shrd/stg",
+                            "tags.Role": "DSE"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_network_interface.stg_dc1_data.2": {
+                    "type": "aws_network_interface",
+                    "depends_on": [
+                        "aws_security_group.stg_dse_node",
+                        "aws_security_group.stg_dse_peer",
+                        "data.aws_security_group.stg_data",
+                        "data.aws_subnet.stg_data2",
+                        "data.aws_vpc.stg_vpc"
+                    ],
+                    "primary": {
+                        "id": "eni-b91dd894",
+                        "attributes": {
+                            "attachment.#": "0",
+                            "description": "",
+                            "id": "eni-b91dd894",
+                            "private_dns_name": "ip-10-0-0-6.ap-southeast-2.compute.internal",
+                            "private_ip": "10.0.0.6",
+                            "private_ips.#": "1",
+                            "private_ips.1989118630": "10.0.0.6",
+                            "security_groups.#": "3",
+                            "security_groups.1294561141": "sg-8a2503f3",
+                            "security_groups.2149224266": "sg-f9034b80",
+                            "security_groups.425576852": "sg-1b220462",
+                            "source_dest_check": "true",
+                            "subnet_id": "subnet-890d43ee",
+                            "tags.%": "3",
+                            "tags.Name": "stg-vpc.Dse1.3",
+                            "tags.ProjectRef": "dse-shrd/stg",
+                            "tags.Role": "DSE"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_network_interface.stg_opsc_data.0": {
+                    "type": "aws_network_interface",
+                    "depends_on": [
+                        "aws_security_group.stg_dse_node",
+                        "aws_security_group.stg_dse_peer",
+                        "aws_security_group.stg_opsc_node",
+                        "aws_security_group.stg_opsc_ui",
+                        "data.aws_security_group.stg_data",
+                        "data.aws_subnet.stg_data2",
+                        "data.aws_vpc.stg_vpc"
+                    ],
+                    "primary": {
+                        "id": "eni-8414d1a9",
+                        "attributes": {
+                            "attachment.#": "0",
+                            "description": "",
+                            "id": "eni-8414d1a9",
+                            "private_dns_name": "ip-10-0-0-7.ap-southeast-2.compute.internal",
+                            "private_ip": "10.0.0.7",
+                            "private_ips.#": "1",
+                            "private_ips.227943884": "10.0.0.7",
+                            "security_groups.#": "5",
+                            "security_groups.1294561141": "sg-8a2503f3",
+                            "security_groups.2149224266": "sg-f9034b80",
+                            "security_groups.325164720": "sg-4a200633",
+                            "security_groups.3396190246": "sg-bd2107c4",
+                            "security_groups.425576852": "sg-1b220462",
+                            "source_dest_check": "true",
+                            "subnet_id": "subnet-890d43ee",
+                            "tags.%": "3",
+                            "tags.Name": "stg-vpc.Opsc1",
+                            "tags.ProjectRef": "dse-shrd/stg",
+                            "tags.Role": "OpsCenter"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_network_interface.stg_opsc_data.1": {
+                    "type": "aws_network_interface",
+                    "depends_on": [
+                        "aws_security_group.stg_dse_node",
+                        "aws_security_group.stg_dse_peer",
+                        "aws_security_group.stg_opsc_node",
+                        "aws_security_group.stg_opsc_ui",
+                        "data.aws_security_group.stg_data",
+                        "data.aws_subnet.stg_data2",
+                        "data.aws_vpc.stg_vpc"
+                    ],
+                    "primary": {
+                        "id": "eni-b515d098",
+                        "attributes": {
+                            "attachment.#": "0",
+                            "description": "",
+                            "id": "eni-b515d098",
+                            "private_dns_name": "ip-10-0-0-8.ap-southeast-2.compute.internal",
+                            "private_ip": "10.0.0.8",
+                            "private_ips.#": "1",
+                            "private_ips.2594391145": "10.0.0.8",
+                            "security_groups.#": "5",
+                            "security_groups.1294561141": "sg-8a2503f3",
+                            "security_groups.2149224266": "sg-f9034b80",
+                            "security_groups.325164720": "sg-4a200633",
+                            "security_groups.3396190246": "sg-bd2107c4",
+                            "security_groups.425576852": "sg-1b220462",
+                            "source_dest_check": "true",
+                            "subnet_id": "subnet-890d43ee",
+                            "tags.%": "3",
+                            "tags.Name": "stg-vpc.Opsc2",
+                            "tags.ProjectRef": "dse-shrd/stg",
+                            "tags.Role": "OpsCenter"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_security_group.stg_dse_node": {
+                    "type": "aws_security_group",
+                    "depends_on": [
+                        "aws_security_group.stg_dse_peer",
+                        "data.aws_vpc.stg_vpc"
+                    ],
+                    "primary": {
+                        "id": "sg-8a2503f3",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:ap-southeast-2:555781440146:security-group/sg-8a2503f3",
+                            "description": "stg-vpc.DseNode",
+                            "egress.#": "1",
+                            "egress.2127472976.cidr_blocks.#": "0",
+                            "egress.2127472976.description": "",
+                            "egress.2127472976.from_port": "0",
+                            "egress.2127472976.ipv6_cidr_blocks.#": "0",
+                            "egress.2127472976.prefix_list_ids.#": "0",
+                            "egress.2127472976.protocol": "-1",
+                            "egress.2127472976.security_groups.#": "1",
+                            "egress.2127472976.security_groups.425576852": "sg-1b220462",
+                            "egress.2127472976.self": "false",
+                            "egress.2127472976.to_port": "0",
+                            "id": "sg-8a2503f3",
+                            "ingress.#": "11",
+                            "ingress.1032492893.cidr_blocks.#": "1",
+                            "ingress.1032492893.cidr_blocks.0": "10.0.0.0/",
+                            "ingress.1032492893.description": "",
+                            "ingress.1032492893.from_port": "9042",
+                            "ingress.1032492893.ipv6_cidr_blocks.#": "0",
+                            "ingress.1032492893.protocol": "tcp",
+                            "ingress.1032492893.security_groups.#": "1",
+                            "ingress.1032492893.security_groups.425576852": "sg-1b220462",
+                            "ingress.1032492893.self": "false",
+                            "ingress.1032492893.to_port": "9042",
+                            "ingress.1433705478.cidr_blocks.#": "0",
+                            "ingress.1433705478.description": "",
+                            "ingress.1433705478.from_port": "61621",
+                            "ingress.1433705478.ipv6_cidr_blocks.#": "0",
+                            "ingress.1433705478.protocol": "tcp",
+                            "ingress.1433705478.security_groups.#": "1",
+                            "ingress.1433705478.security_groups.425576852": "sg-1b220462",
+                            "ingress.1433705478.self": "false",
+                            "ingress.1433705478.to_port": "61621",
+                            "ingress.2074949905.cidr_blocks.#": "0",
+                            "ingress.2074949905.description": "",
+                            "ingress.2074949905.from_port": "5599",
+                            "ingress.2074949905.ipv6_cidr_blocks.#": "0",
+                            "ingress.2074949905.protocol": "tcp",
+                            "ingress.2074949905.security_groups.#": "1",
+                            "ingress.2074949905.security_groups.425576852": "sg-1b220462",
+                            "ingress.2074949905.self": "false",
+                            "ingress.2074949905.to_port": "5599",
+                            "ingress.2407216924.cidr_blocks.#": "0",
+                            "ingress.2407216924.description": "",
+                            "ingress.2407216924.from_port": "7199",
+                            "ingress.2407216924.ipv6_cidr_blocks.#": "0",
+                            "ingress.2407216924.protocol": "tcp",
+                            "ingress.2407216924.security_groups.#": "1",
+                            "ingress.2407216924.security_groups.425576852": "sg-1b220462",
+                            "ingress.2407216924.self": "false",
+                            "ingress.2407216924.to_port": "7199",
+                            "ingress.2968643643.cidr_blocks.#": "0",
+                            "ingress.2968643643.description": "",
+                            "ingress.2968643643.from_port": "10000",
+                            "ingress.2968643643.ipv6_cidr_blocks.#": "0",
+                            "ingress.2968643643.protocol": "tcp",
+                            "ingress.2968643643.security_groups.#": "1",
+                            "ingress.2968643643.security_groups.425576852": "sg-1b220462",
+                            "ingress.2968643643.self": "false",
+                            "ingress.2968643643.to_port": "10000",
+                            "ingress.3109002864.cidr_blocks.#": "0",
+                            "ingress.3109002864.description": "",
+                            "ingress.3109002864.from_port": "8609",
+                            "ingress.3109002864.ipv6_cidr_blocks.#": "0",
+                            "ingress.3109002864.protocol": "tcp",
+                            "ingress.3109002864.security_groups.#": "1",
+                            "ingress.3109002864.security_groups.425576852": "sg-1b220462",
+                            "ingress.3109002864.self": "false",
+                            "ingress.3109002864.to_port": "8609",
+                            "ingress.3454577071.cidr_blocks.#": "0",
+                            "ingress.3454577071.description": "",
+                            "ingress.3454577071.from_port": "7077",
+                            "ingress.3454577071.ipv6_cidr_blocks.#": "0",
+                            "ingress.3454577071.protocol": "tcp",
+                            "ingress.3454577071.security_groups.#": "1",
+                            "ingress.3454577071.security_groups.425576852": "sg-1b220462",
+                            "ingress.3454577071.self": "false",
+                            "ingress.3454577071.to_port": "7077",
+                            "ingress.4106332114.cidr_blocks.#": "0",
+                            "ingress.4106332114.description": "",
+                            "ingress.4106332114.from_port": "7000",
+                            "ingress.4106332114.ipv6_cidr_blocks.#": "0",
+                            "ingress.4106332114.protocol": "tcp",
+                            "ingress.4106332114.security_groups.#": "1",
+                            "ingress.4106332114.security_groups.425576852": "sg-1b220462",
+                            "ingress.4106332114.self": "false",
+                            "ingress.4106332114.to_port": "7001",
+                            "ingress.4123662550.cidr_blocks.#": "1",
+                            "ingress.4123662550.description": "",
+                            "ingress.4123662550.from_port": "9142",
+                            "ingress.4123662550.ipv6_cidr_blocks.#": "0",
+                            "ingress.4123662550.protocol": "tcp",
+                            "ingress.4123662550.security_groups.#": "1",
+                            "ingress.4123662550.security_groups.425576852": "sg-1b220462",
+                            "ingress.4123662550.self": "false",
+                            "ingress.4123662550.to_port": "9142",
+                            "ingress.413301989.cidr_blocks.#": "1",
+                            "ingress.413301989.cidr_blocks.0": "10.0.0.0/26",
+                            "ingress.413301989.description": "",
+                            "ingress.413301989.from_port": "9160",
+                            "ingress.413301989.ipv6_cidr_blocks.#": "0",
+                            "ingress.413301989.protocol": "tcp",
+                            "ingress.413301989.security_groups.#": "1",
+                            "ingress.413301989.security_groups.425576852": "sg-1b220462",
+                            "ingress.413301989.self": "false",
+                            "ingress.413301989.to_port": "9160",
+                            "ingress.481631928.cidr_blocks.#": "0",
+                            "ingress.481631928.description": "",
+                            "ingress.481631928.from_port": "8983",
+                            "ingress.481631928.ipv6_cidr_blocks.#": "0",
+                            "ingress.481631928.protocol": "tcp",
+                            "ingress.481631928.security_groups.#": "1",
+                            "ingress.481631928.security_groups.425576852": "sg-1b220462",
+                            "ingress.481631928.self": "false",
+                            "ingress.481631928.to_port": "8983",
+                            "name": "stg-vpc.DseNode",
+                            "owner_id": "555781440146",
+                            "revoke_rules_on_delete": "false",
+                            "tags.%": "2",
+                            "tags.Name": "stg-vpc.DseNode",
+                            "tags.ProjectRef": "dse-shrd/stg",
+                            "vpc_id": "vpc-6d00940a"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_security_group.stg_dse_peer": {
+                    "type": "aws_security_group",
+                    "depends_on": [
+                        "data.aws_vpc.stg_vpc"
+                    ],
+                    "primary": {
+                        "id": "sg-1b220462",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:ap-southeast-2:555781440146:security-group/sg-1b220462",
+                            "description": "stg-vpc.DsePeer",
+                            "egress.#": "0",
+                            "id": "sg-1b220462",
+                            "ingress.#": "0",
+                            "name": "stg-vpc.DsePeer",
+                            "owner_id": "555781440146",
+                            "revoke_rules_on_delete": "false",
+                            "tags.%": "2",
+                            "tags.Name": "stg-vpc.DsePeer",
+                            "tags.ProjectRef": "dse-shrd/stg",
+                            "vpc_id": "vpc-6d00940a"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_security_group.stg_opsc_lb": {
+                    "type": "aws_security_group",
+                    "depends_on": [
+                        "data.aws_vpc.stg_vpc"
+                    ],
+                    "primary": {
+                        "id": "sg-5625032f",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:ap-southeast-2:555781440146:security-group/sg-5625032f",
+                            "description": "stg-vpc.OpscLB",
+                            "egress.#": "0",
+                            "id": "sg-5625032f",
+                            "ingress.#": "2",
+                            "ingress.505700043.cidr_blocks.#": "1",
+                            "ingress.505700043.description": "",
+                            "ingress.505700043.from_port": "443",
+                            "ingress.505700043.ipv6_cidr_blocks.#": "0",
+                            "ingress.505700043.protocol": "TCP",
+                            "ingress.505700043.security_groups.#": "0",
+                            "ingress.505700043.self": "false",
+                            "ingress.505700043.to_port": "443",
+                            "ingress.591901360.cidr_blocks.#": "1",
+                            "ingress.591901360.description": "",
+                            "ingress.591901360.from_port": "80",
+                            "ingress.591901360.ipv6_cidr_blocks.#": "0",
+                            "ingress.591901360.protocol": "TCP",
+                            "ingress.591901360.security_groups.#": "0",
+                            "ingress.591901360.self": "false",
+                            "ingress.591901360.to_port": "80",
+                            "name": "stg-vpc.OpscLB",
+                            "owner_id": "555781440146",
+                            "revoke_rules_on_delete": "false",
+                            "tags.%": "2",
+                            "tags.Name": "stg-vpc.OpscLB",
+                            "tags.ProjectRef": "dse-shrd/stg",
+                            "vpc_id": "vpc-6d00940a"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_security_group.stg_opsc_node": {
+                    "type": "aws_security_group",
+                    "depends_on": [
+                        "aws_security_group.stg_dse_peer",
+                        "data.aws_vpc.stg_vpc"
+                    ],
+                    "primary": {
+                        "id": "sg-bd2107c4",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:ap-southeast-2:555781440146:security-group/sg-bd2107c4",
+                            "description": "stg-vpc.OpscData",
+                            "egress.#": "1",
+                            "egress.2127472976.cidr_blocks.#": "0",
+                            "egress.2127472976.description": "",
+                            "egress.2127472976.from_port": "0",
+                            "egress.2127472976.ipv6_cidr_blocks.#": "0",
+                            "egress.2127472976.prefix_list_ids.#": "0",
+                            "egress.2127472976.protocol": "-1",
+                            "egress.2127472976.security_groups.#": "1",
+                            "egress.2127472976.security_groups.425576852": "sg-1b220462",
+                            "egress.2127472976.self": "false",
+                            "egress.2127472976.to_port": "0",
+                            "id": "sg-bd2107c4",
+                            "ingress.#": "6",
+                            "ingress.1730051813.cidr_blocks.#": "0",
+                            "ingress.1730051813.description": "",
+                            "ingress.1730051813.from_port": "443",
+                            "ingress.1730051813.ipv6_cidr_blocks.#": "0",
+                            "ingress.1730051813.protocol": "tcp",
+                            "ingress.1730051813.security_groups.#": "1",
+                            "ingress.1730051813.security_groups.425576852": "sg-1b220462",
+                            "ingress.1730051813.self": "false",
+                            "ingress.1730051813.to_port": "443",
+                            "ingress.2230761198.cidr_blocks.#": "0",
+                            "ingress.2230761198.description": "",
+                            "ingress.2230761198.from_port": "465",
+                            "ingress.2230761198.ipv6_cidr_blocks.#": "0",
+                            "ingress.2230761198.protocol": "tcp",
+                            "ingress.2230761198.security_groups.#": "1",
+                            "ingress.2230761198.security_groups.425576852": "sg-1b220462",
+                            "ingress.2230761198.self": "false",
+                            "ingress.2230761198.to_port": "465",
+                            "ingress.3477262131.cidr_blocks.#": "0",
+                            "ingress.3477262131.description": "",
+                            "ingress.3477262131.from_port": "162",
+                            "ingress.3477262131.ipv6_cidr_blocks.#": "0",
+                            "ingress.3477262131.protocol": "udp",
+                            "ingress.3477262131.security_groups.#": "1",
+                            "ingress.3477262131.security_groups.425576852": "sg-1b220462",
+                            "ingress.3477262131.self": "false",
+                            "ingress.3477262131.to_port": "162",
+                            "ingress.3730334311.cidr_blocks.#": "0",
+                            "ingress.3730334311.description": "",
+                            "ingress.3730334311.from_port": "25",
+                            "ingress.3730334311.ipv6_cidr_blocks.#": "0",
+                            "ingress.3730334311.protocol": "tcp",
+                            "ingress.3730334311.security_groups.#": "1",
+                            "ingress.3730334311.security_groups.425576852": "sg-1b220462",
+                            "ingress.3730334311.self": "false",
+                            "ingress.3730334311.to_port": "25",
+                            "ingress.413394061.cidr_blocks.#": "0",
+                            "ingress.413394061.description": "",
+                            "ingress.413394061.from_port": "3128",
+                            "ingress.413394061.ipv6_cidr_blocks.#": "0",
+                            "ingress.413394061.protocol": "tcp",
+                            "ingress.413394061.security_groups.#": "1",
+                            "ingress.413394061.security_groups.425576852": "sg-1b220462",
+                            "ingress.413394061.self": "false",
+                            "ingress.413394061.to_port": "3128",
+                            "ingress.4279230035.cidr_blocks.#": "0",
+                            "ingress.4279230035.description": "",
+                            "ingress.4279230035.from_port": "61619",
+                            "ingress.4279230035.ipv6_cidr_blocks.#": "0",
+                            "ingress.4279230035.protocol": "tcp",
+                            "ingress.4279230035.security_groups.#": "1",
+                            "ingress.4279230035.security_groups.425576852": "sg-1b220462",
+                            "ingress.4279230035.self": "false",
+                            "ingress.4279230035.to_port": "61620",
+                            "name": "stg-vpc.OpscData",
+                            "owner_id": "555781440146",
+                            "revoke_rules_on_delete": "false",
+                            "tags.%": "2",
+                            "tags.Name": "stg-vpc.OpscData",
+                            "tags.ProjectRef": "dse-shrd/stg",
+                            "vpc_id": "vpc-6d00940a"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_security_group.stg_opsc_ui": {
+                    "type": "aws_security_group",
+                    "depends_on": [
+                        "aws_security_group.stg_opsc_lb",
+                        "data.aws_vpc.stg_vpc"
+                    ],
+                    "primary": {
+                        "id": "sg-4a200633",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:ap-southeast-2:555781440146:security-group/sg-4a200633",
+                            "description": "stg-vpc.OpscUI",
+                            "egress.#": "0",
+                            "id": "sg-4a200633",
+                            "ingress.#": "2",
+                            "ingress.1310241929.cidr_blocks.#": "1",
+                            "ingress.1310241929.description": "",
+                            "ingress.1310241929.from_port": "8888",
+                            "ingress.1310241929.ipv6_cidr_blocks.#": "0",
+                            "ingress.1310241929.protocol": "tcp",
+                            "ingress.1310241929.security_groups.#": "1",
+                            "ingress.1310241929.security_groups.4119367862": "sg-5625032f",
+                            "ingress.1310241929.self": "false",
+                            "ingress.1310241929.to_port": "8888",
+                            "ingress.160862562.cidr_blocks.#": "1",
+                            "ingress.160862562.description": "",
+                            "ingress.160862562.from_port": "8443",
+                            "ingress.160862562.ipv6_cidr_blocks.#": "0",
+                            "ingress.160862562.protocol": "tcp",
+                            "ingress.160862562.security_groups.#": "1",
+                            "ingress.160862562.security_groups.4119367862": "sg-5625032f",
+                            "ingress.160862562.self": "false",
+                            "ingress.160862562.to_port": "8443",
+                            "name": "stg-vpc.OpscUI",
+                            "owner_id": "555781440146",
+                            "revoke_rules_on_delete": "false",
+                            "tags.%": "2",
+                            "tags.Name": "stg-vpc.OpscUI",
+                            "tags.ProjectRef": "dse-shrd/stg",
+                            "vpc_id": "vpc-6d00940a"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_volume_attachment.stg_dc1_data.0": {
+                    "type": "aws_volume_attachment",
+                    "depends_on": [
+                        "aws_ebs_volume.stg_dc1_data.*",
+                        "aws_instance.stg_dc1_data_dse_graph.*"
+                    ],
+                    "primary": {
+                        "id": "vai-1319514067",
+                        "attributes": {
+                            "device_name": "/dev/xvdb",
+                            "id": "vai-1319514067",
+                            "instance_id": "i-0387ffbbcd2dceb5f",
+                            "skip_destroy": "true",
+                            "volume_id": "vol-0159e6dcb8ce32273"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_volume_attachment.stg_dc1_data.1": {
+                    "type": "aws_volume_attachment",
+                    "depends_on": [
+                        "aws_ebs_volume.stg_dc1_data.*",
+                        "aws_instance.stg_dc1_data_dse_graph.*"
+                    ],
+                    "primary": {
+                        "id": "vai-2116643807",
+                        "attributes": {
+                            "device_name": "/dev/xvdb",
+                            "id": "vai-2116643807",
+                            "instance_id": "i-046e646f2d9149073",
+                            "skip_destroy": "true",
+                            "volume_id": "vol-0202300f8048c21ae"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_volume_attachment.stg_dc1_data.2": {
+                    "type": "aws_volume_attachment",
+                    "depends_on": [
+                        "aws_ebs_volume.stg_dc1_data.*",
+                        "aws_instance.stg_dc1_data_dse_graph.*"
+                    ],
+                    "primary": {
+                        "id": "vai-2940807049",
+                        "attributes": {
+                            "device_name": "/dev/xvdb",
+                            "id": "vai-2940807049",
+                            "instance_id": "i-0fc573cfc7d44c657",
+                            "skip_destroy": "true",
+                            "volume_id": "vol-00bfebe5f264bdf68"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_volume_attachment.stg_opsc_data.0": {
+                    "type": "aws_volume_attachment",
+                    "depends_on": [
+                        "aws_ebs_volume.stg_opsc_data.*",
+                        "aws_instance.stg_opsc_data_dse_opsc.*"
+                    ],
+                    "primary": {
+                        "id": "vai-382061303",
+                        "attributes": {
+                            "device_name": "/dev/xvdb",
+                            "id": "vai-382061303",
+                            "instance_id": "i-091ea864ad9662757",
+                            "volume_id": "vol-07d5c41674a460933"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "aws_volume_attachment.stg_opsc_data.1": {
+                    "type": "aws_volume_attachment",
+                    "depends_on": [
+                        "aws_ebs_volume.stg_opsc_data.*",
+                        "aws_instance.stg_opsc_data_dse_opsc.*"
+                    ],
+                    "primary": {
+                        "id": "vai-3776238023",
+                        "attributes": {
+                            "device_name": "/dev/xvdb",
+                            "id": "vai-3776238023",
+                            "instance_id": "i-01e5884a4aacd6a55",
+                            "volume_id": "vol-0219b3802f71b5e99"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "data.aws_iam_instance_profile.stg_role": {
+                    "type": "aws_iam_instance_profile",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "AIPAJQQB2XIP77WBATTTM",
+                        "attributes": {
+                            "arn": "arn:aws:iam::555781440146:instance-profile/OpenshiftNode",
+                            "create_date": "2018-04-29 09:16:44 +0000 UTC",
+                            "id": "AIPAJQQB2XIP77WBATTTM",
+                            "name": "OpenshiftNode",
+                            "path": "/",
+                            "role_arn": "arn:aws:iam::555781440146:role/OpenshiftNode",
+                            "role_id": "AROAI6CZEMTGBODTPBK5O",
+                            "role_name": "OpenshiftNode"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "data.aws_security_group.stg_data": {
+                    "type": "aws_security_group",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "sg-f9034b80",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:ap-southeast-2:555781440146:security-group/sg-f9034b80",
+                            "description": "stg-vpc._data",
+                            "id": "sg-f9034b80",
+                            "name": "stg-vpc._data",
+                            "tags.%": "2",
+                            "tags.Name": "stg-vpc._data",
+                            "tags.ProjectRef": "aws-network/stg",
+                            "vpc_id": "vpc-6d00940a"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "data.aws_security_group.stg_dmz": {
+                    "type": "aws_security_group",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "sg-920941eb",
+                        "attributes": {
+
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "data.aws_security_group.stg_int": {
+                    "type": "aws_security_group",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "sg-52034b2b",
+                        "attributes": {
+
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "data.aws_subnet.stg_data1": {
+                    "type": "aws_subnet",
+                    "depends_on": [
+                        "data.aws_subnet_ids.stg_data"
+                    ],
+                    "primary": {
+                        "id": "subnet-985f27d1",
+                        "attributes": {
+
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "data.aws_subnet.stg_data2": {
+                    "type": "aws_subnet",
+                    "depends_on": [
+                        "data.aws_subnet_ids.stg_data"
+                    ],
+                    "primary": {
+                        "id": "subnet-890d43ee",
+                        "attributes": {
+
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "data.aws_subnet.stg_data3": {
+                    "type": "aws_subnet",
+                    "depends_on": [
+                        "data.aws_subnet_ids.stg_data"
+                    ],
+                    "primary": {
+                        "id": "subnet-919c5cc9",
+                        "attributes": {
+
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "data.aws_subnet_ids.stg_data": {
+                    "type": "aws_subnet_ids",
+                    "depends_on": [
+                        "data.aws_vpc.stg_vpc"
+                    ],
+                    "primary": {
+                        "id": "vpc-6d00940a",
+                        "attributes": {
+
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "data.aws_vpc.shrd_vpc": {
+                    "type": "aws_vpc",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "vpc-c91b1fad",
+                        "attributes": {
+
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.shrd"
+                },
+                "data.aws_vpc.stg_vpc": {
+                    "type": "aws_vpc",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "vpc-6d00940a",
+                        "attributes": {
+                            
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws.stg"
+                },
+                "data.template_file.user_data": {
+                    "type": "template_file",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "40b212b98c948a80f14ea41a1f1acab88bc588335004a63cbbbd7423b605c078",
+                        "attributes": {
+                            },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.template"
+                }
+            },
+            "depends_on": []
+        }
+    ]
+}

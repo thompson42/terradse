@@ -1,6 +1,6 @@
 ## DSE Unified Authentication
 
-Additional security roles: `security_unified_auth_activate` and `security_install` to implement the core configuration settings for DSE Unified Authentication.
+Additional security roles: `security_auth_activate_internal` and `security_install` to implement the core configuration settings for DSE Unified Authentication.
 
 The default SCHEME is `internal`, please re-configure for LDAP and Kerberos SCHEMES, see the documentation here on how to do this:
 
@@ -18,7 +18,7 @@ Special note: default install cassandra superuser account:
 
 [Creating Roles for Internal Authentication](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secRolesInternal.html)
 
-Once the security_unified_auth_activate role has run you should have a system that challenges user access at all levels, its now time to create your roles and open your system back up, you will need your superuser account to edit these roles. See the above link to create roles, not that you want ot use the "internal" option on that page, with the `SCHEME: internal`  e.g.
+Once the security_auth_activate_internal role has run you should have a system that challenges user access at all levels, its now time to create your roles and open your system back up, you will need your superuser account to edit these roles. See the above link to create roles, not that you want ot use the "internal" option on that page, with the `SCHEME: internal`  e.g.
 
 ```
 CREATE ROLE jane WITH LOGIN = true AND PASSWORD = 'Abc123Jane';

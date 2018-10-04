@@ -28,6 +28,12 @@ ansible-playbook -i hosts add_node_authentication.yml --private-key=~/.ssh/id_rs
 echo
 
 echo
+echo ">>>> Configure DSE Role Management <<<<"
+echo
+ansible-playbook -i hosts add_node_role_management.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
+echo
 echo ">>>> Setup DSE cluster Transport Encryption on new Node <<<<"
 echo
 ansible-playbook -i hosts add_node_security.yml --private-key=~/.ssh/id_rsa_aws

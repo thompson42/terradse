@@ -78,6 +78,12 @@ ansible-playbook -i hosts add_datacenter_authentication.yml --private-key=~/.ssh
 echo
 
 echo
+echo ">>>> Activate Unified Authentication on new Datacenter nodes <<<<"
+echo
+ansible-playbook -i hosts add_datacenter_role_management.yml --private-key=~/.ssh/id_rsa_aws
+echo
+
+echo
 echo ">>>> Activate JMX Unified Authentication on new Datacenter nodes <<<<"
 echo
 ansible-playbook -i hosts add_datacenter_jmx_authentication.yml --private-key=~/.ssh/id_rsa_aws

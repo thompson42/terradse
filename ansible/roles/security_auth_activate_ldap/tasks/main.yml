@@ -1,0 +1,79 @@
+---
+
+# THIS ROLE ISUSED BY BOTH OPSC AND DSE
+
+# https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secAuthAndRbacAbout.html
+# https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secEnableDseAuthenticator.html
+  
+# In the cassandra.yaml file the following should all be setup already, but make sure here:
+- name: Configure DSE Unified Authentication authenticator, authorizer in cassandra.yaml.
+  yedit:
+    src: "{{ dse_config_dir }}/cassandra/cassandra.yaml"
+    edits:
+    - key: authenticator
+      value: com.datastax.bdp.cassandra.auth.DseAuthenticator
+    - key: authorizer
+      value: com.datastax.bdp.cassandra.auth.DseAuthorizer
+
+#Configure the DSE Authorizer in dse.yaml (/etc/dse/dse.yaml)
+- name: Configure the DSE Authorizer in dse.yaml (/etc/dse/dse.yaml)
+  yedit:
+    src: "{{ dse_config_dir }}/dse.yaml"
+    edits:
+    - key: authorization_options.enabled
+      value: true
+
+# Configure DSE Authenticator in dse.yaml (/etc/dse/dse.yaml)
+# Extended settings:
+# allow_digest_with_kerberos: true
+# plain_text_without_ssl: warn
+# transitional_mode: disabled
+# other_schemes:
+# scheme_permissions: false
+- name: Configure LDAP DSE Authenticator in dse.yaml (/etc/dse/dse.yaml)
+  yedit:
+    src: "{{ dse_config_dir }}/dse.yaml"
+    edits:
+    - key: authentication_options.enabled
+      value: true
+    - key: authentication_options.scheme
+      value: ldap
+      
+# Configure ldap_options in dse.yaml file:
+- name: Configure LDAP options in dse.yaml (/etc/dse/dse.yaml)
+  yedit:
+    src: "{{ dse_config_dir }}/dse.yaml"
+    edits:
+    - key: ldap_options.server_host
+      value: "{{ ldap_server_host }}"
+    - key: ldap_options.server_port
+      value: "{{ ldap_server_port }}"
+    - key: ldap_options.search_dn
+      value: "{{ ldap_search_dn }}"
+    - key: ldap_options.search_password
+      value: "{{ ldap_search_password }}"
+    - key: ldap_options.use_ssl
+      value: "{{ ldap_use_ssl }}"
+    - key: ldap_options.use_tls
+      value: "{{ ldap_use_tls }}"
+    - key: ldap_options.truststore_path
+      value: "{{ ldap_truststore_path }}"
+    - key: ldap_options.truststore_password
+      value: "{{ ldap_truststore_password }}"
+    - key: ldap_options.truststore_type
+      value: "{{ ldap_truststore_type }}"
+    - key: ldap_options.user_search_base
+      value: "{{ ldap_user_search_base }}"
+    - key: ldap_options.user_search_filter
+      value: "{{ ldap_user_search_filter }}"
+    - key: ldap_options.credentials_validity_in_ms
+      value: "{{ ldap_credentials_validity_in_ms }}"
+    - key: ldap_options.search_validity_in_seconds
+      value: "{{ ldap_search_validity_in_seconds }}"
+    - key: ldap_options.connection_pool.max_active
+      value: "{{ ldap_connection_pool_max_active }}"
+    - key: ldap_options.connection_pool.max_idle
+      value: "{{ ldap_connection_pool_max_idle }}"
+
+
+

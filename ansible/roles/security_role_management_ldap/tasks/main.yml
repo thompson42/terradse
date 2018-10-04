@@ -1,0 +1,16 @@
+
+# In the cassandra.yaml file the following should all be setup already, but make sure here:
+- name: Configure DSE role_manager in cassandra.yaml.
+  yedit:
+    src: "{{ dse_config_dir }}/cassandra/cassandra.yaml"
+    edits:
+    - key: role_manager
+      value: com.datastax.bdp.cassandra.auth.DseRoleManager
+
+#Configure the DSE Role Manager in dse.yaml (/etc/dse/dse.yaml)
+- name: Configure the DSE Role Manager in dse.yaml (/etc/dse/dse.yaml)
+  yedit:
+    src: "{{ dse_config_dir }}/dse.yaml"
+    edits:
+    - key: role_management_options.mode
+      value: ldap
