@@ -417,10 +417,17 @@ Better approach to CQLSH/cqlshrc, DSE/.dserc, Spark shell etc is use Datastax St
 
 ## LDAP Authentication 
 
-- TODO :x:
+- COMPLETE :heavy_check_mark:
 
-1. Configure selected authentication scheme options: [LDAP Schemes](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secLDAPScheme.html)
-2. Adjust the credentials_validity_in_ms and credentials_update_interval_in_ms as required for your environment in the dse.yaml.
+[Defining an LDAP scheme](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secLDAPScheme.html)
+
+[Creating roles for LDAP mode](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secRolesLdap.html)
+
+Read the following link if using mixed authentication (e.g. internal AND LDAP/AD authentcation):
+
+"Prevent unintentional role assignment when a group name or user name is found in multiple schemes. When a role has execute permission on a scheme, the role can only be applied to users that authenticated against that scheme."
+
+[Binding a role to an authentication scheme](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/Auth/secGrantScheme.html)
 
 ## Audit Logging 
 

@@ -14,7 +14,8 @@ my_is_ldap_authentication: true
 my_is_ldap_role_management: true
 ```
 6. Configure all other LDAP settings in your ansible/group_vars/my.yml file under the "LDAP Configuration" section
-7. Build and run your cluster, login in with your LDAP username/password
+7. Adjust the my_ldap_credentials_validity_in_ms and my_ldap_credentials_update_interval_in_ms as required for your environment
+8. Build and run your cluster, login in with your LDAP username/password
 
 #### For more extensive documentation:
 
