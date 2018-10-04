@@ -19,6 +19,7 @@ my_is_ldap_role_management: true
 #### For more extensive documentation:
 
 [Defining an LDAP scheme](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secLDAPScheme.html)
+
 [Creating roles for LDAP mode](https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/security/secRolesLdap.html)
 
 Read the following link if using mixed authentication (e.g. internal AND LDAP/AD authentcation):
