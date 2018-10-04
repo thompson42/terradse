@@ -1,11 +1,11 @@
 
  
-- hosts: dse_analytics
+- hosts: dse[0]
   any_errors_fatal: true
-  name: Rolling activate graph...
+  name: Activate LDAP
   become: true
   become_method: sudo
   roles:
-    - { role: dummy_role }
+    - { role: security_auth_activate_ldap }
 
 
