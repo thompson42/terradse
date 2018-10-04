@@ -4,9 +4,7 @@
 
 TESTING
 
-If using the dynamic inventory run your custom Terraform script with the required tags, ignore the NOTE and steps 1->8, but do complete steps 9) and 10) - see instructions [HERE](dynamic_inventory.md)
-
-Note: You will need the `ansible/hosts` file from the above cluster creation process to successfully add a node to this cluster due to the fact we have to regenerate keystores in some cases to add the new node's certificate. The hosts file needs to be 100% accurate, do NOT attempt to add a node into this cluster if you are not sure the hosts file is accurate.
+#### Manual method for basic AWS environments:
 
 1. Make sure you have a hosts file that reflects your target cluster AND a group_vars/all/my.vars that matches the existing nodes in the DC
 2. Create your new node
@@ -18,5 +16,10 @@ Note: You will need the `ansible/hosts` file from the above cluster creation pro
 8. Override default settings in group_vars/all/vars.yml with a my_ prefix in the group_vars/all/my.yml see group_vars/all_example for examples of how to do this.
 9. Make sure all settings in group_vars/all/my.yml are the same as when the original cluster that was generated with this tool.
 10. cd to the terraDSE directory and run ./runterra_add_node.sh and monitor Opscenter as the new node comes up.
+
+#### Dynamic inventory method for VPC environments:
+
+If using the dynamic inventory run your custom Terraform script with the required tags, ignore the NOTE and steps 1->8, but do complete steps 9) and 10) - for dynamic inventory see instructions [HERE](dynamic_inventory.md)
+
 
 

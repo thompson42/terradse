@@ -16,8 +16,4 @@
 
 #### Dynamic inventory method for VPC environments:
 
-If using a terraform dynamic inventory run your custom Terraform script with the required tags, ignore steps 1->8 and complete steps 9) and 10) - see instructions [HERE](https://github.com/thompson42/terraform-dynamic-inventory)
-
-```
-NOTE: A NEW DYNAMIC INVENTORY PROCESS IS NOW AVAILABLE, SEE THE REPO AND INSTRUCTIONS ON HOW TO USE IT WITH TERRADSE [HERE](https://github.com/thompson42/terraform-dynamic-inventory)
-```
+If using the dynamic inventory run your custom Terraform script with the required tags, ignore the NOTE and steps 1->8, but do complete steps 9) and 10) - for dynamic inventiry see instructions [HERE](dynamic_inventory.md)

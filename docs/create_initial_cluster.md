@@ -21,7 +21,7 @@ MUST SEE BELOW for a more full description and more detailed instructions - you 
 
 #### Dynamic inventory method for VPC environments:
 
-You are expected to supply your own Terraform scripts, then take advantage of dynamic inventory in TerraDSE, plese read the documentation for dynamic inventory generation: [HERE](https://github.com/thompson42/terraform-dynamic-inventory) and then:
+If using the dynamic inventory run your custom Terraform script with the required tags - for dynamic inventory see instructions [HERE](dynamic_inventory.md)
 
 1. Copy the directory `ansible/group_vars/all_example` to `ansible/group_vars/all`
 2. Override any default settings in `ansible/group_vars/all/vars.yml` by placing the parameter in the `ansible/group_vars/all/my.yml` file with  [my_] in front it.
@@ -29,7 +29,3 @@ You are expected to supply your own Terraform scripts, then take advantage of dy
 e.g. if a setting is [dse_repo_email] in `ansible/group_vars/all/vars.yml` override it with [my_dse_repo_email] in `ansible/group_vars/all/my.yml`
 
 3. Run `./runansi_extended.sh` (expects your key to be: `~/.ssh/id_rsa_aws`, edit if necessary)
-
-```
-NOTE: A NEW DYNAMIC INVENTORY PROCESS IS NOW AVAILABLE, SEE THE REPO AND INSTRUCTIONS ON HOW TO USE IT WITH TERRADSE [HERE](https://github.com/thompson42/terraform-dynamic-inventory)
-```
