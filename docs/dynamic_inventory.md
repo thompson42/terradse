@@ -3,21 +3,47 @@
 
 This small module in the ansible/library/dynamic_inventory.py file will generate a dynamic inventory in JSON format for Ansible via tfstate files.
 
-The inventory is controlled by two AWS tags on each instance:
+#### Configuration
+
+##### AWS Tags
+
+The inventory is controlled by two AWS tags on each instance e.g.:
 
 ```
-tags.DSEDataCenterName
-tags.DSENodeType
+"tags.DSEDataCenterName": "dse_graph",
+"tags.DSENodeType": "dse_graph",
 
 ```
 
-And the following environment variables (consumed by the inventory_generator.py file) e.g.:
+Make sure you tag all nodes (instances) with both tags.
+
+##### Environment variables
+
+Set following environment variables (consumed by the inventory_generator.py file) e.g.:
 
 ```
 DYNAMIC_INVENTORY_TFSTATE_PATH="/path/to/tfstate"
 DYNAMIC_INVENTORY_TFSTATE_LATEST_PATH="/path/to/tfstate_latest"
 ```
 These will need to be added to the profile for the user you run ansible as.
+
+To export these environment variables and values on Ubuntu use the following commands:
+
+```
+export DYNAMIC_INVENTORY_TFSTATE_PATH="/path/to/tfstate"
+export DYNAMIC_INVENTORY_TFSTATE_LATEST_PATH="/path/to/tfstate_latest"
+```
+
+Of course reset those paths to your storage locations for the files.
+
+To check you correctly set the environment paths:
+
+```
+echo $DYNAMIC_INVENTORY_TFSTATE_PATH
+echo $DYNAMIC_INVENTORY_TFSTATE_LATEST_PATH
+```
+
+#### Usage
 
 With the AWS tags and environment variables correctly set on existing Terraform tfstate and a new Terraform tfstate we have enough information to generate a dynamic inventory for ansible, avoiding the need to maintain [hosts] files for ansible, we also have the added advantage of being able to version tfstate files in S3 etc.
 
@@ -33,15 +59,9 @@ If you attempt to add more than 1x node to an existing datacenter the script wil
 
 If you attempt to add more than 1x datacenter to an existing cluster the script will exit and fail.
 
-### Set two EC2 tags on AWS all DSE cluster instances:
+### When calling an ansible playbook
 
-```
-"tags.DSEDataCenterName": "dse_graph",
-"tags.DSENodeType": "dse_graph",
-
-```
-
-### When calling an ansible playbook, explicitly point to the inventory_generator.py file:
+Explicitly point to the inventory_generator.py file:
 
 ```
 cmd>ansible-playbook -i /path/to/inventory_generator.py dse_keyspace_replication_configure.yml --private-key=~/.ssh/id_rsa_aws
