@@ -24,20 +24,24 @@
       value: true
 
 # Configure DSE Authenticator in dse.yaml (/etc/dse/dse.yaml)
+# See: https://support.datastax.com/hc/en-us/articles/115005881643-Setting-Up-LDAP-Authentication-and-Authorization-DSE-5-x
 # Extended settings:
 # allow_digest_with_kerberos: true
 # plain_text_without_ssl: warn
 # transitional_mode: disabled
-# other_schemes:
-# scheme_permissions: false
-- name: Configure LDAP DSE Authenticator in dse.yaml (/etc/dse/dse.yaml)
+- name: Configure mixed LDAP and INTERNAL DSE Authenticator in dse.yaml (/etc/dse/dse.yaml)
   yedit:
     src: "{{ dse_config_dir }}/dse.yaml"
     edits:
     - key: authentication_options.enabled
       value: true
-    - key: authentication_options.scheme
+    - key: authentication_options.default_scheme
       value: ldap
+    - key: authentication_options.other_schemes
+      value: [internal]
+      value_type: list
+    - key: authentication_options.scheme_permissions
+      value: true
       
 # Configure ldap_options in dse.yaml file:
 - name: Configure LDAP options in dse.yaml (/etc/dse/dse.yaml)
@@ -74,6 +78,11 @@
       value: "{{ ldap_connection_pool_max_active }}"
     - key: ldap_options.connection_pool.max_idle
       value: "{{ ldap_connection_pool_max_idle }}"
-
+    - key: ldap_options.user_memberof_attribute
+      value: "{{ ldap_user_memberof_attribute }}"
+    - key: ldap_options.group_search_type
+      value: "{{ ldap_group_search_type }}"
+    - key: ldap_options.group_name_attribute
+      value: "{{ ldap_group_name_attribute }}"
 
 

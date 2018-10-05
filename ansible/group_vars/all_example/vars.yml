@@ -193,7 +193,8 @@ is_automated_backup: "{{ my_is_automated_backup | default(false) }}"            
 backup_path: "{{ my_backup_path | default('/mnt/backups') }}"                                                           #EDIT: Should be located off node to be of any use
 backup_keyspace_list: "{{ my_backup_keyspace_list | default('keyspace1,keyspace2,keyspace3') }}"                        #EDIT: list keyspaces to backup, empty list means ALL keyspaces
 
-# LDAP Configuration
+# LDAP Configuration (from MS Active Directory example)
+# See: https://support.datastax.com/hc/en-us/articles/115005881643-Setting-Up-LDAP-Authentication-and-Authorization-DSE-5-x
 #-------------------------------------------------------------------------------
 is_ldap_authentication: "{{ my_is_ldap_authentication | default(false) }}"
 is_ldap_role_management: "{{ my_is_ldap_role_management | default(false) }}"
@@ -216,5 +217,16 @@ ldap_search_validity_in_seconds: "{{ my_ldap_search_validity_in_seconds | defaul
 #ldap_options.connection_pool in dse.yaml file:
 ldap_connection_pool_max_active: "{{ my_ldap_connection_pool_max_active | default('8') }}"
 ldap_connection_pool_max_idle: "{{ my_ldap_connection_pool_max_idle | default('8') }}"
+
+ldap_user_memberof_attribute: "{{ my_ldap_user_memberof_attribute | default('memberOf') }}"
+ldap_group_search_type: "{{ my_ldap_group_search_type | default('memberof_search') }}"
+ldap_group_name_attribute: "{{ my_ldap_group_name_attribute | default('cn') }}"
+
+# Additional unimplemented fields and/or options:
+# group_search_type: directory_search
+# group_search_base: cn=users,dc=qawin201,dc=lan
+# group_search_filter: (member=cn={0},cn=users,dc=qawin2008,dc=datastax,dc=lan)
+
+
 
 

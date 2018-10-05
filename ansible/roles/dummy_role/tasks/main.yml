@@ -1,22 +1,15 @@
 
-- name: Shut down "cassandra/dse" service
-  service:
-    name: dse
-    state: stopped
-    
-- name: Configure DSE Graph workload type
-  lineinfile:
-    name: "{{ dse_default_dir }}/dse"
-    regexp: '^GRAPH_ENABLED='
-    line: "GRAPH_ENABLED=1"
-    owner: cassandra
-    group: cassandra
-    mode: 0644
-    
-- name: Start cassandra or dse service
-  service:
-    name: dse
-    state: restarted
-  ignore_errors: true
+- name: Configure mixed LDAP and INTERNAL DSE Authenticator in dse.yaml (/etc/dse/dse.yaml)
+  yedit:
+    src: "{{ dse_config_dir }}/dse.yaml"
+    edits:
+    - key: authentication_options.enabled
+      value: true
+    - key: authentication_options.default_scheme
+      value: ldap
+    - key: authentication_options.other_schemes
+      value: [internal]
+      value_type: list
+#      append: true
       
 
