@@ -11,16 +11,17 @@ tags.DSENodeType
 
 ```
 
-And the following environment variables (consumed by the inventory_generator.py file):
+And the following environment variables (consumed by the inventory_generator.py file) e.g.:
 
 ```
-DYNAMIC_INVENTORY_TFSTATE_PATH
-DYNAMIC_INVENTORY_TFSTATE_LATEST_PATH 
+DYNAMIC_INVENTORY_TFSTATE_PATH="/path/to/tfstate"
+DYNAMIC_INVENTORY_TFSTATE_LATEST_PATH="/path/to/tfstate_latest"
 ```
+These will need to be added to the profile for the user you run ansible as.
 
-With these two tags correctly set on existing Terraform tfstate (DYNAMIC_INVENTORY_TFSTATE_PATH)  and a new Terraform tfstate (DYNAMIC_INVENTORY_TFSTATE_LATEST_PATH) we have enough information to generate a dynamic inventory for ansible, avoiding the need to maintain [hosts] files for ansible, we also have the added advantage of being able to version tfstate files in S3 etc.
+With the AWS tags and environment variables correctly set on existing Terraform tfstate and a new Terraform tfstate we have enough information to generate a dynamic inventory for ansible, avoiding the need to maintain [hosts] files for ansible, we also have the added advantage of being able to version tfstate files in S3 etc.
 
-Case 1: If only a single Terraform tfstate file exists in the first variable;DYNAMIC_INVENTORY_TFSTATE_PATH and the second field; DYNAMIC_INVENTORY_TFSTATE_LATEST_PATH  is empty,  the dynamic inventory script will build the Ansible inventory describing the current state, this can be used to generate a new cluster, or used to perform work on the existing cluster.
+Case 1: If only a single Terraform tfstate file exists at the first variable path; DYNAMIC_INVENTORY_TFSTATE_PATH and the second path; DYNAMIC_INVENTORY_TFSTATE_LATEST_PATH  is empty,  the dynamic inventory script will build the Ansible inventory describing the current state, this can be used to generate a new cluster, or used to perform work on the existing cluster.
 
 Case 2: If two Terraform tfstate files exist the dynamic inventory script will difference the two states and work out your intentions:
 
@@ -28,9 +29,9 @@ Case 2 A: If no difference there is no work to do, an empty inventory will be su
 
 Case 2 B: If differences found the script will work out your intentions which will be either [add_node] or [add_datacenter]
 
-If you attempt to add more than 1x node the script will exit and fail.
+If you attempt to add more than 1x node to an existing datacenter the script will exit and fail.
 
-If you attempt to add more than 1x datacenter the script will exit and fail.
+If you attempt to add more than 1x datacenter to an existing cluster the script will exit and fail.
 
 ### Set two EC2 tags on AWS all DSE cluster instances:
 
