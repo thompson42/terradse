@@ -10,7 +10,7 @@ A rolling restart is not a full cluster down, then cluster back up process but r
 TerraDSE contains a playbook that automates this process, you can invoke it on an ad-hoc basis by the following command:
 
 ```
-ansible-playbook dse_cluster_rolling_restart.yml --private-key=~/.ssh/id_rsa_aws
+ansible-playbook dse_cluster_rolling_restart.yml
 
 ```
 
