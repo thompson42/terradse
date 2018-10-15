@@ -1,8 +1,8 @@
 
  
-- hosts: dse[0]
+- hosts: dse
   any_errors_fatal: true
-  name: Activate LDAP
+  name: Print ip-address
   become: true
   become_method: sudo
   roles:

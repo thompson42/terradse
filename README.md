@@ -36,6 +36,7 @@ The scripts in this repository have 3 major parts:
 | [Security and automation features](docs/security_features.md)  | This solution is a work in progress, please refer to the security features document to keep abreast of changes  | WIP |
 | [FAQ](docs/faq.md)  | Frequently asked questions  | |
 | [Ansible client machine requirements](docs/ansible_requirements.md)  | In order to run this solution your ansible client machine will require the following libraries installed  | Operational |
+| [Static ansible inventory](docs/static_inventory.md)  | DEFAULT inventory - PLEASE READ!  | Operational |
 | [Dynamic ansible inventory](docs/dynamic_inventory.md)  | How to dynamically manage your Ansible inventory via EC2 tags and Terraform state files   | Operational |
 | [Create the initial cluster](docs/create_initial_cluster.md)  | Quickstart steps for initial cluster creation  | Operational |
 | [Add a new node to existing datacenter](docs/add_node.md)  | Quickstart steps to add a new node to an existing datacenter  | Testing |
@@ -43,6 +44,7 @@ The scripts in this repository have 3 major parts:
 | [DSE Unified Authentication](docs/dse_authentication.md)  | Notes on how to use DSE Unified Authentication  | Operational |
 | [LDAP Integration](docs/ldap_integration.md)  | Using LDAP / Active Directory to manage roles and user authentication  | Operational |
 | [SSL certificates](docs/ssl_certificates.md)  | Self signed and CA wildcard certificates  | Operational |
+| [SysAdmin Task Automation](docs/task_automation.md)  | Various operational tasks that may need to be performed from time-to-time on an ad-hoc basis,  e.g rolling restart of the cluster  | Operational |
 | [This fork compared to upstream](docs/forked_version.md)  | Why this fork?  |  |
 | [Limitations](docs/limitations.md)  | Limitations of this automation solution  |  |
 

@@ -1,0 +1,13 @@
+
+
+# Stop a DSE 
+- hosts: dse
+  any_errors_fatal: true
+  name: Perform a rolling restart of ALL DSE nodes in all DC's
+  serial: 1
+  become: true
+  become_method: sudo
+  vars:
+    srvc_name: dse
+  roles:
+    - { role: stop_start_dse_node} 

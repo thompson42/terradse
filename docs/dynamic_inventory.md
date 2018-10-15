@@ -5,6 +5,14 @@ This small module in the ansible/library/dynamic_inventory.py file will generate
 
 #### Configuration
 
+##### ancible.cfg setting
+
+To activate the dynamic inventory change the inventory key to the following:
+
+```
+inventory = library/inventory_generator.py
+```
+
 ##### AWS Tags
 
 The inventory is controlled by two AWS tags on each instance e.g.:
@@ -25,18 +33,23 @@ Set following environment variables (consumed by the inventory_generator.py file
 DYNAMIC_INVENTORY_TFSTATE_PATH="/path/to/tfstate"
 DYNAMIC_INVENTORY_TFSTATE_LATEST_PATH="/path/to/tfstate_latest"
 ```
-These will need to be added to the profile for the user you run ansible as.
 
-To export these environment variables and values on Ubuntu use the following commands:
+These will need to be added to your /etc/environment file as key=value:
 
 ```
-export DYNAMIC_INVENTORY_TFSTATE_PATH="/path/to/tfstate"
-export DYNAMIC_INVENTORY_TFSTATE_LATEST_PATH="/path/to/tfstate_latest"
+DYNAMIC_INVENTORY_TFSTATE_PATH="/path/to/tfstate"
+DYNAMIC_INVENTORY_TFSTATE_LATEST_PATH="/path/to/tfstate_latest"
 ```
 
-Of course reset those paths to your storage locations for the files.
+Then reload the environment file temporarily via the following command, this will only work for the existing shell:
 
-To check you correctly set the environment paths:
+```
+source /etc/environment
+```
+
+Reboot the OS on the ansible node to persist these environment variables and make them available for all users.
+
+To check you correctly set the paths:
 
 ```
 echo $DYNAMIC_INVENTORY_TFSTATE_PATH
@@ -58,26 +71,6 @@ Case 2 B: If differences found the script will work out your intentions which wi
 If you attempt to add more than 1x node to an existing datacenter the script will exit and fail.
 
 If you attempt to add more than 1x datacenter to an existing cluster the script will exit and fail.
-
-### When calling an ansible playbook
-
-Explicitly point to the inventory_generator.py file:
-
-```
-cmd>ansible-playbook -i /path/to/inventory_generator.py dse_keyspace_replication_configure.yml --private-key=~/.ssh/id_rsa_aws
-```
-
-Or, in your ansible.cfg file enter the line:
-
-```
-inventory = /path/to/inventory_generator.py
-```
-
-And then call a playbook via:
-
-```
-cmd>ansible-playbook dse_keyspace_replication_configure.yml --private-key=~/.ssh/id_rsa_aws
-```
 
 ### To debug inventory_generator.py
 

@@ -1,15 +1,5 @@
 
-- name: Configure mixed LDAP and INTERNAL DSE Authenticator in dse.yaml (/etc/dse/dse.yaml)
-  yedit:
-    src: "{{ dse_config_dir }}/dse.yaml"
-    edits:
-    - key: authentication_options.enabled
-      value: true
-    - key: authentication_options.default_scheme
-      value: ldap
-    - key: authentication_options.other_schemes
-      value: [internal]
-      value_type: list
-#      append: true
+- debug: 
+    msg: "{{ ansible_host }}"
       
 

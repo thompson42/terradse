@@ -12,7 +12,7 @@ To run:
 
 ```sh
 cd ansible
-ansible-playbook -i hosts dse_security.yml --private-key=~/.ssh/id_rsa_aws
+ansible-playbook dse_security.yml --private-key=~/.ssh/id_rsa_aws
 ```
 
 #### Addition of a configurable OpsCenter Security (opsc_security.yml) playbook
@@ -23,7 +23,7 @@ To run:
 
 ```sh
 cd ansible
-ansible-playbook -i hosts opsc_security.yml --private-key=~/.ssh/id_rsa_aws
+ansible-playbook opsc_security.yml --private-key=~/.ssh/id_rsa_aws
 ```
 
 #### Addition of a configurable Spark Secuirty (spark_security.yml) playbook
@@ -34,7 +34,7 @@ To run:
 
 ```sh
 cd ansible
-ansible-playbook -i hosts spark_security.yml --private-key=~/.ssh/id_rsa_aws
+ansible-playbook spark_security.yml --private-key=~/.ssh/id_rsa_aws
 ```
 
 #### Creation of independently runnable Security_xyz encryption roles under ansible/roles to configure:

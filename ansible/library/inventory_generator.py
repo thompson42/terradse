@@ -364,7 +364,7 @@ class TerraformDynamicInventory():
 
 if __name__ == '__main__':
     
-    tfstate_path        = os.environ['DYNAMIC_INVENTORY_TFSTATE_PATH']
-    tfstate_latest_path = os.environ['DYNAMIC_INVENTORY_TFSTATE_LATEST_PATH']
+    tfstate_path        = os.getenv('DYNAMIC_INVENTORY_TFSTATE_PATH')
+    tfstate_latest_path = os.getenv('DYNAMIC_INVENTORY_TFSTATE_LATEST_PATH')
     tdi                 = TerraformDynamicInventory(tfstate_path, tfstate_latest_path)
     tdi.main()
