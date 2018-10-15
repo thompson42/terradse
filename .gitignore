@@ -1,5 +1,6 @@
 terraform_extended/.terraform
 *.retry
+*.cfg
 ansible/group_vars/all/
 ansible/group_vars/all/*
 ansible/group_vars/all_backup
