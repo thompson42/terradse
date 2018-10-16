@@ -39,7 +39,7 @@ The scripts in this repository have 3 major parts:
 | [Static ansible inventory](docs/static_inventory.md)  | DEFAULT inventory - PLEASE READ!  | Operational |
 | [Dynamic ansible inventory](docs/dynamic_inventory.md)  | How to dynamically manage your Ansible inventory via EC2 tags and Terraform state files   | Operational |
 | [Create the initial cluster](docs/create_initial_cluster.md)  | Quickstart steps for initial cluster creation  | Operational |
-| [Add a new node to existing datacenter](docs/add_node.md)  | Quickstart steps to add a new node to an existing datacenter  | Testing |
+| [Add a new node to existing datacenter](docs/add_node.md)  | Quickstart steps to add a new node to an existing datacenter  | Operational |
 | [Add a new datacenter to existing cluster](docs/add_datacenter.md)  | Quickstart steps to add a full datacenter to an existing cluster  | Operational |
 | [DSE Unified Authentication](docs/dse_authentication.md)  | Notes on how to use DSE Unified Authentication  | Operational |
 | [LDAP Integration](docs/ldap_integration.md)  | Using LDAP / Active Directory to manage roles and user authentication  | Operational |
