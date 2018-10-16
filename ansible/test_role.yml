@@ -1,11 +1,42 @@
 
- 
-- hosts: dse
+# Populate the seeds list by iterating over >>>ALL<<<< exiting DSE nodes and the new add_node node
+- hosts: dse, add_node
   any_errors_fatal: true
-  name: Print ip-address
   become: true
   become_method: sudo
   roles:
-    - { role: dummy_role }
+    - { role: dse_common }
+ 
+# Install and configure DSE
+- hosts: add_node[0]
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - { role: dse_updcfg }
+    - { role: dse_set_heap }
+  vars:
+    is_initial_install: false
+    
+# Install and configure datastax-agent
+- hosts: add_node[0]
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  tasks:
+  
+    - name: Install datastax-agent on DSE nodes
+      apt:
+        name: "datastax-agent={{opsc_ver_target}}"
+        state: present
+        update_cache: yes
+        
+    - name: Configure stomp_address
+      lineinfile:
+        name: "/var/lib/datastax-agent/conf/address.yaml"
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      with_items:
+        - { regexp: '# stomp_interface', line: "stomp_interface: {{ groups['opsc_srv'][0] }}" }
 
 

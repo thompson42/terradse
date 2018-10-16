@@ -105,9 +105,9 @@
   with_items:
     - "{{ hints_directory }}"
 
-# Initial install, Add a node:
+# Initial install
 # Get the cluster_name directly
-- name: Configure DSE cluster name for [initial install] and [add node] (cassandra.yaml)
+- name: Configure DSE cluster name for initial install (cassandra.yaml)
   lineinfile:
     name: "{{ dse_config_dir }}/cassandra/cassandra.yaml"
     regexp: "{{ item.regexp }}"
@@ -117,11 +117,11 @@
     mode: 0644
   with_items:
     - { regexp: 'cluster_name\:',    line: "cluster_name: {{ cluster_name }}" }
-  when: not add_datacenter
+  when: is_initial_install
 
 # Add a datacenter:
 # Get the cluster_name from the [dse] group
-- name: Configure DSE cluster name for [add datacenter] only (cassandra.yaml)
+- name: Configure DSE cluster name for [add_datacenter] and [add_node] (cassandra.yaml)
   lineinfile:
     name: "{{ dse_config_dir }}/cassandra/cassandra.yaml"
     regexp: "{{ item.regexp }}"
@@ -131,7 +131,7 @@
     mode: 0644
   with_items:
     - { regexp: 'cluster_name\:',    line: "cluster_name: {{ hostvars[groups['dse'][0]]['cluster_name'] }}" }
-  when: add_datacenter
+  when: not is_initial_install
 
     
 - name: Configure seeds, endpoint_snitch, listen_address, rpc_address, broadcast_rpc_address, commitlog_directory and saved_caches_directory (cassandra.yaml)
@@ -165,6 +165,7 @@
   with_items:
     - { regexp: '^hints_directory\:', line: 'hints_directory: {{ hints_directory }}' }
 
+#TODO can now convert this to yedit list type
 - name: Configure Cassandra data directory (cassandra.yaml)
   replace:
     name: "{{ dse_config_dir }}/cassandra/cassandra.yaml"

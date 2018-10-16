@@ -21,15 +21,15 @@
   roles:
   - { role: datastax_pkg }
 
-# Populate the seeds list by iterating over >>>ALL<<<< exiting DSE nodes in the hosts file
-- hosts: dse
+# Populate the seeds list by iterating over >>>ALL<<<< exiting DSE nodes and the new add_node node
+- hosts: dse, add_node
   any_errors_fatal: true
   become: true
   become_method: sudo
   roles:
     - { role: dse_common }
 
-# Install and configure DSE
+# Install and configure the new node
 - hosts: add_node[0]
   any_errors_fatal: true
   become: true
@@ -42,9 +42,9 @@
     - { role: dse_updcfg }
     - { role: dse_set_heap }
   vars:
-    add_datacenter: false
+    is_initial_install: false
     
-# Install and configure datastax-agent
+# Install and configure datastax-agent on new node
 - hosts: add_node[0]
   any_errors_fatal: true
   become: true

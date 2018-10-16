@@ -41,7 +41,7 @@
     - { role: dse_updcfg }
     - { role: dse_set_heap }
   vars:
-    add_datacenter: true
+    is_initial_install: false
 
 # Update the seeds list on DSE nodes to include seeds in the new Datacenter    
 - hosts: dse

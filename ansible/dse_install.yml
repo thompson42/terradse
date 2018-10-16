@@ -45,4 +45,4 @@
     - { role: dse_updcfg }
     - { role: dse_set_heap }
   vars:
-    add_datacenter: false
+    is_initial_install: true
