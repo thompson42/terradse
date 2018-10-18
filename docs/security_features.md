@@ -4,10 +4,19 @@
 
 ## Testing and TODO
 
-1. Need to check Vnode allocation on all types (core, search,analytic, graph) in a dry run.
-2. Audit all final file ownership on target dse nodes (ctool comparable sys.)
+1. Audit all final file ownership on target dse nodes (ctool comparable sys.)
 
-dynamic_inventory.py needs to be able to handle the following scenario:
+#### SSL
+
+Need to validate generated root -> intemidiaries -> top level cert order via openssl validate() function, appears to be an incorrect order, current workaround is to force truststore/keystore acceptance.
+
+#### LDAP
+
+Need to test against Windows AD with DSE mixed LDAP/Internal mode.
+
+https://academy.datastax.com/content/datastax-enterprise-46-ldap-support
+
+#### library/dynamic_inventory.py needs to be able to handle the following scenario:
 
 1. create initial cluster: TFSTATE created
 2. delete initial cluster: TFSTATE exists but is empty
