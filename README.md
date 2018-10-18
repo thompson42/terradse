@@ -42,7 +42,7 @@ The scripts in this repository have 3 major parts:
 | [Add a new node to existing datacenter](docs/add_node.md)  | Quickstart steps to add a new node to an existing datacenter  | Operational |
 | [Add a new datacenter to existing cluster](docs/add_datacenter.md)  | Quickstart steps to add a full datacenter to an existing cluster  | Operational |
 | [DSE Unified Authentication](docs/dse_authentication.md)  | Notes on how to use DSE Unified Authentication  | Operational |
-| [LDAP Integration](docs/ldap_integration.md)  | Using LDAP / Active Directory to manage roles and user authentication  | Operational |
+| [LDAP Integration](docs/ldap_integration.md)  | Using LDAP / Active Directory to manage roles and user authentication  | Testing |
 | [SSL certificates](docs/ssl_certificates.md)  | Self signed and CA wildcard certificates  | Operational |
 | [SysAdmin Task Automation](docs/task_automation.md)  | Various operational tasks that may need to be performed from time-to-time on an ad-hoc basis,  e.g rolling restart of the cluster  | Operational |
 | [This fork compared to upstream](docs/forked_version.md)  | Why this fork?  |  |

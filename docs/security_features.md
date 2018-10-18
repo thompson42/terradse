@@ -2,10 +2,18 @@
 
 # Security and Automation Features
 
-## Testing
+## Testing and TODO
 
 1. Need to check Vnode allocation on all types (core, search,analytic, graph) in a dry run.
 2. Audit all final file ownership on target dse nodes (ctool comparable sys.)
+
+dynamic_inventory.py needs to be able to handle the following scenario:
+
+1. create initial cluster: TFSTATE created
+2. delete initial cluster: TFSTATE exists but is empty
+3. create initial cluster: TFSTATE_LATEST created
+
+The process is now an incorrect state, need to remove TFSTATE if empty so that TFSTATE_LATEST is not created.
 
 ## HEAP allication
 
