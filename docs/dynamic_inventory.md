@@ -60,7 +60,7 @@ echo $DYNAMIC_INVENTORY_TFSTATE_LATEST_PATH
 
 With the AWS tags and environment variables correctly set on existing Terraform tfstate and a new Terraform tfstate we have enough information to generate a dynamic inventory for ansible, avoiding the need to maintain [hosts] files for ansible, we also have the added advantage of being able to version tfstate files in S3 etc.
 
-Case 1: If only a single Terraform tfstate file exists at the first variable path; DYNAMIC_INVENTORY_TFSTATE_PATH and the second path; DYNAMIC_INVENTORY_TFSTATE_LATEST_PATH  is empty,  the dynamic inventory script will build the Ansible inventory describing the current state, this can be used to generate a new cluster, or used to perform work on the existing cluster.
+Case 1: If only a single Terraform tfstate file exists at the first variable path; DYNAMIC_INVENTORY_TFSTATE_PATH and the second path; DYNAMIC_INVENTORY_TFSTATE_LATEST_PATH  is empty OR the file at the endpoint does not exist,  the dynamic inventory script will build the Ansible inventory describing the current state, this can be used to generate a new cluster, or used to perform work on the existing cluster.
 
 Case 2: If two Terraform tfstate files exist the dynamic inventory script will difference the two states and work out your intentions:
 
@@ -74,7 +74,7 @@ If you attempt to add more than 1x datacenter to an existing cluster the script 
 
 ### To debug inventory_generator.py
 
-To dbug the script or just to see how it works prior to using it in ansible call the script outside of ansible on the command line directly:
+To debug the script or just to see how it works prior to using it in ansible call the script outside of ansible on the command line directly:
 
 ```
 >python inventory_generator.py

@@ -86,13 +86,13 @@ def calculate_keyspace_replication(replication_dc, keyspace_name):
     for dc_name, node_count in replication_dc.items():
         #if the number of nodes in a DC is zero do not output the DC
         if int(node_count) != 0:
-            #DCs < 3x nodes use an RF=1
+            #DCs node count less than 3 use an RF=1
             if int(node_count) < 3:
                 replication_dc_str = replication_dc_str + ", \'" + dc_name + "\': 1"
-            #DCs >= 3x nodes use an RF=3
-            elif int(node_count) >= 3:
+            #DCs node count between 3 and 9 use an RF=3
+            elif int(node_count) >= 3 and int(node_count) <= 9:
                 replication_dc_str = replication_dc_str + ", \'" + dc_name + "\': 3"
-            #DCs > 9x nodes use an RF=5
+            #DCs node count greater than 9
             elif int(node_count) > 9:
                 if keyspace_name.lower() == 'system_auth' or keyspace_name.lower() == 'dse_security':
                     replication_dc_str = replication_dc_str + ", \'" + dc_name + "\': 5"
