@@ -6,6 +6,18 @@
 
 1. Audit all final file ownership on target dse nodes (ctool comparable sys.)
 
+#### Ubuntu 18.04 - pyton pip etc
+
+Need universe added to ubuntu repos:
+
+sudo nano /etc/apt/sources.list
+
+then add  universe at the end of each line, like this:
+
+deb http://archive.ubuntu.com/ubuntu bionic main universe
+deb http://archive.ubuntu.com/ubuntu bionic-security main universe 
+deb http://archive.ubuntu.com/ubuntu bionic-updates main universe
+
 #### SSL
 
 Need to validate generated root -> intemidiaries -> top level cert order via openssl validate() function, appears to be an incorrect order, current workaround is to force truststore/keystore acceptance.
@@ -18,11 +30,15 @@ https://academy.datastax.com/content/datastax-enterprise-46-ldap-support
 
 #### library/dynamic_inventory.py needs to be able to handle the following scenario:
 
+DONE: ANT MOD SLACK
+
 1. create initial cluster: TFSTATE created
 2. delete initial cluster: TFSTATE exists but is empty
 3. create initial cluster: TFSTATE_LATEST created
 
 The process is now an incorrect state, need to remove TFSTATE if empty so that TFSTATE_LATEST is not created.
+
+function cluster_initlialisation_required() should return None if the original TFSTATE has no children
 
 ## HEAP allication
 

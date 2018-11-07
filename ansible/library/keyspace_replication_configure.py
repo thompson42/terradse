@@ -9,7 +9,7 @@ module: keyspace_replication_configure
 short_description: Manage Cassandra Keyspace Replication and Topology Strategies
 description:
     - Manage Cassandra Keyspace Replication and Topology Strategies
-    - requires `pip install cassandra-driver`
+    - requires `pip install dse-driver`
     - Related Docs: https://datastax.github.io/python-driver/api/cassandra/query.html
     - Related Docs: https://docs.datastax.com/en/cql/3.3/cql/cql_reference/create_role.html
 author: "Alex Thompson"
@@ -60,7 +60,7 @@ options:
     default: 9042
 
 notes:
-   - "requires cassandra-driver to be installed"
+   - "requires dse-driver to be installed"
 
 '''
 
@@ -165,9 +165,9 @@ def main():
     login_hosts       = module.params["login_hosts"]
     login_port        = module.params["login_port"]
 
-    #exit if no cassandra driver found
+    #exit if no dse driver found
     if not cassandra_dep_found:
-        module.fail_json(msg="the python cassandra-driver module is required")
+        module.fail_json(msg="the python dse-driver module is required")
 
     session = None
     changed = True

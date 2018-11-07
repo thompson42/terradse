@@ -8,6 +8,7 @@
 #
 ansible_connection: ssh
 ansible_user: "{{ my_ansible_user | default('ubuntu') }}"                                                   #EDIT: Change from default e.g. ec2-user, ubuntu, automaton etc
+ansible_ssh_pass: "{{ my_ansible_ssh_pass | default('ssh_password') }}" 
 
 # DSE Superuser account
 #-------------------------------------------------------------------------------
@@ -39,9 +40,9 @@ dse_repo_email: "{{ my_dse_repo_email | default('xxx') }}"                      
 dse_repo_password: "{{ my_dse_repo_password | default('xxx') }}"                                            #EDIT: Change from default (Use ansible-vault)
 
 # Target/Current DSE verson
-dse_major_version: 5.1                                                          #used to choose the correct configuration templates
-dse_ver_target:  5.1.7-1                                                       #requires the [-1] on the end of the version
-opsc_ver_target: 6.5.0                                                          #opsc 6.5 is compatible with DSE 5.0,5.1,6.0
+dse_major_version: "{{ my_dse_major_version | default('6.0') }}"                                            #used to choose the correct configuration templates
+dse_ver_target: "{{ my_dse_ver_target | default('6.0.4-1') }}"                                             #requires the [-1] on the end of the version
+opsc_ver_target: "{{ my_opsc_ver_target | default('6.5.1') }}"                                              #opsc 6.5 is compatible with DSE 5.0,5.1,6.0
 
 # DSE directory locations 
 #-------------------------------------------------------------------------------
@@ -105,8 +106,8 @@ secure_opscenter_password: "{{ my_secure_opscenter_password | default('opscenter
 
 # Key JMX settings
 #-------------------------------------------------------------------------------
-jmx_username: "{{ my_jmx_username | default('jmx_username') }}"                                             #EDIT: Change from default (Use ansible-vault)
-jmx_password: "{{ my_jmx_password | default('jmx_password') }}"                                             #EDIT: Change from default (Use ansible-vault)
+jmx_username: "{{ my_jmx_username | default('jmx_username') }}"                                             #NOT USED, PASSES THRU TO UNIFIED AUTH
+jmx_password: "{{ my_jmx_password | default('jmx_password') }}"                                             #NOT USED, PASSES THRU TO UNIFIED AUTH
 
 # path fix for JMX/JAAS/cassandra-env.sh
 jaas_path: "{{dse_config_dir}}/cassandra/cassandra-jaas.config"

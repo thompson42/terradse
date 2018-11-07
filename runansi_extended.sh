@@ -139,13 +139,13 @@ echo
 echo
 echo ">>>> Inject into Opscenter services activation and other best practise configurations via API call <<<<"
 echo
-#ansible-playbook opsc_services_configure.yml
+ansible-playbook opsc_services_configure.yml
 echo
 
 echo
 echo ">>>> Inject into Opscenter backup schedule via API call <<<<"
 echo " Disabled, must run after schema creation... "
-#ansible-playbook opsc_backups_configure.yml
+ansible-playbook opsc_backups_configure.yml
 echo
 
 echo ">>>> Configure Spark security in datacenter: dse_analytics...  <<<<"

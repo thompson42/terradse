@@ -15,7 +15,7 @@
       with_items: "{{groups[parent]}}"
 
     - debug: 
-        msg: "{{ datacenters }}"
+        msg: "List of existing DSE datacenter names {{ datacenters }}"
         
     - name: Create a dictionary of DC's and their node count from the existing datacenters list
       set_fact:
@@ -24,7 +24,7 @@
         - "{{ datacenters }}"
         
     - debug: 
-        msg: "{{ dc_dict }}"
+        msg: "Dictionary of DC's and their node count {{ dc_dict }}"
 
     - name: Add the new datacenter to its own dictionary
       set_fact:
@@ -33,14 +33,14 @@
         - ["{{ hostvars[groups['add_datacenter'][0]]['dc'] }}"]
         
     - debug: 
-        msg: "{{ add_dc_dict }}"
+        msg: "Add the new datacenter to its own dictionary {{ add_dc_dict }}"
         
     - name: Combine the dictionaries
       set_fact:
         core_dc_dict: "{{ dc_dict | combine(add_dc_dict) }}"
 
     - debug: 
-        msg: "{{ core_dc_dict }}"
+        msg: "Combined dictionaries {{ core_dc_dict }}"
 
 # Modify the keyspaces via a CQL call to a node in one of the existing datacenters - here defaults to node: groups['dse'][0]
 - hosts: localhost
@@ -77,7 +77,7 @@
       when: hostvars[groups[item][0]]['spark_enabled']|int >= 1
       
     - debug: 
-        msg: "{{ existing_spark_dc_dict }}"
+        msg: "Existing Spark DC's and their node count {{ existing_spark_dc_dict }}"
         
     - name: Create an empty new spark DC dictionary
       set_fact:
@@ -94,14 +94,14 @@
         msg: "{{ hostvars[groups['add_datacenter'][0]]['spark_enabled'] }}"
       
     - debug: 
-        msg: "{{ new_spark_dc_dict }}"
+        msg: "New Spark DC dictionary {{ new_spark_dc_dict }}"
       
     - name: Combine the dictionaries
       set_fact:
         spark_dc_dict: "{{ existing_spark_dc_dict | combine(new_spark_dc_dict) }}"
 
     - debug: 
-        msg: "{{ spark_dc_dict }}"
+        msg: "Combined Spark dictionaries {{ spark_dc_dict }}"
 
 # Modify the keyspaces via a CQL call to a node in one of the existing datacenters - here defaults to node: groups['dse'][0]
 - hosts: localhost

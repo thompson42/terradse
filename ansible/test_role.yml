@@ -1,42 +1,89 @@
 
-# Populate the seeds list by iterating over >>>ALL<<<< exiting DSE nodes and the new add_node node
-- hosts: dse, add_node
+# Change the topology strategy and replication for core DSE keyspaces
+# NOTE: Core DSE keyspaces are replicated to all DCs in the cluster
+# Surface all datacenter names by finding all unique group_names for all DSE nodes
+- hosts: localhost
   any_errors_fatal: true
-  become: true
-  become_method: sudo
-  roles:
-    - { role: dse_common }
- 
-# Install and configure DSE
-- hosts: add_node[0]
-  any_errors_fatal: true
-  become: true
-  become_method: sudo
-  roles:
-    - { role: dse_updcfg }
-    - { role: dse_set_heap }
+  become: no
+  connection: local
   vars:
-    is_initial_install: false
-    
-# Install and configure datastax-agent
-- hosts: add_node[0]
-  any_errors_fatal: true
-  become: true
-  become_method: sudo
+    parent: 'dse'
   tasks:
-  
-    - name: Install datastax-agent on DSE nodes
-      apt:
-        name: "datastax-agent={{opsc_ver_target}}"
-        state: present
-        update_cache: yes
+    - name: Build a list of existing DSE datacenter names
+      set_fact: 
+        datacenters: "{{ ((datacenters | default([])) + hostvars[item].group_names) | difference(parent) }}"
+      with_items: "{{groups[parent]}}"
+
+    - debug: 
+        msg: "List of existing DSE datacenter names {{ datacenters }}"
         
-    - name: Configure stomp_address
-      lineinfile:
-        name: "/var/lib/datastax-agent/conf/address.yaml"
-        regexp: "{{ item.regexp }}"
-        line: "{{ item.line }}"
+    - name: Create a dictionary of DC's and their node count from the existing datacenters list
+      set_fact:
+        dc_dict: "{{ dc_dict | default({}) | combine({ item:groups[item]|length }) }}"
       with_items:
-        - { regexp: '# stomp_interface', line: "stomp_interface: {{ groups['opsc_srv'][0] }}" }
+        - "{{ datacenters }}"
+        
+    - debug: 
+        msg: "Dictionary of DC's and their node count {{ dc_dict }}"
 
+    - name: Add the new datacenter to its own dictionary
+      set_fact:
+        add_dc_dict: "{{ add_dc_dict | default({}) | combine({ item:groups['add_datacenter']|length }) }}"
+      with_items:
+        - ["{{ hostvars[groups['add_datacenter'][0]]['dc'] }}"]
+        
+    - debug: 
+        msg: "Add the new datacenter to its own dictionary {{ add_dc_dict }}"
+        
+    - name: Combine the dictionaries
+      set_fact:
+        core_dc_dict: "{{ dc_dict | combine(add_dc_dict) }}"
 
+    - debug: 
+        msg: "Combined dictionaries {{ core_dc_dict }}"
+
+# If there is Spark DC/s in the existing cluster, change the Spark keyspace's topology strategy and replication
+# NOTE: Spark specific keyspaces are only replicated to Spark DC/s in the cluster
+- hosts: localhost
+  any_errors_fatal: true
+  become: no
+  connection: local
+  tasks:
+
+    - name: Create an empty existing spark DC dictionary
+      set_fact:
+        existing_spark_dc_dict: "{{ existing_spark_dc_dict | default({}) }}"
+    
+    - name: Populate the existing Spark DC's and their node count from the existing datacenters collection
+      set_fact:
+        existing_spark_dc_dict: "{{ existing_spark_dc_dict | combine({ item:groups[item]|length }) }}"
+      with_items:
+        - "{{ datacenters }}"
+      when: hostvars[groups[item][0]]['spark_enabled']|int >= 1
+      
+    - debug: 
+        msg: "Existing Spark DC's and their node count {{ existing_spark_dc_dict }}"
+        
+    - name: Create an empty new spark DC dictionary
+      set_fact:
+        new_spark_dc_dict: "{{ new_spark_dc_dict | default({}) }}"
+    
+    - name: Populate the new datacenter to its own dictionary only if it is a Spark DC
+      set_fact:
+        new_spark_dc_dict: "{{ new_spark_dc_dict | combine({ item:groups['add_datacenter']|length }) }}"
+      with_items:
+        - ["{{ hostvars[groups['add_datacenter'][0]]['dc'] }}"]
+      when: hostvars[groups['add_datacenter'][0]]['spark_enabled']|int >= 1
+      
+    - debug: 
+        msg: "{{ hostvars[groups['add_datacenter'][0]]['spark_enabled'] }}"
+      
+    - debug: 
+        msg: "New Spark DC dictionary {{ new_spark_dc_dict }}"
+      
+    - name: Combine the dictionaries
+      set_fact:
+        spark_dc_dict: "{{ existing_spark_dc_dict | combine(new_spark_dc_dict) }}"
+
+    - debug: 
+        msg: "Combined Spark dictionaries {{ spark_dc_dict }}"
