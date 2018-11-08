@@ -189,6 +189,22 @@ class TerraformDynamicInventory():
         
         return inventory
 
+    #get the count of aws_instances in the original tfstate file
+    def getAwsInstanceCount(self, tfstate_json_object):
+    
+        count = 0
+        
+        try:
+            
+            for module in tfstate_json_object["modules"]:
+                for resource in module["resources"].values():
+                    if resource["type"].startswith("aws_instance"):
+                        count = count + 1
+        except:
+            pass
+    
+        return count
+    
     #used by add_node, return the ip-address of the added node
     def getAddNodeIp(self):
         
@@ -295,19 +311,39 @@ class TerraformDynamicInventory():
     
     def cluster_initialisation_required(self):
         
-        if os.path.isfile(self.tfstate_path) and os.path.isfile(self.tfstate_latest_path):
-            return False
-        else:
+        #to get here we have a valid original tfstate but an unknown tfstate_latest
+        
+        # tfstate_latest_path = None
+        # output the original tfstate only
+        if self.tfstate_latest_path == None:
             return True
-
+        
+        # No valid file at tfstate_latest_path
+        # output the original tfstate only
+        if not os.path.isfile(self.tfstate_latest_path):
+            return True
+        
+        # No valid JSON file at tfstate_latest_path
+        # bubble up exception
+        with open(self.tfstate_latest_path) as f:
+            self.tfstate_latest = json.load(f)
+        
+        # No aws_instances in tfstate_latest
+        # output the original tfstate only
+        aws_instance_count = self.getAwsInstanceCount(self.tfstate_latest)
+        if aws_instance_count == 0:        
+            sys.stdout.write("A TFSTATE LATEST file was found but contains no aws_instances, please check your tfstate_latest file: " + self.tfstate_latest_path)
+            sys.exit(1)
+        
+        #we have a valid tfstate_latest file with aws_instances listed
+        return False
+        
+        
     def get_difference_type(self):
         
         #difference can be None, add_node or add_datacenter  
         self.original_inventory = self.build_inventory(self.tfstate, self.init_inventory())
-        self.original_dc_count = len(self.original_inventory['all']['children'])
-        
-        with open(tfstate_latest_path) as f:
-            self.tfstate_latest = json.load(f)    
+        self.original_dc_count = len(self.original_inventory['all']['children'])  
             
         self.latest_inventory = self.build_inventory(self.tfstate_latest, self.init_inventory())
         self.latest_dc_count = len(self.latest_inventory['all']['children'])
@@ -327,16 +363,24 @@ class TerraformDynamicInventory():
     def main(self):
         try:
             
-            #tf_command = [TERRAFORM_PATH, 'state', 'pull', '-input=false']
-            #proc = subprocess.Popen(tf_command, cwd=TERRAFORM_DIR, stdout=subprocess.PIPE
             
-            #open the original tfstate file, exit if it does not exist
-            if os.path.isfile(self.tfstate_path):
-                with open(self.tfstate_path) as f:
-                    self.tfstate = json.load(f)
-            else:
-                sys.stdout.write("No TFSTATE files found at tfstate_path:" + tfstate_path + " or at tfstate_latest_path:" + tfstate_latest_path)
-                sys.exit(1)        
+            if self.tfstate_path == None:
+                sys.stdout.write("No TFSTATE file passed in")
+                sys.exit(1)                
+            
+            if not os.path.isfile(self.tfstate_path):
+                sys.stdout.write("No valid file object at TFSTATE PATH: " + self.tfstate_path)
+                sys.exit(1)                
+            
+            #load into json, if it fails to load bubble up exception
+            with open(self.tfstate_path) as f:
+                self.tfstate = json.load(f)
+            
+            # if tfstate has zero(0) EC2 node instances in it -> exit
+            aws_instance_count = self.getAwsInstanceCount(self.tfstate)
+            if aws_instance_count == 0:
+                sys.stdout.write("Original TFSTATE file exists but has zero aws_instances listed in it, please check the file at path: " + self.tfstate_path)
+                sys.exit(1)             
             
             #find out if there are two TFSTATE files to compare, otherwise this is an initial run
             is_cluster_initialisation_required = self.cluster_initialisation_required()
@@ -363,6 +407,58 @@ class TerraformDynamicInventory():
         return json.dumps(inventory, indent=2)
 
 if __name__ == '__main__':
+    
+    """
+    TESTING - tfstate
+    -----------------
+    
+    tfstate_path        = None
+    tfstate_latest_path = None
+    
+    tfstate_path        = "inventory_generator_test_data/no_file"
+    tfstate_latest_path = None
+    
+    tfstate_path        = "inventory_generator_test_data/tfstate_empty_file.json"
+    tfstate_latest_path = None
+    
+    tfstate_path        = "inventory_generator_test_data/tfstate_invalid_json.json"
+    tfstate_latest_path = None
+    
+    tfstate_path        = "inventory_generator_test_data/tfstate_no_aws_instances_json.json"
+    tfstate_latest_path = None
+    
+    #Success case:
+    tfstate_path        = "inventory_generator_test_data/tfstate_valid.json"
+    tfstate_latest_path = None
+    
+    TESTING - tfstate_latest
+    ------------------------
+    
+    tfstate_path        = "inventory_generator_test_data/tfstate_valid.json"
+    tfstate_latest_path = "inventory_generator_test_data/no_file"
+    
+    tfstate_path        = "inventory_generator_test_data/tfstate_valid.json"
+    tfstate_latest_path = "inventory_generator_test_data/tfstate_empty_file.json"
+    
+    tfstate_path        = "inventory_generator_test_data/tfstate_valid.json"
+    tfstate_latest_path = "inventory_generator_test_data/tfstate_invalid_json.json"
+    
+    tfstate_path        = "inventory_generator_test_data/tfstate_valid.json"
+    tfstate_latest_path = "inventory_generator_test_data/tfstate_no_aws_instances_json.json"
+    
+    # No change
+    tfstate_path        = "inventory_generator_test_data/tfstate_valid.json"
+    tfstate_latest_path = "inventory_generator_test_data/tfstate_valid.json"
+    
+    #Success cases:
+    tfstate_path        = "inventory_generator_test_data/tfstate_valid.json"
+    tfstate_latest_path = "inventory_generator_test_data/tfstate_latest_add_node.json"
+    
+    tfstate_path        = "inventory_generator_test_data/tfstate_valid.json"
+    tfstate_latest_path = "inventory_generator_test_data/tfstate_latest_add_datacenter.json"
+    
+    
+    """
     
     tfstate_path        = os.getenv('DYNAMIC_INVENTORY_TFSTATE_PATH')
     tfstate_latest_path = os.getenv('DYNAMIC_INVENTORY_TFSTATE_LATEST_PATH')
