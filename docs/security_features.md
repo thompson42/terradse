@@ -28,18 +28,6 @@ Need to test against Windows AD with DSE mixed LDAP/Internal mode.
 
 https://academy.datastax.com/content/datastax-enterprise-46-ldap-support
 
-#### library/dynamic_inventory.py needs to be able to handle the following scenario:
-
-DONE: ANT MOD SLACK
-
-1. create initial cluster: TFSTATE created
-2. delete initial cluster: TFSTATE exists but is empty
-3. create initial cluster: TFSTATE_LATEST created
-
-The process is now an incorrect state, need to remove TFSTATE if empty so that TFSTATE_LATEST is not created.
-
-function cluster_initlialisation_required() should return None if the original TFSTATE has no children
-
 ## HEAP allication
 
 1. See new params in `group_vars/all`: `[heap_xms]` and `[heap_xmx]` - always set them both to the same value to avoid runtime memory allocation issues.
